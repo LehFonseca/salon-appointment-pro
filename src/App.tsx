@@ -11,6 +11,15 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import SalonPage from "./pages/SalonPage";
 import NotFound from "./pages/NotFound";
+import AboutPage from "./pages/AboutPage";
+import ServicesPage from "./pages/ServicesPage";
+import BusinessPage from "./pages/BusinessPage";
+import SalonsPage from "./pages/SalonsPage";
+import ProfilePage from "./pages/ProfilePage";
+import AppointmentsPage from "./pages/AppointmentsPage";
+import FavoritesPage from "./pages/FavoritesPage";
+import ContactPage from "./pages/ContactPage";
+import FAQPage from "./pages/FAQPage";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +37,15 @@ const App = () => (
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/salon/:id" element={<SalonPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/business" element={<BusinessPage />} />
+              <Route path="/salons" element={<SalonsPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/appointments" element={<AppointmentsPage />} />
+              <Route path="/favorites" element={<FavoritesPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/faq" element={<FAQPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

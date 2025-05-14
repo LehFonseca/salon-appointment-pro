@@ -53,30 +53,31 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				beauty: {
-					50: '#f5f3ff',
-					100: '#ede9fe',
-					200: '#ddd6fe',
-					300: '#c4b5fd',
-					400: '#9b87f5', // Primary purple
-					500: '#7e69ab', // Secondary purple
-					600: '#6d4aaa',
-					700: '#5b3b8f',
-					800: '#4c3175',
-					900: '#3e275d',
-					950: '#2e1a45',
+				glam: {
+					50: '#f9f9f9',
+					100: '#f0f0f0',
+					200: '#e4e4e4',
+					300: '#c9c9c9',
+					400: '#a3a3a3', // Light silver
+					500: '#737373', // Medium gray
+					600: '#525252', // Darker gray
+					700: '#383838', // Very dark gray
+					800: '#1f1f1f', // Almost black
+					900: '#121212', // Black
+					950: '#0a0a0a', // Deep black
 				},
-				pink: {
-					50: '#fdf2f4',
-					100: '#fce7eb',
-					200: '#ffdee2', // Soft Pink accent
-					300: '#ffb1bd',
-					400: '#ff8494',
-					500: '#ff4d6a',
-					600: '#ff1f47',
-					700: '#e50026',
-					800: '#bd0026',
-					900: '#9c0026',
+				gold: {
+					50: '#fbf8f1',
+					100: '#f6ecd9',
+					200: '#edd6b0',
+					300: '#e5bf85', // Light gold
+					400: '#daa95e', // Medium gold
+					500: '#d19544', // Gold
+					600: '#b8782e',
+					700: '#95592a',
+					800: '#7a462b',
+					900: '#653b29',
+					950: '#3a2015',
 				},
 			},
 			borderRadius: {

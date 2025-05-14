@@ -21,20 +21,21 @@ const HeroSection = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
         style={{ 
-          backgroundImage: "url('https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1674&q=80')",
+          backgroundImage: "url('https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80')",
           backgroundPosition: "center 30%",
-          filter: "brightness(0.4)"
+          filter: "brightness(0.2)"
         }}
       />
+      <div className="absolute inset-0 bg-gradient-to-b from-glam-950/80 to-glam-900/50 z-1"></div>
       
       <div className="relative z-10 px-4 py-24 md:py-32 lg:py-40 max-w-5xl mx-auto">
         <div className="text-center">
           <h1 className="text-white font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-6">
             Discover and Book the Best <br />
-            <span className="text-beauty-400">Beauty Services</span> Near You
+            <span className="text-gold-400">Beauty Services</span> Near You
           </h1>
           
-          <p className="text-gray-200 text-lg md:text-xl max-w-2xl mx-auto mb-8">
+          <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-8">
             Connect with top-rated salons and barbershops. Browse, book, and enjoy professional beauty treatments all in one place.
           </p>
           
@@ -43,30 +44,30 @@ const HeroSection = () => {
             className="relative max-w-xl mx-auto flex flex-col sm:flex-row gap-2 sm:gap-0"
           >
             <div className="relative flex-grow">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
               <Input
                 type="text"
                 placeholder="Search for salons, services, or locations..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 py-6 rounded-lg sm:rounded-r-none text-base w-full bg-white/95"
+                className="pl-10 py-6 rounded-lg sm:rounded-r-none text-base w-full bg-glam-800/90 text-white border-gold-500/50 focus:border-gold-400"
               />
             </div>
             <Button 
               type="submit" 
-              className="bg-beauty-400 hover:bg-beauty-500 py-6 px-6 text-base font-medium sm:rounded-l-none"
+              className="bg-gold-500 hover:bg-gold-600 text-glam-900 py-6 px-6 text-base font-medium sm:rounded-l-none"
             >
               Search
             </Button>
           </form>
           
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <span className="text-gray-300 text-sm">Popular:</span>
+            <span className="text-gray-400 text-sm">Popular:</span>
             {['Haircut', 'Manicure', 'Beard Trim', 'Hair Coloring', 'Massage'].map((tag) => (
               <button 
                 key={tag} 
                 onClick={() => setSearchTerm(tag)}
-                className="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors"
+                className="px-3 py-1 rounded-full bg-glam-700/60 hover:bg-glam-700 text-gray-300 text-sm transition-colors"
               >
                 {tag}
               </button>

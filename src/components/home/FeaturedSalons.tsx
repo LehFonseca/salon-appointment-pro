@@ -16,6 +16,7 @@ const mockSalons: Partial<Business>[] = [
       street: "Rua Augusta",
       number: "1200",
       zipCode: "01304-001",
+      neighborhood: "Consolação" // Added neighborhood
     },
     photos: ["https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1674&q=80"],
     rating: 4.8,
@@ -36,6 +37,7 @@ const mockSalons: Partial<Business>[] = [
       street: "Av. Atlântica",
       number: "500",
       zipCode: "22021-001",
+      neighborhood: "Copacabana" // Added neighborhood
     },
     photos: ["https://images.unsplash.com/photo-1503951914875-452162b0f3f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"],
     rating: 4.6,
@@ -56,6 +58,7 @@ const mockSalons: Partial<Business>[] = [
       street: "Rua da Bahia",
       number: "1500",
       zipCode: "30160-011",
+      neighborhood: "Centro" // Added neighborhood
     },
     photos: ["https://images.unsplash.com/photo-1600948836101-f9ffda59d250?ixlib=rb-4.0.3&auto=format&fit=crop&w=1036&q=80"],
     rating: 4.9,
@@ -76,6 +79,7 @@ const mockSalons: Partial<Business>[] = [
       street: "Av. Cândido de Abreu",
       number: "300",
       zipCode: "80530-000",
+      neighborhood: "Centro Cívico" // Added neighborhood
     },
     photos: ["https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"],
     rating: 4.7,
@@ -96,6 +100,7 @@ const mockSalons: Partial<Business>[] = [
       street: "SBS Quadra 2",
       number: "10",
       zipCode: "70070-120",
+      neighborhood: "Asa Sul" // Added neighborhood
     },
     photos: ["https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1471&q=80"],
     rating: 4.5,
@@ -116,6 +121,7 @@ const mockSalons: Partial<Business>[] = [
       street: "Av. Tancredo Neves",
       number: "450",
       zipCode: "41820-020",
+      neighborhood: "Caminho das Árvores" // Added neighborhood
     },
     photos: ["https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"],
     rating: 4.4,
@@ -145,13 +151,13 @@ const FeaturedSalons = () => {
     : mockSalons.filter(salon => salon.category === activeFilter);
 
   return (
-    <section className="py-12 md:py-16 px-4">
+    <section className="py-12 md:py-16 px-4 bg-glam-800">
       <div className="container max-w-7xl">
         <div className="text-center mb-10">
-          <h2 className="text-2xl md:text-3xl font-bold mb-3">
+          <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
             Featured Beauty Establishments
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-400 max-w-2xl mx-auto">
             Discover top-rated salons and barbershops in your area, handpicked for their exceptional service and customer satisfaction.
           </p>
         </div>
@@ -165,8 +171,8 @@ const FeaturedSalons = () => {
               className={`
                 rounded-full text-sm font-medium px-4
                 ${activeFilter === option.id 
-                  ? "bg-beauty-400 hover:bg-beauty-500" 
-                  : "hover:bg-gray-100 hover:text-beauty-500"}
+                  ? "bg-gold-500 hover:bg-gold-600 text-glam-900" 
+                  : "border-gold-500 text-gray-300 hover:bg-glam-700"}
               `}
             >
               {option.label}
@@ -187,7 +193,7 @@ const FeaturedSalons = () => {
         <div className="mt-10 text-center">
           <Button 
             asChild
-            className="bg-transparent hover:bg-transparent text-beauty-500 hover:text-beauty-600 border border-beauty-400 hover:border-beauty-600"
+            className="bg-transparent hover:bg-transparent text-gold-400 hover:text-gold-300 border border-gold-500 hover:border-gold-300"
           >
             <a href="/salons">View All Salons</a>
           </Button>

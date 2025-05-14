@@ -5,65 +5,35 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --background: 0 0% 7%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover: 0 0% 9%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 255 82% 74.5%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 38 57% 58%;
+    --primary-foreground: 0 0% 10%;
 
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 342 100% 94.5%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 38 57% 58%;
+    --accent-foreground: 0 0% 10%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 255 82% 74.5%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 38 57% 58%;
 
-    --radius: 0.75rem;
-  }
-
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 255 82% 74.5%;
-    --primary-foreground: 240 5.9% 10%;
-
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 342 100% 94.5%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 255 82% 74.5%;
+    --radius: 0.5rem;
   }
 }
 
@@ -80,7 +50,7 @@
 
 @layer components {
   .gradient-heading {
-    @apply bg-gradient-to-r from-beauty-400 to-beauty-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-gold-300 to-gold-500 bg-clip-text text-transparent;
   }
 
   .card-hover {
@@ -88,18 +58,26 @@
   }
 
   .input-style {
-    @apply rounded-lg border-gray-200 focus:border-beauty-400 focus:ring-beauty-400;
+    @apply rounded-md border-gray-700 bg-glam-800 focus:border-gold-400 focus:ring-gold-400 text-white;
   }
 
   .button-primary {
-    @apply bg-beauty-400 hover:bg-beauty-500 text-white font-medium py-2 px-4 rounded-lg transition-colors;
+    @apply bg-gold-500 hover:bg-gold-600 text-glam-900 font-medium py-2 px-4 rounded-md transition-colors;
   }
 
   .button-secondary {
-    @apply bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors;
+    @apply bg-glam-700 hover:bg-glam-600 text-white font-medium py-2 px-4 rounded-md transition-colors border border-gold-500;
   }
 
   .button-accent {
-    @apply bg-pink-200 hover:bg-pink-300 text-beauty-800 font-medium py-2 px-4 rounded-lg transition-colors;
+    @apply bg-glam-800 hover:bg-glam-700 text-gold-400 font-medium py-2 px-4 rounded-md transition-colors border border-gold-400;
+  }
+  
+  .glass-effect {
+    @apply backdrop-blur-md bg-glam-900/70 border border-glam-700;
+  }
+  
+  .gold-glow {
+    @apply shadow-[0_0_10px_rgba(218,169,94,0.3)];
   }
 }

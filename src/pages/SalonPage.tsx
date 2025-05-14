@@ -15,6 +15,7 @@ const mockSalons: Record<string, Partial<Business>> = {
       street: "Rua Augusta",
       number: "1200",
       zipCode: "01304-001",
+      neighborhood: "Consolação" // Added neighborhood
     },
     photos: [
       "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1674&q=80",
@@ -46,7 +47,7 @@ const SalonPage = () => {
   const salon = mockSalons[id || "1"] || mockSalons["1"];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-glam-900">
       <SalonDetails salon={salon} />
     </div>
   );
