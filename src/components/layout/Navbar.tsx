@@ -12,7 +12,7 @@ import { Search, Menu, X, User } from "lucide-react";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isLoggedIn = false; // Replace with actual auth check logic
+  const isLoggedIn = false; // Substituir pela lógica de autenticação real
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-glam-700 bg-glam-900/95 backdrop-blur">
@@ -23,19 +23,19 @@ const Navbar = () => {
           </Link>
           <div className="hidden md:flex md:gap-6 md:ml-6">
             <Link to="/" className="text-sm font-medium text-gray-300 hover:text-gold-400 transition-colors">
-              Home
+              Início
             </Link>
             <Link to="/salons" className="text-sm font-medium text-gray-300 hover:text-gold-400 transition-colors">
-              Find Salons
+              Encontrar Salões
             </Link>
             <Link to="/services" className="text-sm font-medium text-gray-300 hover:text-gold-400 transition-colors">
-              Services
+              Serviços
             </Link>
             <Link to="/about" className="text-sm font-medium text-gray-300 hover:text-gold-400 transition-colors">
-              About
+              Sobre
             </Link>
             <Link to="/business" className="text-sm font-medium text-gray-300 hover:text-gold-400 transition-colors">
-              For Business
+              Para Empresas
             </Link>
           </div>
         </div>
@@ -45,7 +45,7 @@ const Navbar = () => {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search salons..."
+              placeholder="Buscar salões..."
               className="rounded-md border-glam-700 bg-glam-800 px-8 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 w-[200px] lg:w-[300px] text-white"
             />
           </div>
@@ -59,24 +59,24 @@ const Navbar = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="bg-glam-800 border-glam-700">
                 <DropdownMenuItem asChild className="hover:bg-glam-700 focus:bg-glam-700">
-                  <Link to="/profile">Profile</Link>
+                  <Link to="/profile">Perfil</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="hover:bg-glam-700 focus:bg-glam-700">
-                  <Link to="/appointments">My Appointments</Link>
+                  <Link to="/appointments">Meus Agendamentos</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="hover:bg-glam-700 focus:bg-glam-700">
-                  <Link to="/favorites">Favorites</Link>
+                  <Link to="/favorites">Favoritos</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-glam-700 focus:bg-glam-700">Log out</DropdownMenuItem>
+                <DropdownMenuItem className="hover:bg-glam-700 focus:bg-glam-700">Sair</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <div className="flex gap-2">
               <Button asChild variant="outline" className="border-gold-500 text-gold-400 hover:bg-glam-800">
-                <Link to="/login">Login</Link>
+                <Link to="/login">Entrar</Link>
               </Button>
               <Button asChild className="bg-gold-500 hover:bg-gold-600 text-glam-900">
-                <Link to="/register">Register</Link>
+                <Link to="/register">Cadastrar</Link>
               </Button>
             </div>
           )}
@@ -90,7 +90,7 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
+      {/* Menu mobile */}
       {isMenuOpen && (
         <div className="container md:hidden pb-3 animate-fade-in bg-glam-900">
           <div className="flex flex-col gap-3">
@@ -98,7 +98,7 @@ const Navbar = () => {
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <input
                 type="text"
-                placeholder="Search salons..."
+                placeholder="Buscar salões..."
                 className="rounded-md border-glam-700 bg-glam-800 px-8 py-2 text-sm w-full text-white"
               />
             </div>
@@ -107,35 +107,35 @@ const Navbar = () => {
               className="px-2 py-1.5 text-sm font-medium text-gray-300 hover:bg-glam-800"
               onClick={() => setIsMenuOpen(false)}
             >
-              Home
+              Início
             </Link>
             <Link 
               to="/salons" 
               className="px-2 py-1.5 text-sm font-medium text-gray-300 hover:bg-glam-800"
               onClick={() => setIsMenuOpen(false)}
             >
-              Find Salons
+              Encontrar Salões
             </Link>
             <Link 
               to="/services" 
               className="px-2 py-1.5 text-sm font-medium text-gray-300 hover:bg-glam-800"
               onClick={() => setIsMenuOpen(false)}
             >
-              Services
+              Serviços
             </Link>
             <Link 
               to="/about" 
               className="px-2 py-1.5 text-sm font-medium text-gray-300 hover:bg-glam-800"
               onClick={() => setIsMenuOpen(false)}
             >
-              About
+              Sobre
             </Link>
             <Link 
               to="/business" 
               className="px-2 py-1.5 text-sm font-medium text-gray-300 hover:bg-glam-800"
               onClick={() => setIsMenuOpen(false)}
             >
-              For Business
+              Para Empresas
             </Link>
             <div className="border-t border-glam-700 my-2"></div>
             {isLoggedIn ? (
@@ -145,33 +145,33 @@ const Navbar = () => {
                   className="px-2 py-1.5 text-sm font-medium text-gray-300 hover:bg-glam-800"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Profile
+                  Perfil
                 </Link>
                 <Link 
                   to="/appointments" 
                   className="px-2 py-1.5 text-sm font-medium text-gray-300 hover:bg-glam-800"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  My Appointments
+                  Meus Agendamentos
                 </Link>
                 <Link 
                   to="/favorites" 
                   className="px-2 py-1.5 text-sm font-medium text-gray-300 hover:bg-glam-800"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Favorites
+                  Favoritos
                 </Link>
                 <button className="text-left px-2 py-1.5 text-sm font-medium text-red-400 hover:bg-glam-800">
-                  Log out
+                  Sair
                 </button>
               </>
             ) : (
               <div className="flex gap-2 mt-2">
                 <Button asChild variant="outline" className="flex-1 border-gold-500 text-gold-400 hover:bg-glam-800">
-                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>Login</Link>
+                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>Entrar</Link>
                 </Button>
                 <Button asChild className="flex-1 bg-gold-500 hover:bg-gold-600 text-glam-900">
-                  <Link to="/register" onClick={() => setIsMenuOpen(false)}>Register</Link>
+                  <Link to="/register" onClick={() => setIsMenuOpen(false)}>Cadastrar</Link>
                 </Button>
               </div>
             )}

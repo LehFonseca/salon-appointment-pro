@@ -29,12 +29,12 @@ const AuthForm = ({ type }: AuthFormProps) => {
       <Card>
         <CardHeader>
           <CardTitle className="text-center">
-            {isLogin ? "Log in to your account" : "Create an account"}
+            {isLogin ? "Entre em sua conta" : "Criar uma conta"}
           </CardTitle>
           <CardDescription className="text-center">
             {isLogin 
-              ? "Enter your email and password below to log in" 
-              : "Enter your details to create your account"
+              ? "Digite seu email e senha abaixo para entrar" 
+              : "Digite seus dados para criar sua conta"
             }
           </CardDescription>
         </CardHeader>
@@ -43,8 +43,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
             <div className="mb-6">
               <Tabs defaultValue="client" onValueChange={(value) => setUserRole(value as UserRole)}>
                 <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="client">I'm a Client</TabsTrigger>
-                  <TabsTrigger value="business">I'm a Business</TabsTrigger>
+                  <TabsTrigger value="client">Sou Cliente</TabsTrigger>
+                  <TabsTrigger value="business">Sou Empresa</TabsTrigger>
                 </TabsList>
               </Tabs>
             </div>
@@ -54,29 +54,29 @@ const AuthForm = ({ type }: AuthFormProps) => {
             {!isLogin && (
               <div className="space-y-2">
                 <Label htmlFor={userRole === "client" ? "name" : "businessName"}>
-                  {userRole === "client" ? "Full Name" : "Business Name"}
+                  {userRole === "client" ? "Nome Completo" : "Nome da Empresa"}
                 </Label>
                 <Input 
                   id={userRole === "client" ? "name" : "businessName"} 
-                  placeholder={userRole === "client" ? "John Doe" : "Awesome Hair Salon"} 
+                  placeholder={userRole === "client" ? "João Silva" : "Salão Incrível"} 
                 />
               </div>
             )}
 
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="name@example.com" />
+              <Input id="email" type="email" placeholder="nome@exemplo.com" />
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Senha</Label>
                 {isLogin && (
                   <Link 
                     to="/forgot-password" 
                     className="text-xs text-beauty-500 hover:text-beauty-600"
                   >
-                    Forgot password?
+                    Esqueceu a senha?
                   </Link>
                 )}
               </div>
@@ -86,12 +86,12 @@ const AuthForm = ({ type }: AuthFormProps) => {
             {!isLogin && (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Label htmlFor="confirmPassword">Confirmar Senha</Label>
                   <Input id="confirmPassword" type="password" />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
+                  <Label htmlFor="phone">Número de Telefone</Label>
                   <Input id="phone" placeholder="(99) 99999-9999" />
                 </div>
 
@@ -103,40 +103,40 @@ const AuthForm = ({ type }: AuthFormProps) => {
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="zipCode">Zip Code</Label>
+                      <Label htmlFor="zipCode">CEP</Label>
                       <Input id="zipCode" placeholder="XXXXX-XXX" />
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="address">Address</Label>
-                      <Input id="address" placeholder="Street, number" />
+                      <Label htmlFor="address">Endereço</Label>
+                      <Input id="address" placeholder="Rua, número" />
                     </div>
                     
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="city">City</Label>
+                        <Label htmlFor="city">Cidade</Label>
                         <Input id="city" />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="state">State</Label>
+                        <Label htmlFor="state">Estado</Label>
                         <Input id="state" />
                       </div>
                     </div>
                     
                     <div className="space-y-2">
-                      <Label htmlFor="category">Category</Label>
+                      <Label htmlFor="category">Categoria</Label>
                       <select 
                         id="category" 
                         className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                       >
-                        <option value="">Select a category</option>
-                        <option value="hair_salon">Hair Salon</option>
-                        <option value="barbershop">Barbershop</option>
+                        <option value="">Selecione uma categoria</option>
+                        <option value="hair_salon">Salão de Beleza</option>
+                        <option value="barbershop">Barbearia</option>
                         <option value="nail_salon">Nail Salon</option>
                         <option value="spa">Spa</option>
-                        <option value="esthetic_clinic">Esthetic Clinic</option>
-                        <option value="makeup_studio">Makeup Studio</option>
-                        <option value="other">Other</option>
+                        <option value="esthetic_clinic">Clínica Estética</option>
+                        <option value="makeup_studio">Estúdio de Maquiagem</option>
+                        <option value="other">Outros</option>
                       </select>
                     </div>
                   </>
@@ -149,13 +149,13 @@ const AuthForm = ({ type }: AuthFormProps) => {
                     className="h-4 w-4 rounded border-gray-300 text-beauty-400 focus:ring-beauty-400"
                   />
                   <label htmlFor="terms" className="text-sm text-gray-600">
-                    I agree to the{" "}
+                    Concordo com os{" "}
                     <Link to="/terms" className="text-beauty-500 hover:text-beauty-600">
-                      Terms of Service
+                      Termos de Serviço
                     </Link>{" "}
-                    and{" "}
+                    e{" "}
                     <Link to="/privacy" className="text-beauty-500 hover:text-beauty-600">
-                      Privacy Policy
+                      Política de Privacidade
                     </Link>
                   </label>
                 </div>
@@ -166,7 +166,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
               type="submit" 
               className="w-full bg-beauty-400 hover:bg-beauty-500"
             >
-              {isLogin ? "Sign In" : "Create Account"}
+              {isLogin ? "Entrar" : "Criar Conta"}
             </Button>
           </form>
 
@@ -178,7 +178,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-card px-2 text-muted-foreground">
-                    Or continue with
+                    Ou continue com
                   </span>
                 </div>
               </div>
@@ -221,7 +221,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
                   >
                     <path
                       fill="currentColor"
-                      d="M9.94474914,22 L9.94474914,13.1657526 L7,13.1657526 L7,9.48481614 L9.94474914,9.48481614 L9.94474914,6.54006699 C9.94474914,3.49740494 11.8713513,2 14.5856738,2 C15.8857805,2 17.0033128,2.09717672 17.3287076,2.13987558 L17.3287076,5.32020466 L15.4462767,5.32094085 C13.9702212,5.32094085 13.6256856,6.02252733 13.6256856,7.05171716 L13.6256856,9.48481614 L17.2236791,9.48481614 L16.7751033,13.1657526 L13.6256856,13.1657526 L13.6256856,22 L9.94474914,22 Z"
+                      d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
                     />
                   </svg>
                   Facebook
@@ -230,15 +230,23 @@ const AuthForm = ({ type }: AuthFormProps) => {
             </div>
           )}
         </CardContent>
-        <CardFooter className="flex justify-center">
+        <CardFooter className="text-center">
           <p className="text-sm text-gray-600">
-            {isLogin ? "Don't have an account? " : "Already have an account? "}
-            <Link
-              to={isLogin ? "/register" : "/login"}
-              className="font-medium text-beauty-500 hover:text-beauty-600"
-            >
-              {isLogin ? "Register" : "Log in"}
-            </Link>
+            {isLogin ? (
+              <>
+                Não tem uma conta?{" "}
+                <Link to="/register" className="text-beauty-500 hover:text-beauty-600">
+                  Cadastre-se
+                </Link>
+              </>
+            ) : (
+              <>
+                Já tem uma conta?{" "}
+                <Link to="/login" className="text-beauty-500 hover:text-beauty-600">
+                  Entre
+                </Link>
+              </>
+            )}
           </p>
         </CardFooter>
       </Card>

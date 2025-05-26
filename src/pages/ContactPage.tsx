@@ -10,24 +10,24 @@ const ContactPage = () => {
     <div className="min-h-screen bg-glam-900 text-white py-12 px-4">
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 gradient-heading">Contact Us</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 gradient-heading">Fale Conosco</h1>
           <p className="text-gray-300 max-w-2xl mx-auto">
-            Have questions or feedback about GlamPro? Our team is here to help.
-            Reach out to us through any of the channels below.
+            Tem dúvidas ou comentários sobre o GlamPro? Nossa equipe está aqui para ajudar.
+            Entre em contato conosco através de qualquer um dos canais abaixo.
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           <div className="bg-glam-800 rounded-xl p-6 border border-glam-700">
-            <h2 className="text-xl font-bold mb-6 text-gold-400">Send Us a Message</h2>
+            <h2 className="text-xl font-bold mb-6 text-gold-400">Envie uma Mensagem</h2>
             <form className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gold-400 mb-1">Name</label>
+                  <label htmlFor="name" className="block text-sm font-medium text-gold-400 mb-1">Nome</label>
                   <Input 
                     id="name" 
                     name="name" 
-                    placeholder="Your name" 
+                    placeholder="Seu nome" 
                     className="bg-glam-900 border-glam-700 text-white placeholder:text-gray-500"
                   />
                 </div>
@@ -37,55 +37,55 @@ const ContactPage = () => {
                     id="email" 
                     name="email" 
                     type="email" 
-                    placeholder="Your email" 
+                    placeholder="Seu email" 
                     className="bg-glam-900 border-glam-700 text-white placeholder:text-gray-500"
                   />
                 </div>
               </div>
               
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gold-400 mb-1">Subject</label>
+                <label htmlFor="subject" className="block text-sm font-medium text-gold-400 mb-1">Assunto</label>
                 <Input 
                   id="subject" 
                   name="subject" 
-                  placeholder="Subject of your message" 
+                  placeholder="Assunto da sua mensagem" 
                   className="bg-glam-900 border-glam-700 text-white placeholder:text-gray-500"
                 />
               </div>
               
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gold-400 mb-1">Message</label>
+                <label htmlFor="message" className="block text-sm font-medium text-gold-400 mb-1">Mensagem</label>
                 <Textarea 
                   id="message" 
                   name="message" 
-                  placeholder="Your message" 
+                  placeholder="Sua mensagem" 
                   rows={6}
                   className="bg-glam-900 border-glam-700 text-white placeholder:text-gray-500"
                 />
               </div>
               
               <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900 w-full">
-                Send Message
+                Enviar Mensagem
               </Button>
             </form>
           </div>
           
           <div className="space-y-6">
             <div className="bg-glam-800 rounded-xl p-6 border border-glam-700">
-              <h2 className="text-xl font-bold mb-6 text-gold-400">Contact Information</h2>
+              <h2 className="text-xl font-bold mb-6 text-gold-400">Informações de Contato</h2>
               <div className="space-y-4">
                 <div className="flex">
                   <MapPin className="h-5 w-5 text-gold-400 mt-1 mr-3" />
                   <div>
-                    <p className="font-medium text-white">Address</p>
-                    <p className="text-gray-300">Av. Paulista, 1234, São Paulo, SP, Brazil</p>
+                    <p className="font-medium text-white">Endereço</p>
+                    <p className="text-gray-300">Av. Paulista, 1234, São Paulo, SP, Brasil</p>
                   </div>
                 </div>
                 
                 <div className="flex">
                   <Phone className="h-5 w-5 text-gold-400 mt-1 mr-3" />
                   <div>
-                    <p className="font-medium text-white">Phone</p>
+                    <p className="font-medium text-white">Telefone</p>
                     <p className="text-gray-300">+55 (11) 3456-7890</p>
                   </div>
                 </div>
@@ -94,24 +94,24 @@ const ContactPage = () => {
                   <Mail className="h-5 w-5 text-gold-400 mt-1 mr-3" />
                   <div>
                     <p className="font-medium text-white">Email</p>
-                    <p className="text-gray-300">contact@glampro.com</p>
+                    <p className="text-gray-300">contato@glampro.com</p>
                   </div>
                 </div>
                 
                 <div className="flex">
                   <Clock className="h-5 w-5 text-gold-400 mt-1 mr-3" />
                   <div>
-                    <p className="font-medium text-white">Business Hours</p>
-                    <p className="text-gray-300">Monday - Friday: 9:00 AM - 6:00 PM</p>
-                    <p className="text-gray-300">Saturday: 10:00 AM - 4:00 PM</p>
-                    <p className="text-gray-300">Sunday: Closed</p>
+                    <p className="font-medium text-white">Horário de Atendimento</p>
+                    <p className="text-gray-300">Segunda - Sexta: 9:00 - 18:00</p>
+                    <p className="text-gray-300">Sábado: 10:00 - 16:00</p>
+                    <p className="text-gray-300">Domingo: Fechado</p>
                   </div>
                 </div>
               </div>
             </div>
             
             <div className="bg-glam-800 rounded-xl p-6 border border-glam-700">
-              <h2 className="text-xl font-bold mb-6 text-gold-400">Follow Us</h2>
+              <h2 className="text-xl font-bold mb-6 text-gold-400">Nos Siga</h2>
               <div className="flex space-x-4">
                 <Link to="#" className="bg-glam-700 h-10 w-10 rounded-full flex items-center justify-center hover:bg-gold-500 transition-colors group">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white group-hover:text-glam-900" fill="currentColor" viewBox="0 0 24 24">
@@ -143,30 +143,30 @@ const ContactPage = () => {
         </div>
         
         <div className="bg-glam-800 rounded-xl p-6 border border-glam-700 mb-12">
-          <h2 className="text-xl font-bold mb-6 text-gold-400">Our Location</h2>
+          <h2 className="text-xl font-bold mb-6 text-gold-400">Nossa Localização</h2>
           <div className="h-80 w-full rounded-lg overflow-hidden">
-            {/* This would be a Google Map in a real application */}
+            {/* Este seria um Google Map em uma aplicação real */}
             <div className="w-full h-full bg-glam-700 flex items-center justify-center">
-              <p className="text-gray-300">Interactive map would be embedded here</p>
+              <p className="text-gray-300">Mapa interativo seria incorporado aqui</p>
             </div>
           </div>
         </div>
         
         <div className="bg-glam-800 rounded-xl p-6 border border-glam-700">
-          <h2 className="text-xl font-bold mb-6 text-gold-400">Frequently Asked Questions</h2>
+          <h2 className="text-xl font-bold mb-6 text-gold-400">Perguntas Frequentes</h2>
           <div className="space-y-6">
             {[
               {
-                question: "How quickly can I expect a response to my inquiry?",
-                answer: "We strive to respond to all inquiries within 24 business hours. For urgent matters, please contact us by phone."
+                question: "Qual a rapidez para resposta das consultas?",
+                answer: "Nos esforçamos para responder a todas as consultas dentro de 24 horas úteis. Para assuntos urgentes, entre em contato por telefone."
               },
               {
-                question: "Do you offer support on weekends?",
-                answer: "Our customer support team is available Monday through Saturday. On Sundays and holidays, you can leave a message and we'll get back to you on the next business day."
+                question: "Vocês oferecem suporte aos fins de semana?",
+                answer: "Nossa equipe de atendimento ao cliente está disponível de segunda a sábado. Aos domingos e feriados, você pode deixar uma mensagem e retornaremos no próximo dia útil."
               },
               {
-                question: "How can I report a technical issue with the platform?",
-                answer: "For technical issues, please email support@glampro.com with details of the problem you're experiencing, including screenshots if possible."
+                question: "Como posso reportar um problema técnico com a plataforma?",
+                answer: "Para problemas técnicos, envie um email para suporte@glampro.com com detalhes do problema que está enfrentando, incluindo capturas de tela se possível."
               }
             ].map((faq, index) => (
               <div key={index}>
@@ -177,7 +177,7 @@ const ContactPage = () => {
           </div>
           <div className="mt-6 text-center">
             <Link to="/faq" className="text-gold-400 hover:text-gold-300 underline">
-              View all FAQs
+              Ver todas as perguntas frequentes
             </Link>
           </div>
         </div>

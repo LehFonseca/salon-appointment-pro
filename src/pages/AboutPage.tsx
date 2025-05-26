@@ -5,53 +5,53 @@ import { Link } from "react-router-dom";
 const AboutPage = () => {
   return (
     <div className="min-h-screen bg-glam-900 text-white">
-      {/* Hero Section */}
+      {/* Seção Hero */}
       <section className="relative py-16 md:py-24">
         <div className="container max-w-5xl mx-auto px-4">
           <div className="text-center">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 gradient-heading">About GlamPro</h1>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 gradient-heading">Sobre o GlamPro</h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Connecting beauty professionals with clients since 2023. 
-              Our mission is to transform the beauty industry through technology.
+              Conectando profissionais de beleza com clientes desde 2023. 
+              Nossa missão é transformar o setor de beleza através da tecnologia.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Our Story */}
+      {/* Nossa História */}
       <section className="py-12 md:py-16 bg-glam-800">
         <div className="container max-w-5xl mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-12 items-center">
             <div className="md:w-1/2">
               <img 
                 src="https://images.unsplash.com/photo-1607006946965-3943dab6c3ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80" 
-                alt="Team meeting" 
+                alt="Reunião de equipe" 
                 className="rounded-xl shadow-lg border border-glam-700"
               />
             </div>
             <div className="md:w-1/2">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">Our Story</h2>
+              <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">Nossa História</h2>
               <p className="text-gray-300 mb-4">
-                GlamPro was founded in 2023 with a simple mission: to make beauty services more accessible while empowering beauty professionals to grow their businesses.
+                O GlamPro foi fundado em 2023 com uma missão simples: tornar os serviços de beleza mais acessíveis enquanto capacitamos profissionais de beleza a expandir seus negócios.
               </p>
               <p className="text-gray-300 mb-4">
-                After witnessing the challenges faced by both clients seeking quality services and professionals trying to build their clientele, our founders decided to create a comprehensive platform that would connect both sides seamlessly.
+                Após testemunhar os desafios enfrentados tanto por clientes buscando serviços de qualidade quanto por profissionais tentando construir sua clientela, nossos fundadores decidiram criar uma plataforma abrangente que conectaria ambos os lados perfeitamente.
               </p>
               <p className="text-gray-300">
-                Today, GlamPro has grown to support thousands of beauty professionals and serves clients across multiple cities, continuously evolving to meet the needs of our growing community.
+                Hoje, o GlamPro cresceu para apoiar milhares de profissionais de beleza e atende clientes em várias cidades, evoluindo continuamente para atender às necessidades de nossa crescente comunidade.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Our Values */}
+      {/* Nossos Valores */}
       <section className="py-12 md:py-16 bg-glam-900">
         <div className="container max-w-5xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">Our Values</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">Nossos Valores</h2>
             <p className="text-gray-300 max-w-3xl mx-auto">
-              At the heart of GlamPro are core values that guide everything we do.
+              No coração do GlamPro estão valores fundamentais que orientam tudo o que fazemos.
             </p>
           </div>
           
@@ -62,9 +62,9 @@ const AboutPage = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2 text-gold-400">Quality & Trust</h3>
+              <h3 className="text-xl font-bold mb-2 text-gold-400">Qualidade e Confiança</h3>
               <p className="text-gray-300">
-                We believe in promoting quality services and building trust through verified reviews and transparent business practices.
+                Acreditamos em promover serviços de qualidade e construir confiança através de avaliações verificadas e práticas comerciais transparentes.
               </p>
             </div>
             
@@ -75,9 +75,9 @@ const AboutPage = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2 text-gold-400">Innovation</h3>
+              <h3 className="text-xl font-bold mb-2 text-gold-400">Inovação</h3>
               <p className="text-gray-300">
-                We continuously innovate to provide the best technology solutions for the beauty industry, making services more accessible.
+                Inovamos continuamente para fornecer as melhores soluções tecnológicas para o setor de beleza, tornando os serviços mais acessíveis.
               </p>
             </div>
             
@@ -87,22 +87,22 @@ const AboutPage = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2 text-gold-400">Community</h3>
+              <h3 className="text-xl font-bold mb-2 text-gold-400">Comunidade</h3>
               <p className="text-gray-300">
-                We foster a supportive community for beauty professionals to grow, learn, and connect with each other and their clients.
+                Fomentamos uma comunidade solidária para profissionais de beleza crescerem, aprenderem e se conectarem uns com os outros e com seus clientes.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Team Section */}
+      {/* Seção da Equipe */}
       <section className="py-12 md:py-16 bg-glam-800">
         <div className="container max-w-5xl mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">Meet Our Team</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">Conheça Nossa Equipe</h2>
             <p className="text-gray-300 max-w-3xl mx-auto">
-              The passionate individuals behind GlamPro dedicated to transforming the beauty industry.
+              Os indivíduos apaixonados por trás do GlamPro dedicados a transformar o setor de beleza.
             </p>
           </div>
           
@@ -110,22 +110,22 @@ const AboutPage = () => {
             {[
               {
                 name: "Sofia Silva",
-                role: "Founder & CEO",
+                role: "Fundadora & CEO",
                 image: "https://images.unsplash.com/photo-1536811145107-cdc66051a5f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80"
               },
               {
                 name: "Ricardo Almeida",
-                role: "Chief Technology Officer",
+                role: "Diretor de Tecnologia",
                 image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80"
               },
               {
                 name: "Luisa Costa",
-                role: "Head of Marketing",
+                role: "Diretora de Marketing",
                 image: "https://images.unsplash.com/photo-1524541341496-418d509a5adb?ixlib=rb-4.0.3&auto=format&fit=crop&w=869&q=80"
               },
               {
                 name: "André Santos",
-                role: "Operations Manager",
+                role: "Gerente de Operações",
                 image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80"
               }
             ].map((member, index) => (
@@ -145,19 +145,19 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Seção CTA */}
       <section className="py-12 md:py-16 bg-glam-900">
         <div className="container max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">Join the GlamPro Community</h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">Junte-se à Comunidade GlamPro</h2>
           <p className="text-gray-300 mb-8 max-w-xl mx-auto">
-            Whether you're a beauty professional looking to grow your business or a client seeking quality services, GlamPro has something for you.
+            Seja você um profissional de beleza procurando expandir seu negócio ou um cliente buscando serviços de qualidade, o GlamPro tem algo para você.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900">
-              <Link to="/register">Sign Up Now</Link>
+              <Link to="/register">Cadastre-se Agora</Link>
             </Button>
             <Button variant="outline" className="border-gold-500 text-gold-400">
-              <Link to="/contact">Contact Us</Link>
+              <Link to="/contact">Entre em Contato</Link>
             </Button>
           </div>
         </div>
