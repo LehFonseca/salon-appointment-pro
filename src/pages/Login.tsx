@@ -10,7 +10,7 @@ const Login = () => {
           <Link to="/" className="inline-block">
             <h1 className="text-2xl font-bold gradient-heading">GlamPro</h1>
           </Link>
-          <p className="text-gray-300 mt-2">Sign in to access your account</p>
+          <p className="text-gray-300 mt-2">Entre em sua conta</p>
         </div>
         <AuthForm type="login" />
       </div>

@@ -58,7 +58,7 @@ const ServiceCard = ({ service, onBook }: ServiceCardProps) => {
           onClick={() => onBook(service.id)}
           className="bg-beauty-400 hover:bg-beauty-500 text-sm h-9"
         >
-          Book Now
+          Agendar
         </Button>
       </div>
     </div>
@@ -67,18 +67,18 @@ const ServiceCard = ({ service, onBook }: ServiceCardProps) => {
 
 const getServiceCategoryName = (category: string) => {
   const categories = {
-    haircut: "Haircut",
-    hair_coloring: "Hair Coloring",
-    hair_treatment: "Hair Treatment",
-    beard: "Beard Trim",
+    haircut: "Corte de Cabelo",
+    hair_coloring: "Coloração",
+    hair_treatment: "Tratamento Capilar",
+    beard: "Barba",
     facial: "Facial",
-    nails: "Nail Service",
-    makeup: "Makeup",
-    massage: "Massage",
-    other: "Other",
+    nails: "Unhas",
+    makeup: "Maquiagem",
+    massage: "Massagem",
+    other: "Outros",
   };
   
-  return categories[category as keyof typeof categories] || "Service";
+  return categories[category as keyof typeof categories] || "Serviço";
 };
 
 export default ServiceCard;

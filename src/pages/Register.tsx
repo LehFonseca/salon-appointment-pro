@@ -10,7 +10,7 @@ const Register = () => {
           <Link to="/" className="inline-block">
             <h1 className="text-2xl font-bold gradient-heading">GlamPro</h1>
           </Link>
-          <p className="text-gray-300 mt-2">Create a new account</p>
+          <p className="text-gray-300 mt-2">Criar uma nova conta</p>
         </div>
         <AuthForm type="register" />
       </div>

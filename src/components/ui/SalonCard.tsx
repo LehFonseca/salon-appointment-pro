@@ -11,9 +11,9 @@ interface SalonCardProps {
 const SalonCard = ({ salon, highlight = false }: SalonCardProps) => {
   const {
     id = "1",
-    businessName = "Sample Salon",
+    businessName = "Salão Exemplo",
     category = "hair_salon",
-    address = { city: "Sample City", state: "SP" },
+    address = { city: "Cidade Exemplo", state: "SP" },
     photos = ["/placeholder.svg"],
     rating = 4.5,
     reviewCount = 128,
@@ -21,13 +21,13 @@ const SalonCard = ({ salon, highlight = false }: SalonCardProps) => {
   } = salon;
 
   const categoryNames = {
-    hair_salon: "Hair Salon",
-    barbershop: "Barbershop",
-    nail_salon: "Nail Salon",
+    hair_salon: "Salão de Beleza",
+    barbershop: "Barbearia",
+    nail_salon: "Nail Designer",
     spa: "Spa",
-    esthetic_clinic: "Esthetic Clinic",
-    makeup_studio: "Makeup Studio",
-    other: "Beauty Service",
+    esthetic_clinic: "Clínica Estética",
+    makeup_studio: "Estúdio de Maquiagem",
+    other: "Serviços de Beleza",
   };
 
   return (
@@ -46,7 +46,7 @@ const SalonCard = ({ salon, highlight = false }: SalonCardProps) => {
           />
           {highlight && (
             <div className="absolute top-3 left-3 bg-beauty-400 text-white text-xs font-bold px-3 py-1 rounded-full">
-              Featured
+              Destaque
             </div>
           )}
         </div>
@@ -68,7 +68,7 @@ const SalonCard = ({ salon, highlight = false }: SalonCardProps) => {
 
           {services && services.length > 0 && (
             <div className="pt-2 border-t border-border">
-              <p className="text-sm text-gray-600 font-medium mb-1.5">Services:</p>
+              <p className="text-sm text-gray-600 font-medium mb-1.5">Serviços:</p>
               <div className="flex flex-wrap gap-2">
                 {services.slice(0, 3).map((service) => (
                   <span 
@@ -80,7 +80,7 @@ const SalonCard = ({ salon, highlight = false }: SalonCardProps) => {
                 ))}
                 {services.length > 3 && (
                   <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full">
-                    +{services.length - 3} more
+                    +{services.length - 3} mais
                   </span>
                 )}
               </div>

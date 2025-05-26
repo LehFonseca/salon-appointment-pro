@@ -9,9 +9,9 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-bold gradient-heading">GlamPro</h3>
             <p className="text-gray-400 text-sm">
-              Connecting you to the best beauty professionals and salons
-              in your area. Book appointments, discover new styles, and
-              experience premium beauty services.
+              Conectando você aos melhores profissionais de beleza e salões
+              da sua região. Agende consultas, descubra novos estilos e
+              experimente serviços de beleza premium.
             </p>
             <div className="flex gap-4">
               <Link to="#" className="text-gray-500 hover:text-gold-400">
@@ -70,42 +70,42 @@ const Footer = () => {
             </div>
           </div>
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider mb-4 text-gold-400">For Customers</h3>
+            <h3 className="text-sm font-bold uppercase tracking-wider mb-4 text-gold-400">Para Clientes</h3>
             <div className="grid gap-2">
-              <Link to="/find-salon" className="text-gray-400 hover:text-gold-400 text-sm">Find a Salon</Link>
-              <Link to="/booking" className="text-gray-400 hover:text-gold-400 text-sm">How Booking Works</Link>
-              <Link to="/reviews" className="text-gray-400 hover:text-gold-400 text-sm">Reviews</Link>
-              <Link to="/gift-cards" className="text-gray-400 hover:text-gold-400 text-sm">Gift Cards</Link>
-              <Link to="/blog" className="text-gray-400 hover:text-gold-400 text-sm">Beauty Blog</Link>
+              <Link to="/find-salon" className="text-gray-400 hover:text-gold-400 text-sm">Encontrar Salão</Link>
+              <Link to="/booking" className="text-gray-400 hover:text-gold-400 text-sm">Como Agendar</Link>
+              <Link to="/reviews" className="text-gray-400 hover:text-gold-400 text-sm">Avaliações</Link>
+              <Link to="/gift-cards" className="text-gray-400 hover:text-gold-400 text-sm">Vale Presente</Link>
+              <Link to="/blog" className="text-gray-400 hover:text-gold-400 text-sm">Blog de Beleza</Link>
             </div>
           </div>
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider mb-4 text-gold-400">For Businesses</h3>
+            <h3 className="text-sm font-bold uppercase tracking-wider mb-4 text-gold-400">Para Empresas</h3>
             <div className="grid gap-2">
-              <Link to="/business" className="text-gray-400 hover:text-gold-400 text-sm">Join as a Business</Link>
-              <Link to="/business-resources" className="text-gray-400 hover:text-gold-400 text-sm">Business Resources</Link>
-              <Link to="/success-stories" className="text-gray-400 hover:text-gold-400 text-sm">Success Stories</Link>
-              <Link to="/business-app" className="text-gray-400 hover:text-gold-400 text-sm">Business App</Link>
+              <Link to="/business" className="text-gray-400 hover:text-gold-400 text-sm">Cadastrar Empresa</Link>
+              <Link to="/business-resources" className="text-gray-400 hover:text-gold-400 text-sm">Recursos para Empresas</Link>
+              <Link to="/success-stories" className="text-gray-400 hover:text-gold-400 text-sm">Histórias de Sucesso</Link>
+              <Link to="/business-app" className="text-gray-400 hover:text-gold-400 text-sm">App para Empresas</Link>
             </div>
           </div>
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wider mb-4 text-gold-400">Get Help</h3>
+            <h3 className="text-sm font-bold uppercase tracking-wider mb-4 text-gold-400">Ajuda</h3>
             <div className="grid gap-2">
-              <Link to="/contact" className="text-gray-400 hover:text-gold-400 text-sm">Contact Us</Link>
-              <Link to="/faq" className="text-gray-400 hover:text-gold-400 text-sm">FAQ</Link>
-              <Link to="/privacy" className="text-gray-400 hover:text-gold-400 text-sm">Privacy Policy</Link>
-              <Link to="/terms" className="text-gray-400 hover:text-gold-400 text-sm">Terms of Service</Link>
+              <Link to="/contact" className="text-gray-400 hover:text-gold-400 text-sm">Fale Conosco</Link>
+              <Link to="/faq" className="text-gray-400 hover:text-gold-400 text-sm">Perguntas Frequentes</Link>
+              <Link to="/privacy" className="text-gray-400 hover:text-gold-400 text-sm">Política de Privacidade</Link>
+              <Link to="/terms" className="text-gray-400 hover:text-gold-400 text-sm">Termos de Serviço</Link>
             </div>
           </div>
         </div>
         <div className="border-t border-glam-700 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} GlamPro. All rights reserved.
+            © {new Date().getFullYear()} GlamPro. Todos os direitos reservados.
           </p>
           <div className="flex gap-6">
-            <Link to="/privacy" className="text-gray-500 hover:text-gold-400 text-sm">Privacy</Link>
-            <Link to="/terms" className="text-gray-500 hover:text-gold-400 text-sm">Terms</Link>
-            <Link to="/sitemap" className="text-gray-500 hover:text-gold-400 text-sm">Sitemap</Link>
+            <Link to="/privacy" className="text-gray-500 hover:text-gold-400 text-sm">Privacidade</Link>
+            <Link to="/terms" className="text-gray-500 hover:text-gold-400 text-sm">Termos</Link>
+            <Link to="/sitemap" className="text-gray-500 hover:text-gold-400 text-sm">Mapa do Site</Link>
           </div>
         </div>
       </div>

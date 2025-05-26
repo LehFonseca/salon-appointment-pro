@@ -31,12 +31,12 @@ const HeroSection = () => {
       <div className="relative z-10 px-4 py-24 md:py-32 lg:py-40 max-w-5xl mx-auto">
         <div className="text-center">
           <h1 className="text-white font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-6">
-            Discover and Book the Best <br />
-            <span className="text-gold-400">Beauty Services</span> Near You
+            Descubra e Agende os Melhores <br />
+            <span className="text-gold-400">Serviços de Beleza</span> Perto de Você
           </h1>
           
           <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto mb-8">
-            Connect with top-rated salons and barbershops. Browse, book, and enjoy professional beauty treatments all in one place.
+            Conecte-se com salões e barbearias top avaliados. Navegue, agende e desfrute de tratamentos de beleza profissionais tudo em um só lugar.
           </p>
           
           <form 
@@ -47,7 +47,7 @@ const HeroSection = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
               <Input
                 type="text"
-                placeholder="Search for salons, services, or locations..."
+                placeholder="Busque por salões, serviços ou localização..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 py-6 rounded-lg sm:rounded-r-none text-base w-full bg-glam-800/90 text-white border-gold-500/50 focus:border-gold-400"
@@ -57,13 +57,13 @@ const HeroSection = () => {
               type="submit" 
               className="bg-gold-500 hover:bg-gold-600 text-glam-900 py-6 px-6 text-base font-medium sm:rounded-l-none"
             >
-              Search
+              Buscar
             </Button>
           </form>
           
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <span className="text-gray-400 text-sm">Popular:</span>
-            {['Haircut', 'Manicure', 'Beard Trim', 'Hair Coloring', 'Massage'].map((tag) => (
+            {['Corte', 'Manicure', 'Barba', 'Coloração', 'Massagem'].map((tag) => (
               <button 
                 key={tag} 
                 onClick={() => setSearchTerm(tag)}
