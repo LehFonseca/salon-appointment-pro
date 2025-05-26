@@ -21,18 +21,18 @@ const BusinessPage = () => {
         <div className="container relative z-10 mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 gradient-heading">
-              Grow Your Beauty Business with GlamPro
+              Faça Seu Negócio de Beleza Crescer com o GlamPro
             </h1>
             <p className="text-xl text-gray-300 mb-8">
-              Join thousands of beauty professionals who are expanding their clientele, streamlining their operations, and increasing their revenue.
+              Junte-se a milhares de profissionais de beleza que estão expandindo sua clientela, otimizando suas operações e aumentando sua receita.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900 text-lg py-6 px-8">
-                Register Your Business
+                Cadastre Seu Negócio
                 <ArrowRight className="ml-2" size={18} />
               </Button>
               <Button variant="outline" className="border-gold-500 text-gold-400 text-lg py-6 px-8">
-                Request a Demo
+                Solicitar Demonstração
               </Button>
             </div>
           </div>
@@ -44,10 +44,10 @@ const BusinessPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">
-              Everything Your Beauty Business Needs
+              Tudo Que Seu Negócio de Beleza Precisa
             </h2>
             <p className="text-gray-300 max-w-2xl mx-auto">
-              GlamPro offers a comprehensive set of tools designed specifically for beauty professionals, helping you manage and grow your business.
+              O GlamPro oferece um conjunto abrangente de ferramentas projetadas especificamente para profissionais de beleza, ajudando você a gerenciar e fazer crescer seu negócio.
             </p>
           </div>
           
@@ -59,8 +59,8 @@ const BusinessPage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 ),
-                title: "Appointment Management",
-                description: "Easily manage your appointments, reduce no-shows with automated reminders, and streamline your scheduling."
+                title: "Gestão de Agendamentos",
+                description: "Gerencie facilmente seus agendamentos, reduza faltas com lembretes automáticos e otimize sua agenda."
               },
               {
                 icon: (
@@ -68,8 +68,8 @@ const BusinessPage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 ),
-                title: "Client Management",
-                description: "Keep track of client preferences, history, and contact information to provide personalized service."
+                title: "Gestão de Clientes",
+                description: "Acompanhe preferências, histórico e informações de contato dos clientes para oferecer um atendimento personalizado."
               },
               {
                 icon: (
@@ -77,8 +77,8 @@ const BusinessPage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 ),
-                title: "Business Analytics",
-                description: "Gain insights into your business performance with detailed reports and analytics to make data-driven decisions."
+                title: "Análise de Negócio",
+                description: "Obtenha insights sobre o desempenho do seu negócio com relatórios detalhados e análises para tomar decisões baseadas em dados."
               },
               {
                 icon: (
@@ -86,8 +86,8 @@ const BusinessPage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                   </svg>
                 ),
-                title: "Service Management",
-                description: "Create and manage your service offerings, prices, durations, and assign them to specific staff members."
+                title: "Gestão de Serviços",
+                description: "Crie e gerencie seus serviços oferecidos, preços, durações e atribua-os a membros específicos da equipe."
               },
               {
                 icon: (
@@ -95,8 +95,8 @@ const BusinessPage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 ),
-                title: "Photo Gallery",
-                description: "Showcase your best work with a professional photo gallery that attracts new clients and builds your reputation."
+                title: "Galeria de Fotos",
+                description: "Exiba seus melhores trabalhos com uma galeria profissional que atrai novos clientes e constrói sua reputação."
               },
               {
                 icon: (
@@ -104,8 +104,8 @@ const BusinessPage = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                   </svg>
                 ),
-                title: "Payment Processing",
-                description: "Accept various payment methods, process transactions securely, and manage financial records efficiently."
+                title: "Processamento de Pagamentos",
+                description: "Aceite vários métodos de pagamento, processe transações com segurança e gerencie registros financeiros de forma eficiente."
               }
             ].map((feature, index) => (
               <div key={index} className="bg-glam-900 p-6 rounded-xl border border-glam-700">
@@ -123,10 +123,10 @@ const BusinessPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">
-              How GlamPro Works For Your Business
+              Como o GlamPro Funciona Para Seu Negócio
             </h2>
             <p className="text-gray-300 max-w-2xl mx-auto">
-              Get started with GlamPro in just a few simple steps and transform how you manage your beauty business.
+              Comece com o GlamPro em apenas alguns passos simples e transforme como você gerencia seu negócio de beleza.
             </p>
           </div>
           
@@ -134,23 +134,23 @@ const BusinessPage = () => {
             {[
               {
                 step: "1",
-                title: "Create Your Profile",
-                description: "Register your business, add your services, staff, and business hours."
+                title: "Crie Seu Perfil",
+                description: "Cadastre seu negócio, adicione seus serviços, equipe e horários de funcionamento."
               },
               {
                 step: "2",
-                title: "Customize Your Page",
-                description: "Upload photos, add descriptions, and showcase what makes your business unique."
+                title: "Personalize Sua Página",
+                description: "Faça upload de fotos, adicione descrições e mostre o que torna seu negócio único."
               },
               {
                 step: "3",
-                title: "Manage Bookings",
-                description: "Start receiving and managing appointments through your personalized dashboard."
+                title: "Gerencie Agendamentos",
+                description: "Comece a receber e gerenciar agendamentos através do seu painel personalizado."
               },
               {
                 step: "4",
-                title: "Grow Your Business",
-                description: "Use our marketing tools and analytics to attract and retain more clients."
+                title: "Faça Seu Negócio Crescer",
+                description: "Use nossas ferramentas de marketing e análises para atrair e reter mais clientes."
               }
             ].map((item, index) => (
               <div key={index} className="text-center">
@@ -173,62 +173,62 @@ const BusinessPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">
-              Simple, Transparent Pricing
+              Preços Simples e Transparentes
             </h2>
             <p className="text-gray-300 max-w-2xl mx-auto">
-              Choose the plan that's right for your business, with no hidden fees or long-term commitments.
+              Escolha o plano ideal para seu negócio, sem taxas ocultas ou compromissos de longo prazo.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
               {
-                name: "Basic",
+                name: "Básico",
                 price: "R$99",
-                period: "per month",
-                description: "Perfect for individuals and small businesses getting started.",
+                period: "por mês",
+                description: "Perfeito para profissionais individuais e pequenos negócios começando.",
                 features: [
-                  "Profile listing on GlamPro",
-                  "Basic appointment management",
-                  "Up to 1 staff member",
-                  "Email support",
-                  "Client management"
+                  "Listagem de perfil no GlamPro",
+                  "Gestão básica de agendamentos",
+                  "Até 1 membro da equipe",
+                  "Suporte por email",
+                  "Gestão de clientes"
                 ],
-                buttonText: "Start Free Trial",
+                buttonText: "Iniciar Teste Grátis",
                 highlighted: false
               },
               {
-                name: "Professional",
+                name: "Profissional",
                 price: "R$199",
-                period: "per month",
-                description: "Ideal for growing businesses looking to expand their online presence.",
+                period: "por mês",
+                description: "Ideal para negócios em crescimento que buscam expandir sua presença online.",
                 features: [
-                  "Everything in Basic",
-                  "Advanced appointment management",
-                  "Up to 5 staff members",
-                  "Phone & email support",
-                  "Marketing tools",
-                  "Analytics dashboard",
-                  "Payment processing"
+                  "Tudo do plano Básico",
+                  "Gestão avançada de agendamentos",
+                  "Até 5 membros da equipe",
+                  "Suporte por telefone e email",
+                  "Ferramentas de marketing",
+                  "Painel de análises",
+                  "Processamento de pagamentos"
                 ],
-                buttonText: "Start Free Trial",
+                buttonText: "Iniciar Teste Grátis",
                 highlighted: true
               },
               {
                 name: "Premium",
                 price: "R$299",
-                period: "per month",
-                description: "For established businesses with multiple locations or large teams.",
+                period: "por mês",
+                description: "Para negócios estabelecidos com múltiplas localizações ou grandes equipes.",
                 features: [
-                  "Everything in Professional",
-                  "Unlimited staff members",
-                  "Multiple locations",
-                  "Priority support",
-                  "Advanced analytics",
-                  "Custom integrations",
-                  "Dedicated account manager"
+                  "Tudo do plano Profissional",
+                  "Membros da equipe ilimitados",
+                  "Múltiplas localizações",
+                  "Suporte prioritário",
+                  "Análises avançadas",
+                  "Integrações personalizadas",
+                  "Gerente de conta dedicado"
                 ],
-                buttonText: "Start Free Trial",
+                buttonText: "Iniciar Teste Grátis",
                 highlighted: false
               }
             ].map((plan, index) => (
@@ -266,7 +266,7 @@ const BusinessPage = () => {
           </div>
           
           <div className="text-center mt-8 text-gray-400 text-sm">
-            All plans come with a 14-day free trial. No credit card required.
+            Todos os planos incluem 14 dias de teste grátis. Não é necessário cartão de crédito.
           </div>
         </div>
       </section>
@@ -276,31 +276,31 @@ const BusinessPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">
-              Success Stories
+              Histórias de Sucesso
             </h2>
             <p className="text-gray-300 max-w-2xl mx-auto">
-              Hear from beauty professionals who have transformed their businesses with GlamPro.
+              Ouça de profissionais de beleza que transformaram seus negócios com o GlamPro.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
               {
-                quote: "Since joining GlamPro, my client bookings have increased by 40%. The platform is so intuitive and my clients love how easy it is to book appointments.",
+                quote: "Desde que ingressei no GlamPro, meus agendamentos de clientes aumentaram 40%. A plataforma é tão intuitiva e meus clientes adoram como é fácil agendar.",
                 name: "Carla Mendes",
-                role: "Hair Stylist, Rio de Janeiro",
+                role: "Cabeleireira, Rio de Janeiro",
                 image: "https://images.unsplash.com/photo-1544717305-2782549b5136?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80"
               },
               {
-                quote: "GlamPro has completely streamlined our operations. The reduced no-shows alone have made it worth every penny. I recommend it to every beauty professional I know.",
+                quote: "O GlamPro simplificou completamente nossas operações. Só a redução de faltas já valeu cada centavo. Recomendo para todo profissional de beleza que conheço.",
                 name: "Miguel Torres",
-                role: "Barbershop Owner, São Paulo",
+                role: "Proprietário de Barbearia, São Paulo",
                 image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=387&q=80"
               },
               {
-                quote: "The analytics tools have helped me understand my business better. I can now make data-driven decisions about services, pricing, and marketing.",
+                quote: "As ferramentas de análise me ajudaram a entender melhor meu negócio. Agora posso tomar decisões baseadas em dados sobre serviços, preços e marketing.",
                 name: "Ana Silva",
-                role: "Nail Salon Owner, Belo Horizonte",
+                role: "Proprietária de Nail Design, Belo Horizonte",
                 image: "https://images.unsplash.com/photo-1544717302-de2939b7ef71?ixlib=rb-4.0.3&auto=format&fit=crop&w=870&q=80"
               }
             ].map((testimonial, index) => (
@@ -330,38 +330,38 @@ const BusinessPage = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">
-              Frequently Asked Questions
+              Perguntas Frequentes
             </h2>
             <p className="text-gray-300 max-w-2xl mx-auto">
-              Have questions about GlamPro? Find answers to common questions below.
+              Tem dúvidas sobre o GlamPro? Encontre respostas para perguntas comuns abaixo.
             </p>
           </div>
           
           <div className="max-w-3xl mx-auto space-y-6">
             {[
               {
-                question: "How much does GlamPro cost?",
-                answer: "GlamPro offers various pricing plans starting from R$99/month. We have options for businesses of all sizes, from individual professionals to large salons with multiple locations."
+                question: "Quanto custa o GlamPro?",
+                answer: "O GlamPro oferece vários planos de preços a partir de R$99/mês. Temos opções para negócios de todos os tamanhos, desde profissionais individuais até grandes salões com múltiplas localizações."
               },
               {
-                question: "Is there a contract or commitment?",
-                answer: "No, GlamPro operates on a monthly subscription basis with no long-term contracts. You can upgrade, downgrade, or cancel your plan at any time."
+                question: "Existe contrato ou compromisso?",
+                answer: "Não, o GlamPro funciona com assinatura mensal sem contratos de longo prazo. Você pode fazer upgrade, downgrade ou cancelar seu plano a qualquer momento."
               },
               {
-                question: "How do I get started with GlamPro?",
-                answer: "Getting started is easy! Simply register for a free 14-day trial, set up your business profile, add your services and staff, and you're ready to start accepting bookings."
+                question: "Como começar com o GlamPro?",
+                answer: "Começar é fácil! Simplesmente cadastre-se para um teste grátis de 14 dias, configure seu perfil de negócio, adicione seus serviços e equipe, e você estará pronto para começar a aceitar agendamentos."
               },
               {
-                question: "Can I integrate GlamPro with my existing website?",
-                answer: "Yes, GlamPro offers widgets and booking buttons that can be easily integrated into your existing website, allowing clients to book appointments directly."
+                question: "Posso integrar o GlamPro com meu site existente?",
+                answer: "Sim, o GlamPro oferece widgets e botões de agendamento que podem ser facilmente integrados ao seu site existente, permitindo que clientes agendem diretamente."
               },
               {
-                question: "What payment methods are supported?",
-                answer: "GlamPro supports all major credit cards, debit cards, and popular payment platforms including Pix, Mercado Pago, and PagSeguro."
+                question: "Quais métodos de pagamento são suportados?",
+                answer: "O GlamPro suporta todos os principais cartões de crédito, cartões de débito e plataformas de pagamento populares incluindo Pix, Mercado Pago e PagSeguro."
               },
               {
-                question: "Can I manage multiple locations with GlamPro?",
-                answer: "Yes, our Premium plan supports multiple location management from a single dashboard, making it perfect for businesses with several branches."
+                question: "Posso gerenciar múltiplas localizações com o GlamPro?",
+                answer: "Sim, nosso plano Premium suporta gestão de múltiplas localizações em um único painel, sendo perfeito para negócios com várias filiais."
               }
             ].map((faq, index) => (
               <div key={index} className="bg-glam-900 rounded-lg p-6 border border-glam-700">
@@ -372,9 +372,9 @@ const BusinessPage = () => {
           </div>
           
           <div className="text-center mt-8">
-            <p className="text-gray-300 mb-4">Still have questions? We're here to help.</p>
+            <p className="text-gray-300 mb-4">Ainda tem dúvidas? Estamos aqui para ajudar.</p>
             <Button asChild className="bg-gold-500 hover:bg-gold-600 text-glam-900">
-              <Link to="/contact">Contact Support</Link>
+              <Link to="/contact">Contactar Suporte</Link>
             </Button>
           </div>
         </div>
@@ -385,21 +385,21 @@ const BusinessPage = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">
-              Ready to Transform Your Beauty Business?
+              Pronto Para Transformar Seu Negócio de Beleza?
             </h2>
             <p className="text-gray-300 mb-8 text-lg">
-              Join thousands of beauty professionals already growing their business with GlamPro.
+              Junte-se a milhares de profissionais de beleza que já estão fazendo seus negócios crescerem com o GlamPro.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900 text-lg py-6 px-8">
-                Start Your Free Trial
+                Comece Seu Teste Grátis
                 <ArrowRight className="ml-2" size={18} />
               </Button>
               <Button variant="outline" className="border-gold-500 text-gold-400 text-lg py-6 px-8">
-                Schedule a Demo
+                Agendar Demonstração
               </Button>
             </div>
-            <p className="text-gray-400 mt-4 text-sm">No credit card required. 14-day free trial.</p>
+            <p className="text-gray-400 mt-4 text-sm">Não é necessário cartão de crédito. Teste grátis de 14 dias.</p>
           </div>
         </div>
       </section>
