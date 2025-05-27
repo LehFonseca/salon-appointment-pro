@@ -9,7 +9,7 @@ import BusinessManagement from "@/components/admin/BusinessManagement";
 import ServiceManagement from "@/components/admin/ServiceManagement";
 import AppointmentManagement from "@/components/admin/AppointmentManagement";
 import ReviewManagement from "@/components/admin/ReviewManagement";
-import { Users, Building, Service, Calendar, Star } from "lucide-react";
+import { Users, Building, Wrench, Calendar, Star } from "lucide-react";
 
 const AdminPage = () => {
   const { users, businesses, services, appointments, reviews } = useApp();
@@ -56,7 +56,7 @@ const AdminPage = () => {
             <Card className="bg-glam-800 border-glam-700">
               <CardContent className="p-6">
                 <div className="flex items-center gap-2">
-                  <Service className="h-8 w-8 text-gold-400" />
+                  <Wrench className="h-8 w-8 text-gold-400" />
                   <div>
                     <p className="text-2xl font-bold text-white">{services.length}</p>
                     <p className="text-gray-400 text-sm">Serviços</p>
