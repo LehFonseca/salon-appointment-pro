@@ -1,184 +1,348 @@
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Link } from "react-router-dom";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Mail, Phone, MapPin, Clock, Send, MessageCircle, HelpCircle, User } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { toast } from "@/hooks/use-toast";
+
+const contactSchema = z.object({
+  name: z.string().min(1, "Nome é obrigatório"),
+  email: z.string().email("E-mail inválido"),
+  phone: z.string().optional(),
+  subject: z.string().min(1, "Assunto é obrigatório"),
+  category: z.string().min(1, "Categoria é obrigatória"),
+  message: z.string().min(10, "Mensagem deve ter pelo menos 10 caracteres"),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
 
 const ContactPage = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      subject: "",
+      category: "",
+      message: "",
+    },
+  });
+
+  const contactInfo = [
+    {
+      icon: <Mail className="h-5 w-5" />,
+      title: "E-mail",
+      content: "contato@glampro.com.br",
+      description: "Resposta em até 24 horas"
+    },
+    {
+      icon: <Phone className="h-5 w-5" />,
+      title: "Telefone",
+      content: "(11) 4000-0000",
+      description: "Segunda a Sexta: 9h às 18h"
+    },
+    {
+      icon: <MapPin className="h-5 w-5" />,
+      title: "Endereço",
+      content: "Av. Paulista, 1000 - São Paulo, SP",
+      description: "CEP: 01310-100"
+    },
+    {
+      icon: <Clock className="h-5 w-5" />,
+      title: "Horário de Atendimento",
+      content: "Segunda a Sexta: 9h às 18h",
+      description: "Sábado: 9h às 13h"
+    }
+  ];
+
+  const categories = [
+    { value: "support", label: "Suporte Técnico" },
+    { value: "business", label: "Parceria Comercial" },
+    { value: "billing", label: "Financeiro/Cobrança" },
+    { value: "feedback", label: "Sugestões/Feedback" },
+    { value: "complaint", label: "Reclamação" },
+    { value: "other", label: "Outros" }
+  ];
+
+  const faqItems = [
+    {
+      question: "Como criar uma conta no GlamPro?",
+      answer: "É simples! Clique em 'Cadastrar' no topo da página, preencha seus dados e confirme seu e-mail."
+    },
+    {
+      question: "Como cancelar um agendamento?",
+      answer: "Acesse 'Meus Agendamentos' no seu perfil e clique em 'Cancelar' no agendamento desejado. Lembre-se de respeitar a política de cancelamento do estabelecimento."
+    },
+    {
+      question: "Posso reagendar um compromisso?",
+      answer: "Sim! Você pode reagendar através da página de agendamentos, sujeito à disponibilidade do profissional."
+    },
+    {
+      question: "Como cadastrar meu negócio?",
+      answer: "Acesse a página 'Para Empresas' e siga o processo de cadastro. Nossa equipe irá verificar as informações em até 48 horas."
+    }
+  ];
+
+  const onSubmit = async (data: ContactFormData) => {
+    setIsSubmitting(true);
+    
+    // Simular envio
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    toast({
+      title: "Mensagem enviada com sucesso!",
+      description: "Responderemos em breve. Obrigado pelo contato!",
+    });
+    
+    form.reset();
+    setIsSubmitting(false);
+  };
+
   return (
-    <div className="min-h-screen bg-glam-900 text-white py-12 px-4">
-      <div className="container mx-auto max-w-6xl">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 gradient-heading">Fale Conosco</h1>
-          <p className="text-gray-300 max-w-2xl mx-auto">
-            Tem dúvidas ou comentários sobre o GlamPro? Nossa equipe está aqui para ajudar.
-            Entre em contato conosco através de qualquer um dos canais abaixo.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          <div className="bg-glam-800 rounded-xl p-6 border border-glam-700">
-            <h2 className="text-xl font-bold mb-6 text-gold-400">Envie uma Mensagem</h2>
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gold-400 mb-1">Nome</label>
-                  <Input 
-                    id="name" 
-                    name="name" 
-                    placeholder="Seu nome" 
-                    className="bg-glam-900 border-glam-700 text-white placeholder:text-gray-500"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gold-400 mb-1">Email</label>
-                  <Input 
-                    id="email" 
-                    name="email" 
-                    type="email" 
-                    placeholder="Seu email" 
-                    className="bg-glam-900 border-glam-700 text-white placeholder:text-gray-500"
-                  />
-                </div>
-              </div>
-              
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gold-400 mb-1">Assunto</label>
-                <Input 
-                  id="subject" 
-                  name="subject" 
-                  placeholder="Assunto da sua mensagem" 
-                  className="bg-glam-900 border-glam-700 text-white placeholder:text-gray-500"
-                />
-              </div>
-              
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gold-400 mb-1">Mensagem</label>
-                <Textarea 
-                  id="message" 
-                  name="message" 
-                  placeholder="Sua mensagem" 
-                  rows={6}
-                  className="bg-glam-900 border-glam-700 text-white placeholder:text-gray-500"
-                />
-              </div>
-              
-              <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900 w-full">
-                Enviar Mensagem
-              </Button>
-            </form>
+    <div className="min-h-screen bg-glam-900 text-white">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto">
+          {/* Cabeçalho */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold gradient-heading mb-4">
+              Entre em Contato
+            </h1>
+            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+              Estamos aqui para ajudar! Entre em contato conosco para dúvidas, 
+              sugestões ou suporte. Nossa equipe terá prazer em atendê-lo.
+            </p>
           </div>
-          
-          <div className="space-y-6">
-            <div className="bg-glam-800 rounded-xl p-6 border border-glam-700">
-              <h2 className="text-xl font-bold mb-6 text-gold-400">Informações de Contato</h2>
-              <div className="space-y-4">
-                <div className="flex">
-                  <MapPin className="h-5 w-5 text-gold-400 mt-1 mr-3" />
-                  <div>
-                    <p className="font-medium text-white">Endereço</p>
-                    <p className="text-gray-300">Av. Paulista, 1234, São Paulo, SP, Brasil</p>
-                  </div>
-                </div>
-                
-                <div className="flex">
-                  <Phone className="h-5 w-5 text-gold-400 mt-1 mr-3" />
-                  <div>
-                    <p className="font-medium text-white">Telefone</p>
-                    <p className="text-gray-300">+55 (11) 3456-7890</p>
-                  </div>
-                </div>
-                
-                <div className="flex">
-                  <Mail className="h-5 w-5 text-gold-400 mt-1 mr-3" />
-                  <div>
-                    <p className="font-medium text-white">Email</p>
-                    <p className="text-gray-300">contato@glampro.com</p>
-                  </div>
-                </div>
-                
-                <div className="flex">
-                  <Clock className="h-5 w-5 text-gold-400 mt-1 mr-3" />
-                  <div>
-                    <p className="font-medium text-white">Horário de Atendimento</p>
-                    <p className="text-gray-300">Segunda - Sexta: 9:00 - 18:00</p>
-                    <p className="text-gray-300">Sábado: 10:00 - 16:00</p>
-                    <p className="text-gray-300">Domingo: Fechado</p>
-                  </div>
-                </div>
-              </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Informações de Contato */}
+            <div className="lg:col-span-1">
+              <Card className="bg-glam-800 border-glam-700 mb-6">
+                <CardHeader>
+                  <CardTitle className="text-gold-400 flex items-center gap-2">
+                    <MessageCircle className="h-5 w-5" />
+                    Informações de Contato
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {contactInfo.map((info, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <div className="bg-gold-500/20 p-2 rounded-lg text-gold-400 shrink-0">
+                        {info.icon}
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-white mb-1">
+                          {info.title}
+                        </h4>
+                        <p className="text-gold-400 mb-1">
+                          {info.content}
+                        </p>
+                        <p className="text-gray-400 text-sm">
+                          {info.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              {/* FAQ Rápido */}
+              <Card className="bg-glam-800 border-glam-700">
+                <CardHeader>
+                  <CardTitle className="text-gold-400 flex items-center gap-2">
+                    <HelpCircle className="h-5 w-5" />
+                    Perguntas Frequentes
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {faqItems.map((item, index) => (
+                    <div key={index}>
+                      <h5 className="font-semibold text-white mb-2 text-sm">
+                        {item.question}
+                      </h5>
+                      <p className="text-gray-400 text-sm mb-3">
+                        {item.answer}
+                      </p>
+                      {index < faqItems.length - 1 && (
+                        <div className="border-b border-glam-700"></div>
+                      )}
+                    </div>
+                  ))}
+                  <Button asChild variant="outline" className="w-full border-gold-500 text-gold-400">
+                    <a href="/faq">Ver Todas as Perguntas</a>
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
-            
-            <div className="bg-glam-800 rounded-xl p-6 border border-glam-700">
-              <h2 className="text-xl font-bold mb-6 text-gold-400">Nos Siga</h2>
-              <div className="flex space-x-4">
-                <Link to="#" className="bg-glam-700 h-10 w-10 rounded-full flex items-center justify-center hover:bg-gold-500 transition-colors group">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white group-hover:text-glam-900" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                  </svg>
-                </Link>
-                <Link to="#" className="bg-glam-700 h-10 w-10 rounded-full flex items-center justify-center hover:bg-gold-500 transition-colors group">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white group-hover:text-glam-900" fill="currentColor" viewBox="0 0 24 24">
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                  </svg>
-                </Link>
-                <Link to="#" className="bg-glam-700 h-10 w-10 rounded-full flex items-center justify-center hover:bg-gold-500 transition-colors group">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white group-hover:text-glam-900" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
-                  </svg>
-                </Link>
-                <Link to="#" className="bg-glam-700 h-10 w-10 rounded-full flex items-center justify-center hover:bg-gold-500 transition-colors group">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white group-hover:text-glam-900" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                    <rect x="2" y="9" width="4" height="12" />
-                    <circle cx="4" cy="4" r="2" />
-                  </svg>
-                </Link>
-              </div>
+
+            {/* Formulário de Contato */}
+            <div className="lg:col-span-2">
+              <Card className="bg-glam-800 border-glam-700">
+                <CardHeader>
+                  <CardTitle className="text-gold-400 flex items-center gap-2">
+                    <Send className="h-5 w-5" />
+                    Envie sua Mensagem
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="name"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Nome Completo *</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  {...field} 
+                                  className="bg-glam-900 border-glam-600"
+                                  placeholder="Seu nome completo"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">E-mail *</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  {...field} 
+                                  type="email"
+                                  className="bg-glam-900 border-glam-600"
+                                  placeholder="seu@email.com"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <FormField
+                          control={form.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Telefone</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  {...field} 
+                                  className="bg-glam-900 border-glam-600"
+                                  placeholder="(11) 99999-9999"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="category"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-gray-300">Categoria *</FormLabel>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="bg-glam-900 border-glam-600">
+                                    <SelectValue placeholder="Selecione uma categoria" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className="bg-glam-800 border-glam-600">
+                                  {categories.map((category) => (
+                                    <SelectItem key={category.value} value={category.value}>
+                                      {category.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+
+                      <FormField
+                        control={form.control}
+                        name="subject"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-300">Assunto *</FormLabel>
+                            <FormControl>
+                              <Input 
+                                {...field} 
+                                className="bg-glam-900 border-glam-600"
+                                placeholder="Resuma o motivo do seu contato"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <FormField
+                        control={form.control}
+                        name="message"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-gray-300">Mensagem *</FormLabel>
+                            <FormControl>
+                              <Textarea 
+                                {...field} 
+                                className="bg-glam-900 border-glam-600 min-h-32"
+                                placeholder="Descreva sua dúvida, sugestão ou problema em detalhes..."
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <Button 
+                        type="submit" 
+                        className="w-full bg-gold-500 hover:bg-gold-600 text-glam-900"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-glam-900 mr-2"></div>
+                            Enviando...
+                          </>
+                        ) : (
+                          <>
+                            <Send className="h-4 w-4 mr-2" />
+                            Enviar Mensagem
+                          </>
+                        )}
+                      </Button>
+
+                      <p className="text-gray-400 text-sm text-center">
+                        * Campos obrigatórios. Responderemos em até 24 horas úteis.
+                      </p>
+                    </form>
+                  </Form>
+                </CardContent>
+              </Card>
             </div>
-          </div>
-        </div>
-        
-        <div className="bg-glam-800 rounded-xl p-6 border border-glam-700 mb-12">
-          <h2 className="text-xl font-bold mb-6 text-gold-400">Nossa Localização</h2>
-          <div className="h-80 w-full rounded-lg overflow-hidden">
-            {/* Este seria um Google Map em uma aplicação real */}
-            <div className="w-full h-full bg-glam-700 flex items-center justify-center">
-              <p className="text-gray-300">Mapa interativo seria incorporado aqui</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-glam-800 rounded-xl p-6 border border-glam-700">
-          <h2 className="text-xl font-bold mb-6 text-gold-400">Perguntas Frequentes</h2>
-          <div className="space-y-6">
-            {[
-              {
-                question: "Qual a rapidez para resposta das consultas?",
-                answer: "Nos esforçamos para responder a todas as consultas dentro de 24 horas úteis. Para assuntos urgentes, entre em contato por telefone."
-              },
-              {
-                question: "Vocês oferecem suporte aos fins de semana?",
-                answer: "Nossa equipe de atendimento ao cliente está disponível de segunda a sábado. Aos domingos e feriados, você pode deixar uma mensagem e retornaremos no próximo dia útil."
-              },
-              {
-                question: "Como posso reportar um problema técnico com a plataforma?",
-                answer: "Para problemas técnicos, envie um email para suporte@glampro.com com detalhes do problema que está enfrentando, incluindo capturas de tela se possível."
-              }
-            ].map((faq, index) => (
-              <div key={index}>
-                <h3 className="font-bold text-white">{faq.question}</h3>
-                <p className="text-gray-300 mt-1">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-6 text-center">
-            <Link to="/faq" className="text-gold-400 hover:text-gold-300 underline">
-              Ver todas as perguntas frequentes
-            </Link>
           </div>
         </div>
       </div>

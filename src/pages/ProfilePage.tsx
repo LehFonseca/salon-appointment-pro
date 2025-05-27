@@ -1,407 +1,390 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { User, Settings, CalendarDays, Heart, Clock, MapPin, Star } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { User, Mail, Phone, Calendar, MapPin, Star, Clock, Camera } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 const ProfilePage = () => {
-  const [editMode, setEditMode] = useState(false);
-  
-  // Mock user data
-  const userData = {
-    name: "Mariana Souza",
-    email: "mariana@example.com",
-    phone: "+55 11 98765-4321",
-    avatar: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?ixlib=rb-4.0.3&auto=format&fit=crop&w=1374&q=80",
-    bio: "I love trying new beauty trends and finding the best salons in the city.",
-    appointments: [
-      {
-        id: "1",
-        salonName: "Eliza's Hair & Beauty",
-        service: "Women's Haircut",
-        date: "2023-06-15",
-        time: "10:00",
-        status: "completed",
-        price: 80,
-        salonImage: "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1674&q=80"
-      },
-      {
-        id: "2",
-        salonName: "Nail Paradise",
-        service: "Gel Manicure",
-        date: "2023-06-28",
-        time: "14:30",
-        status: "completed",
-        price: 60,
-        salonImage: "https://images.unsplash.com/photo-1600948836101-f9ffda59d250?ixlib=rb-4.0.3&auto=format&fit=crop&w=1036&q=80"
-      },
-      {
-        id: "3",
-        salonName: "Glam Studio",
-        service: "Evening Makeup",
-        date: "2023-07-10",
-        time: "18:00",
-        status: "upcoming",
-        price: 120,
-        salonImage: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1471&q=80"
-      }
-    ],
-    favorites: [
-      {
-        id: "1",
-        name: "Eliza's Hair & Beauty",
-        category: "Hair Salon",
-        rating: 4.8,
-        image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1674&q=80",
-        location: "São Paulo, SP"
-      },
-      {
-        id: "3",
-        name: "Nail Paradise",
-        category: "Nail Salon",
-        rating: 4.9,
-        image: "https://images.unsplash.com/photo-1600948836101-f9ffda59d250?ixlib=rb-4.0.3&auto=format&fit=crop&w=1036&q=80",
-        location: "Belo Horizonte, MG"
-      }
-    ]
+  const [user, setUser] = useState({
+    name: "Maria Santos",
+    email: "maria.santos@email.com",
+    phone: "(11) 99999-9999",
+    cpf: "123.456.789-00",
+    birthDate: "1990-05-15",
+    address: {
+      street: "Rua das Flores, 123",
+      neighborhood: "Centro",
+      city: "São Paulo",
+      state: "SP",
+      zipCode: "01234-567"
+    },
+    profileImage: "https://images.unsplash.com/photo-1494790108755-2616b612b6d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+    memberSince: "2023-01-15"
+  });
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState(user);
+
+  const recentAppointments = [
+    {
+      id: "1",
+      businessName: "Salão Beleza Pura",
+      serviceName: "Corte e Escova",
+      date: "2024-12-10",
+      time: "14:00",
+      status: "completed",
+      rating: 5
+    },
+    {
+      id: "2", 
+      businessName: "Spa & Bem-estar",
+      serviceName: "Massagem Relaxante",
+      date: "2024-12-05",
+      time: "10:30",
+      status: "completed",
+      rating: 4
+    },
+    {
+      id: "3",
+      businessName: "Nail Design Studio",
+      serviceName: "Manicure Francesa",
+      date: "2024-11-28",
+      time: "16:00", 
+      status: "completed",
+      rating: 5
+    }
+  ];
+
+  const favoriteBusinesses = [
+    {
+      id: "1",
+      name: "Salão Beleza Pura",
+      category: "Salão de Beleza",
+      rating: 4.8,
+      image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+    },
+    {
+      id: "2",
+      name: "Barbearia Clássica", 
+      category: "Barbearia",
+      rating: 4.9,
+      image: "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80"
+    }
+  ];
+
+  const handleSave = () => {
+    setUser(formData);
+    setIsEditing(false);
+    toast({
+      title: "Perfil atualizado",
+      description: "Suas informações foram salvas com sucesso.",
+    });
+  };
+
+  const handleCancel = () => {
+    setFormData(user);
+    setIsEditing(false);
+  };
+
+  const getStatusBadge = (status: string) => {
+    const statusConfig = {
+      completed: { label: "Concluído", variant: "outline" as const },
+      scheduled: { label: "Agendado", variant: "secondary" as const },
+      confirmed: { label: "Confirmado", variant: "default" as const },
+    };
+    
+    return (
+      <Badge variant={statusConfig[status as keyof typeof statusConfig]?.variant || "secondary"}>
+        {statusConfig[status as keyof typeof statusConfig]?.label || status}
+      </Badge>
+    );
+  };
+
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <Star
+        key={i}
+        className={`h-4 w-4 ${i < rating ? "text-yellow-400 fill-current" : "text-gray-400"}`}
+      />
+    ));
   };
 
   return (
-    <div className="min-h-screen bg-glam-900 py-12 px-4">
-      <div className="container max-w-6xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white mb-2">My Profile</h1>
-          <p className="text-gray-300">Manage your personal information, appointments, and favorites.</p>
-        </div>
-        
-        <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid grid-cols-3 md:w-[400px] bg-glam-800 mb-8">
-            <TabsTrigger value="profile" className="data-[state=active]:bg-gold-500 data-[state=active]:text-glam-900">
-              <User className="mr-2 h-4 w-4" />
-              Profile
-            </TabsTrigger>
-            <TabsTrigger value="appointments" className="data-[state=active]:bg-gold-500 data-[state=active]:text-glam-900">
-              <CalendarDays className="mr-2 h-4 w-4" />
-              Appointments
-            </TabsTrigger>
-            <TabsTrigger value="favorites" className="data-[state=active]:bg-gold-500 data-[state=active]:text-glam-900">
-              <Heart className="mr-2 h-4 w-4" />
-              Favorites
-            </TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="profile" className="space-y-8">
-            <div className="bg-glam-800 rounded-xl border border-glam-700 p-6 md:p-8">
-              <div className="flex flex-col md:flex-row gap-8">
-                <div className="md:w-1/3 flex flex-col items-center">
-                  <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-gold-500 mb-4">
-                    <img 
-                      src={userData.avatar} 
-                      alt={userData.name} 
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  {editMode ? (
-                    <Button variant="outline" className="border-gold-500 text-gold-400 w-full">
-                      Change Photo
-                    </Button>
-                  ) : (
-                    <div className="text-center">
-                      <h2 className="text-xl font-bold text-white">{userData.name}</h2>
-                      <p className="text-gold-400">Client</p>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="md:w-2/3">
-                  {editMode ? (
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gold-400 mb-1">Name</label>
-                        <Input defaultValue={userData.name} className="bg-glam-900 border-glam-700 text-white" />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gold-400 mb-1">Email</label>
-                        <Input defaultValue={userData.email} className="bg-glam-900 border-glam-700 text-white" />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gold-400 mb-1">Phone</label>
-                        <Input defaultValue={userData.phone} className="bg-glam-900 border-glam-700 text-white" />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gold-400 mb-1">Bio</label>
-                        <Textarea defaultValue={userData.bio} className="bg-glam-900 border-glam-700 text-white" />
-                      </div>
-                      <div className="flex gap-3">
-                        <Button onClick={() => setEditMode(false)} className="bg-gold-500 hover:bg-gold-600 text-glam-900">
-                          Save Changes
-                        </Button>
-                        <Button variant="outline" onClick={() => setEditMode(false)} className="border-glam-700 text-white hover:bg-glam-700">
-                          Cancel
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div>
-                      <div className="flex justify-between items-start mb-6">
-                        <h2 className="text-xl font-bold text-white">Personal Information</h2>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={() => setEditMode(true)}
-                          className="border-gold-500 text-gold-400 hover:bg-glam-700"
+    <div className="min-h-screen bg-glam-900 text-white">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-3xl font-bold gradient-heading mb-8">
+            Meu Perfil
+          </h1>
+
+          <Tabs defaultValue="profile" className="space-y-6">
+            <TabsList className="bg-glam-800 border-glam-700">
+              <TabsTrigger value="profile" className="data-[state=active]:bg-gold-500 data-[state=active]:text-glam-900">
+                Informações Pessoais
+              </TabsTrigger>
+              <TabsTrigger value="appointments" className="data-[state=active]:bg-gold-500 data-[state=active]:text-glam-900">
+                Agendamentos Recentes
+              </TabsTrigger>
+              <TabsTrigger value="favorites" className="data-[state=active]:bg-gold-500 data-[state=active]:text-glam-900">
+                Favoritos
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="profile">
+              <Card className="bg-glam-800 border-glam-700">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-gold-400">Informações Pessoais</CardTitle>
+                    {!isEditing ? (
+                      <Button
+                        onClick={() => setIsEditing(true)}
+                        className="bg-gold-500 hover:bg-gold-600 text-glam-900"
+                      >
+                        Editar Perfil
+                      </Button>
+                    ) : (
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={handleSave}
+                          className="bg-gold-500 hover:bg-gold-600 text-glam-900"
                         >
-                          <Settings className="mr-2 h-4 w-4" />
-                          Edit Profile
+                          Salvar
+                        </Button>
+                        <Button
+                          onClick={handleCancel}
+                          variant="outline"
+                          className="border-glam-600 text-gray-300"
+                        >
+                          Cancelar
                         </Button>
                       </div>
-                      
-                      <div className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <p className="text-sm text-gold-400">Email</p>
-                            <p className="text-white">{userData.email}</p>
-                          </div>
-                          <div>
-                            <p className="text-sm text-gold-400">Phone</p>
-                            <p className="text-white">{userData.phone}</p>
-                          </div>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Avatar Section */}
+                  <div className="flex items-center gap-4">
+                    <div className="relative">
+                      <Avatar className="h-20 w-20">
+                        <AvatarImage src={user.profileImage} />
+                        <AvatarFallback>{user.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                      </Avatar>
+                      {isEditing && (
+                        <Button
+                          size="sm"
+                          className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full bg-gold-500 hover:bg-gold-600 text-glam-900"
+                        >
+                          <Camera className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">{user.name}</h3>
+                      <p className="text-gray-400">Membro desde {new Date(user.memberSince).toLocaleDateString('pt-BR')}</p>
+                    </div>
+                  </div>
+
+                  {/* Personal Information */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name" className="text-gray-300">Nome Completo</Label>
+                      {isEditing ? (
+                        <Input
+                          id="name"
+                          value={formData.name}
+                          onChange={(e) => setFormData({...formData, name: e.target.value})}
+                          className="bg-glam-900 border-glam-600"
+                        />
+                      ) : (
+                        <div className="flex items-center gap-2 text-white">
+                          <User className="h-4 w-4 text-gold-400" />
+                          {user.name}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="text-gray-300">E-mail</Label>
+                      {isEditing ? (
+                        <Input
+                          id="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={(e) => setFormData({...formData, email: e.target.value})}
+                          className="bg-glam-900 border-glam-600"
+                        />
+                      ) : (
+                        <div className="flex items-center gap-2 text-white">
+                          <Mail className="h-4 w-4 text-gold-400" />
+                          {user.email}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="phone" className="text-gray-300">Telefone</Label>
+                      {isEditing ? (
+                        <Input
+                          id="phone"
+                          value={formData.phone}
+                          onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                          className="bg-glam-900 border-glam-600"
+                        />
+                      ) : (
+                        <div className="flex items-center gap-2 text-white">
+                          <Phone className="h-4 w-4 text-gold-400" />
+                          {user.phone}
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="cpf" className="text-gray-300">CPF</Label>
+                      {isEditing ? (
+                        <Input
+                          id="cpf"
+                          value={formData.cpf}
+                          onChange={(e) => setFormData({...formData, cpf: e.target.value})}
+                          className="bg-glam-900 border-glam-600"
+                        />
+                      ) : (
+                        <div className="flex items-center gap-2 text-white">
+                          <Calendar className="h-4 w-4 text-gold-400" />
+                          {user.cpf}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Address */}
+                  <div className="space-y-4">
+                    <h4 className="text-lg font-semibold text-gold-400 flex items-center gap-2">
+                      <MapPin className="h-5 w-5" />
+                      Endereço
+                    </h4>
+                    
+                    {isEditing ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="md:col-span-2">
+                          <Label htmlFor="street" className="text-gray-300">Rua</Label>
+                          <Input
+                            id="street"
+                            value={formData.address.street}
+                            onChange={(e) => setFormData({
+                              ...formData, 
+                              address: {...formData.address, street: e.target.value}
+                            })}
+                            className="bg-glam-900 border-glam-600"
+                          />
                         </div>
                         <div>
-                          <p className="text-sm text-gold-400">Bio</p>
-                          <p className="text-white">{userData.bio}</p>
+                          <Label htmlFor="neighborhood" className="text-gray-300">Bairro</Label>
+                          <Input
+                            id="neighborhood"
+                            value={formData.address.neighborhood}
+                            onChange={(e) => setFormData({
+                              ...formData, 
+                              address: {...formData.address, neighborhood: e.target.value}
+                            })}
+                            className="bg-glam-900 border-glam-600"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="city" className="text-gray-300">Cidade</Label>
+                          <Input
+                            id="city"
+                            value={formData.address.city}
+                            onChange={(e) => setFormData({
+                              ...formData, 
+                              address: {...formData.address, city: e.target.value}
+                            })}
+                            className="bg-glam-900 border-glam-600"
+                          />
                         </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-            
-            <div className="bg-glam-800 rounded-xl border border-glam-700 p-6 md:p-8">
-              <h2 className="text-xl font-bold text-white mb-6">Account Settings</h2>
-              <div className="space-y-6">
-                <div>
-                  <Button variant="outline" className="border-gold-500 text-gold-400 hover:bg-glam-700 w-full md:w-auto">
-                    Change Password
-                  </Button>
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium text-white mb-2">Notification Preferences</h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        id="email-notifications" 
-                        defaultChecked 
-                        className="h-4 w-4 rounded border-gray-600 text-gold-500 focus:ring-gold-500 bg-glam-900"
-                      />
-                      <label htmlFor="email-notifications" className="ml-2 text-gray-300">
-                        Email notifications
-                      </label>
-                    </div>
-                    <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        id="sms-notifications" 
-                        defaultChecked 
-                        className="h-4 w-4 rounded border-gray-600 text-gold-500 focus:ring-gold-500 bg-glam-900"
-                      />
-                      <label htmlFor="sms-notifications" className="ml-2 text-gray-300">
-                        SMS notifications
-                      </label>
-                    </div>
-                    <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        id="promo-notifications" 
-                        defaultChecked={false}
-                        className="h-4 w-4 rounded border-gray-600 text-gold-500 focus:ring-gold-500 bg-glam-900"
-                      />
-                      <label htmlFor="promo-notifications" className="ml-2 text-gray-300">
-                        Promotional updates
-                      </label>
-                    </div>
+                    ) : (
+                      <div className="text-gray-300">
+                        <p>{user.address.street}</p>
+                        <p>{user.address.neighborhood}, {user.address.city} - {user.address.state}</p>
+                        <p>CEP: {user.address.zipCode}</p>
+                      </div>
+                    )}
                   </div>
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium text-white mb-2">Privacy Settings</h3>
-                  <div className="space-y-2">
-                    <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        id="profile-public" 
-                        defaultChecked 
-                        className="h-4 w-4 rounded border-gray-600 text-gold-500 focus:ring-gold-500 bg-glam-900"
-                      />
-                      <label htmlFor="profile-public" className="ml-2 text-gray-300">
-                        Make my reviews public
-                      </label>
-                    </div>
-                    <div className="flex items-center">
-                      <input 
-                        type="checkbox" 
-                        id="share-data" 
-                        defaultChecked={false}
-                        className="h-4 w-4 rounded border-gray-600 text-gold-500 focus:ring-gold-500 bg-glam-900"
-                      />
-                      <label htmlFor="share-data" className="ml-2 text-gray-300">
-                        Share my data with partners
-                      </label>
-                    </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="appointments">
+              <Card className="bg-glam-800 border-glam-700">
+                <CardHeader>
+                  <CardTitle className="text-gold-400">Agendamentos Recentes</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {recentAppointments.map((appointment) => (
+                      <div key={appointment.id} className="flex items-center justify-between p-4 bg-glam-900 rounded-lg">
+                        <div className="flex items-center gap-4">
+                          <div className="bg-gold-500/20 p-2 rounded-lg">
+                            <Clock className="h-5 w-5 text-gold-400" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-white">{appointment.businessName}</h4>
+                            <p className="text-gold-400">{appointment.serviceName}</p>
+                            <p className="text-gray-400 text-sm">
+                              {new Date(appointment.date).toLocaleDateString('pt-BR')} às {appointment.time}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-1">
+                            {renderStars(appointment.rating)}
+                          </div>
+                          {getStatusBadge(appointment.status)}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="appointments">
-            <div className="bg-glam-800 rounded-xl border border-glam-700 p-6 md:p-8">
-              <h2 className="text-xl font-bold text-white mb-6">My Appointments</h2>
-              
-              <div className="space-y-6">
-                <div className="flex flex-col md:flex-row gap-4">
-                  <Button variant="outline" className="border-gold-500 text-gold-400 hover:bg-glam-700">
-                    All
-                  </Button>
-                  <Button variant="ghost" className="text-white hover:text-gold-400 hover:bg-glam-700">
-                    Upcoming
-                  </Button>
-                  <Button variant="ghost" className="text-white hover:text-gold-400 hover:bg-glam-700">
-                    Completed
-                  </Button>
-                  <Button variant="ghost" className="text-white hover:text-gold-400 hover:bg-glam-700">
-                    Canceled
-                  </Button>
-                </div>
-                
-                <div className="space-y-4">
-                  {userData.appointments.map((appointment) => (
-                    <div key={appointment.id} className="bg-glam-900 rounded-lg p-4 md:p-6 border border-glam-700">
-                      <div className="flex flex-col md:flex-row gap-4">
-                        <div className="md:w-1/4">
-                          <div className="h-24 w-24 md:h-32 md:w-32 rounded-lg overflow-hidden">
-                            <img 
-                              src={appointment.salonImage} 
-                              alt={appointment.salonName} 
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        </div>
-                        <div className="md:w-2/4">
-                          <h3 className="text-lg font-bold text-white">{appointment.salonName}</h3>
-                          <p className="text-gold-400">{appointment.service}</p>
-                          <div className="flex items-center mt-2 text-gray-300">
-                            <CalendarDays className="h-4 w-4 mr-1" />
-                            <span>{new Date(appointment.date).toLocaleDateString()}</span>
-                          </div>
-                          <div className="flex items-center mt-1 text-gray-300">
-                            <Clock className="h-4 w-4 mr-1" />
-                            <span>{appointment.time}</span>
-                          </div>
-                          <div className="mt-2">
-                            <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                              appointment.status === 'completed' 
-                                ? 'bg-green-900/30 text-green-400' 
-                                : appointment.status === 'upcoming'
-                                ? 'bg-blue-900/30 text-blue-400'
-                                : 'bg-red-900/30 text-red-400'
-                            }`}>
-                              {appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1)}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="md:w-1/4 flex flex-col justify-between">
-                          <div className="text-right">
-                            <p className="text-sm text-gray-400">Price</p>
-                            <p className="text-lg font-bold text-gold-400">R$ {appointment.price}</p>
-                          </div>
-                          <div className="flex flex-col gap-2 mt-4 md:mt-0">
-                            {appointment.status === 'completed' && (
-                              <Button variant="outline" className="border-gold-500 text-gold-400 hover:bg-glam-700">
-                                Leave Review
-                              </Button>
-                            )}
-                            {appointment.status === 'upcoming' && (
-                              <>
-                                <Button variant="outline" className="border-gold-500 text-gold-400 hover:bg-glam-700">
-                                  Reschedule
-                                </Button>
-                                <Button variant="outline" className="border-red-500 text-red-400 hover:bg-red-900/30">
-                                  Cancel
-                                </Button>
-                              </>
-                            )}
-                            <Button variant="ghost" className="text-white hover:text-gold-400 hover:bg-glam-700">
-                              View Details
-                            </Button>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="favorites">
+              <Card className="bg-glam-800 border-glam-700">
+                <CardHeader>
+                  <CardTitle className="text-gold-400">Estabelecimentos Favoritos</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {favoriteBusinesses.map((business) => (
+                      <div key={business.id} className="flex items-center gap-4 p-4 bg-glam-900 rounded-lg">
+                        <img
+                          src={business.image}
+                          alt={business.name}
+                          className="h-16 w-16 rounded-lg object-cover"
+                        />
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-white">{business.name}</h4>
+                          <p className="text-gray-400 text-sm">{business.category}</p>
+                          <div className="flex items-center gap-1 mt-1">
+                            <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                            <span className="text-gray-300 text-sm">{business.rating}</span>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="text-center">
-                  <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900">
-                    Book New Appointment
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="favorites">
-            <div className="bg-glam-800 rounded-xl border border-glam-700 p-6 md:p-8">
-              <h2 className="text-xl font-bold text-white mb-6">My Favorite Salons</h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {userData.favorites.map((salon) => (
-                  <div key={salon.id} className="bg-glam-900 rounded-lg overflow-hidden border border-glam-700 hover:border-gold-500 transition-colors">
-                    <div className="h-40 overflow-hidden">
-                      <img 
-                        src={salon.image} 
-                        alt={salon.name} 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-bold text-white text-lg mb-1">{salon.name}</h3>
-                      <p className="text-gold-400 text-sm mb-2">{salon.category}</p>
-                      <div className="flex items-center mb-2">
-                        <MapPin className="h-4 w-4 text-gray-400 mr-1" />
-                        <span className="text-gray-300 text-sm">{salon.location}</span>
-                      </div>
-                      <div className="flex items-center mb-4">
-                        <Star className="h-4 w-4 text-gold-400 mr-1" />
-                        <span className="text-white">{salon.rating}</span>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900 flex-1">
-                          Book Now
-                        </Button>
-                        <Button variant="outline" className="border-glam-700 text-white hover:bg-glam-700">
-                          <Heart className="h-4 w-4 fill-current" />
-                        </Button>
-                      </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              
-              {userData.favorites.length === 0 && (
-                <div className="text-center py-12">
-                  <p className="text-lg text-gray-300 mb-4">You haven't added any favorites yet.</p>
-                  <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900">
-                    Explore Salons
-                  </Button>
-                </div>
-              )}
-            </div>
-          </TabsContent>
-        </Tabs>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </div>
   );

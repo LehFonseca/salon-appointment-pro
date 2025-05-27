@@ -1,226 +1,452 @@
 
 import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
-
-const serviceCategories = [
-  {
-    id: "haircuts",
-    name: "Cortes e Penteados",
-    description: "Cortes profissionais e penteados para todos os tipos de cabelo",
-    image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
-    services: [
-      { name: "Corte Feminino", priceRange: "R$60 - R$150" },
-      { name: "Corte Masculino", priceRange: "R$40 - R$100" },
-      { name: "Corte Infantil", priceRange: "R$30 - R$60" },
-      { name: "Escova e Penteado", priceRange: "R$50 - R$120" },
-      { name: "Penteado para Ocasião Especial", priceRange: "R$80 - R$200" },
-    ]
-  },
-  {
-    id: "coloring",
-    name: "Coloração Capilar",
-    description: "De mechas sutis a cores vibrantes e transformações completas",
-    image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1674&q=80",
-    services: [
-      { name: "Coloração Completa", priceRange: "R$120 - R$250" },
-      { name: "Mechas/Luzes", priceRange: "R$150 - R$300" },
-      { name: "Balayage", priceRange: "R$200 - R$400" },
-      { name: "Ombré", priceRange: "R$180 - R$350" },
-      { name: "Correção de Cor", priceRange: "R$250+ (consulta necessária)" },
-    ]
-  },
-  {
-    id: "treatments",
-    name: "Tratamentos Capilares",
-    description: "Tratamentos nutritivos para restaurar e manter cabelos saudáveis",
-    image: "https://images.unsplash.com/photo-1532710093739-9470acff878f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
-    services: [
-      { name: "Hidratação Profunda", priceRange: "R$50 - R$100" },
-      { name: "Tratamento de Queratina", priceRange: "R$200 - R$500" },
-      { name: "Escova Progressiva", priceRange: "R$250 - R$450" },
-      { name: "Tratamento do Couro Cabeludo", priceRange: "R$70 - R$150" },
-      { name: "Máscara Capilar", priceRange: "R$40 - R$80" },
-    ]
-  },
-  {
-    id: "nails",
-    name: "Serviços de Unha",
-    description: "Manicure, pedicure e nail art para mãos e pés lindos",
-    image: "https://images.unsplash.com/photo-1600948836101-f9ffda59d250?ixlib=rb-4.0.3&auto=format&fit=crop&w=1036&q=80",
-    services: [
-      { name: "Manicure Simples", priceRange: "R$40 - R$60" },
-      { name: "Manicure em Gel", priceRange: "R$60 - R$90" },
-      { name: "Pedicure Simples", priceRange: "R$50 - R$80" },
-      { name: "Pedicure Spa", priceRange: "R$70 - R$120" },
-      { name: "Nail Art (por unha)", priceRange: "R$10 - R$30" },
-    ]
-  },
-  {
-    id: "makeup",
-    name: "Serviços de Maquiagem",
-    description: "Aplicação profissional de maquiagem para qualquer ocasião",
-    image: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1471&q=80",
-    services: [
-      { name: "Maquiagem Natural do Dia a Dia", priceRange: "R$80 - R$120" },
-      { name: "Maquiagem para Evento Especial", priceRange: "R$120 - R$200" },
-      { name: "Maquiagem para Noiva", priceRange: "R$200 - R$400" },
-      { name: "Aula de Maquiagem", priceRange: "R$150 - R$250" },
-      { name: "Rosto Completo com Cílios", priceRange: "R$150 - R$250" },
-    ]
-  },
-  {
-    id: "spa",
-    name: "Spa e Bem-Estar",
-    description: "Tratamentos relaxantes para corpo e mente",
-    image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
-    services: [
-      { name: "Massagem Sueca (60 min)", priceRange: "R$100 - R$180" },
-      { name: "Massagem com Pedras Quentes (60 min)", priceRange: "R$120 - R$200" },
-      { name: "Tratamento Facial", priceRange: "R$130 - R$250" },
-      { name: "Esfoliação Corporal", priceRange: "R$80 - R$150" },
-      { name: "Pacote Dia Completo no Spa", priceRange: "R$350 - R$700" },
-    ]
-  }
-];
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { Search, Filter, Scissors, Palette, Sparkles, Heart, Star, Clock, MapPin } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const ServicesPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  
-  const filteredCategories = searchTerm 
-    ? serviceCategories.filter(category => 
-        category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        category.services.some(service => service.name.toLowerCase().includes(searchTerm.toLowerCase()))
-      )
-    : serviceCategories;
-  
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedPriceRange, setSelectedPriceRange] = useState("all");
+  const [sortBy, setSortBy] = useState("popular");
+
+  const serviceCategories = [
+    { 
+      id: "haircut", 
+      label: "Cortes", 
+      icon: <Scissors className="h-5 w-5" />,
+      color: "bg-blue-500/20 text-blue-400"
+    },
+    { 
+      id: "hair_coloring", 
+      label: "Coloração", 
+      icon: <Palette className="h-5 w-5" />,
+      color: "bg-purple-500/20 text-purple-400"
+    },
+    { 
+      id: "facial", 
+      label: "Tratamentos Faciais", 
+      icon: <Sparkles className="h-5 w-5" />,
+      color: "bg-pink-500/20 text-pink-400"
+    },
+    { 
+      id: "nails", 
+      label: "Unhas", 
+      icon: <Heart className="h-5 w-5" />,
+      color: "bg-red-500/20 text-red-400"
+    },
+    { 
+      id: "massage", 
+      label: "Massagens", 
+      icon: <Heart className="h-5 w-5" />,
+      color: "bg-green-500/20 text-green-400"
+    },
+    { 
+      id: "makeup", 
+      label: "Maquiagem", 
+      icon: <Sparkles className="h-5 w-5" />,
+      color: "bg-orange-500/20 text-orange-400"
+    }
+  ];
+
+  const services = [
+    {
+      id: "1",
+      name: "Corte Feminino",
+      category: "haircut",
+      description: "Corte moderno e personalizado para mulheres",
+      priceRange: { min: 80, max: 150 },
+      duration: 60,
+      rating: 4.8,
+      reviewCount: 234,
+      businessCount: 45,
+      image: "https://images.unsplash.com/photo-1562322140-8baeececf3df?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      popularBusinesses: ["Salão Beleza Pura", "Hair Studio", "Espaço Cabelo"]
+    },
+    {
+      id: "2", 
+      name: "Coloração Completa",
+      category: "hair_coloring",
+      description: "Mudança completa de cor ou retoque de raiz",
+      priceRange: { min: 120, max: 300 },
+      duration: 120,
+      rating: 4.7,
+      reviewCount: 189,
+      businessCount: 38,
+      image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      popularBusinesses: ["Color Expert", "Salão Cores", "Studio Hair"]
+    },
+    {
+      id: "3",
+      name: "Manicure Completa", 
+      category: "nails",
+      description: "Cuidados completos para as unhas das mãos",
+      priceRange: { min: 25, max: 60 },
+      duration: 45,
+      rating: 4.9,
+      reviewCount: 567,
+      businessCount: 89,
+      image: "https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      popularBusinesses: ["Nail Art Studio", "Unhas & Cia", "Beauty Nails"]
+    },
+    {
+      id: "4",
+      name: "Limpeza de Pele",
+      category: "facial", 
+      description: "Tratamento facial profundo para limpeza e hidratação",
+      priceRange: { min: 90, max: 180 },
+      duration: 90,
+      rating: 4.6,
+      reviewCount: 145,
+      businessCount: 32,
+      image: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      popularBusinesses: ["Spa Facial", "Estética Avançada", "Clin Beauty"]
+    },
+    {
+      id: "5",
+      name: "Massagem Relaxante",
+      category: "massage",
+      description: "Massagem corporal para alívio do stress e tensões",
+      priceRange: { min: 100, max: 200 },
+      duration: 60,
+      rating: 4.8,
+      reviewCount: 298,
+      businessCount: 28,
+      image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      popularBusinesses: ["Spa Zen", "Relax Center", "Wellness Spa"]
+    },
+    {
+      id: "6",
+      name: "Maquiagem Social",
+      category: "makeup",
+      description: "Maquiagem profissional para eventos e ocasiões especiais",
+      priceRange: { min: 80, max: 200 },
+      duration: 45,
+      rating: 4.7,
+      reviewCount: 167,
+      businessCount: 41,
+      image: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      popularBusinesses: ["Make Up Pro", "Studio Glamour", "Beauty Artist"]
+    },
+    {
+      id: "7",
+      name: "Corte Masculino",
+      category: "haircut",
+      description: "Corte moderno e estiloso para homens",
+      priceRange: { min: 30, max: 80 },
+      duration: 30,
+      rating: 4.9,
+      reviewCount: 423,
+      businessCount: 67,
+      image: "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      popularBusinesses: ["Barbearia Clássica", "Men's Hair", "Barber Shop"]
+    },
+    {
+      id: "8",
+      name: "Pedicure Spa",
+      category: "nails",
+      description: "Tratamento relaxante e completo para os pés",
+      priceRange: { min: 35, max: 80 },
+      duration: 60,
+      rating: 4.8,
+      reviewCount: 234,
+      businessCount: 52,
+      image: "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      popularBusinesses: ["Spa dos Pés", "Pedicure Luxo", "Feet Care"]
+    }
+  ];
+
+  const filteredServices = services.filter(service => {
+    const matchesSearch = service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         service.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === "all" || service.category === selectedCategory;
+    const matchesPriceRange = selectedPriceRange === "all" || 
+                             (selectedPriceRange === "low" && service.priceRange.max <= 100) ||
+                             (selectedPriceRange === "medium" && service.priceRange.min >= 50 && service.priceRange.max <= 200) ||
+                             (selectedPriceRange === "high" && service.priceRange.min >= 150);
+    
+    return matchesSearch && matchesCategory && matchesPriceRange;
+  });
+
+  const sortedServices = [...filteredServices].sort((a, b) => {
+    switch (sortBy) {
+      case "price_low":
+        return a.priceRange.min - b.priceRange.min;
+      case "price_high":
+        return b.priceRange.max - a.priceRange.max;
+      case "rating":
+        return b.rating - a.rating;
+      case "duration":
+        return a.duration - b.duration;
+      default: // popular
+        return b.reviewCount - a.reviewCount;
+    }
+  });
+
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <Star
+        key={i}
+        className={`h-4 w-4 ${i < Math.floor(rating) ? "text-yellow-400 fill-current" : "text-gray-400"}`}
+      />
+    ));
+  };
+
+  const formatPrice = (priceRange: { min: number; max: number }) => {
+    if (priceRange.min === priceRange.max) {
+      return `R$ ${priceRange.min}`;
+    }
+    return `R$ ${priceRange.min} - R$ ${priceRange.max}`;
+  };
+
   return (
     <div className="min-h-screen bg-glam-900 text-white">
-      {/* Seção Hero */}
-      <section className="relative py-16 md:py-24">
-        <div className="container max-w-5xl mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 gradient-heading">Nossos Serviços de Beleza</h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
-              Descubra uma ampla gama de serviços de beleza premium disponíveis através de nossa rede de salões profissionais e especialistas em beleza.
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Cabeçalho */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold gradient-heading mb-4">
+              Serviços de Beleza
+            </h1>
+            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+              Descubra os melhores serviços de beleza disponíveis na sua região. 
+              Compare preços, avaliações e encontre o profissional perfeito para você.
             </p>
-            
-            <div className="relative max-w-xl mx-auto">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
-              <input
-                type="text"
-                placeholder="Buscar por serviços..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 py-3 rounded-lg text-base w-full bg-glam-800 text-white border border-glam-700 focus:border-gold-400 focus:ring-gold-400"
-              />
-            </div>
           </div>
-        </div>
-      </section>
 
-      {/* Categorias de Serviços */}
-      <section className="py-8 bg-glam-800">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-3 mb-8">
-            <Button
-              onClick={() => setActiveCategory(null)}
-              variant={activeCategory === null ? "default" : "outline"}
-              className={`
-                rounded-full text-sm font-medium px-4
-                ${activeCategory === null 
-                  ? "bg-gold-500 hover:bg-gold-600 text-glam-900" 
-                  : "border-gold-500 text-gray-300 hover:bg-glam-700"}
-              `}
-            >
-              Todos os Serviços
-            </Button>
-            
-            {serviceCategories.map(category => (
-              <Button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                variant={activeCategory === category.id ? "default" : "outline"}
-                className={`
-                  rounded-full text-sm font-medium px-4
-                  ${activeCategory === category.id 
-                    ? "bg-gold-500 hover:bg-gold-600 text-glam-900" 
-                    : "border-gold-500 text-gray-300 hover:bg-glam-700"}
-                `}
+          {/* Categorias em Destaque */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
+            {serviceCategories.map((category) => (
+              <Card 
+                key={category.id} 
+                className={`bg-glam-800 border-glam-700 cursor-pointer transition-all hover:scale-105 ${
+                  selectedCategory === category.id ? 'ring-2 ring-gold-500' : ''
+                }`}
+                onClick={() => setSelectedCategory(category.id)}
               >
-                {category.name}
-              </Button>
+                <CardContent className="p-4 text-center">
+                  <div className={`w-12 h-12 rounded-lg ${category.color} flex items-center justify-center mx-auto mb-3`}>
+                    {category.icon}
+                  </div>
+                  <h3 className="font-semibold text-sm text-white">
+                    {category.label}
+                  </h3>
+                </CardContent>
+              </Card>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* Lista de Serviços */}
-      <section className="py-12 bg-glam-900">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 gap-12">
-            {filteredCategories
-              .filter(category => activeCategory ? category.id === activeCategory : true)
-              .map((category) => (
-                <div key={category.id} className="bg-glam-800 rounded-xl overflow-hidden border border-glam-700">
-                  <div className="grid grid-cols-1 md:grid-cols-2">
-                    <div className="h-64 md:h-auto">
-                      <img 
-                        src={category.image} 
-                        alt={category.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="p-6 md:p-8">
-                      <h2 className="text-2xl font-bold mb-2 text-gold-400">{category.name}</h2>
-                      <p className="text-gray-300 mb-6">{category.description}</p>
-                      
-                      <div className="space-y-4">
-                        {category.services.map((service, index) => (
-                          <div key={index} className="flex justify-between pb-2 border-b border-glam-700">
-                            <span className="text-white">{service.name}</span>
-                            <span className="text-gold-400 font-medium">{service.priceRange}</span>
-                          </div>
-                        ))}
-                      </div>
-                      
-                      <div className="mt-6">
-                        <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900">
-                          Encontrar Salões
-                        </Button>
-                      </div>
-                    </div>
+          {/* Filtros */}
+          <Card className="bg-glam-800 border-glam-700 mb-8">
+            <CardContent className="p-6">
+              <div className="flex flex-col lg:flex-row gap-4">
+                {/* Busca */}
+                <div className="flex-1">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Input
+                      placeholder="Buscar serviços..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10 bg-glam-900 border-glam-600"
+                    />
                   </div>
                 </div>
-              ))}
-          </div>
-          
-          {filteredCategories.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-xl text-gray-300">Nenhum serviço corresponde à sua busca. Tente palavras-chave diferentes.</p>
-            </div>
-          )}
-        </div>
-      </section>
+                
+                {/* Filtros */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                    <SelectTrigger className="w-48 bg-glam-900 border-glam-600">
+                      <SelectValue placeholder="Categoria" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-glam-800 border-glam-600">
+                      <SelectItem value="all">Todas as Categorias</SelectItem>
+                      {serviceCategories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-      {/* Seção CTA */}
-      <section className="py-12 md:py-16 bg-glam-800">
-        <div className="container max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 gradient-heading">Pronto para Agendar Seu Serviço?</h2>
-          <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-            Encontre salões e profissionais de beleza próximos oferecendo estes serviços. Conquiste o look perfeito dos seus sonhos!
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900 px-6">
-              Encontrar Salões
-            </Button>
-            <Button variant="outline" className="border-gold-500 text-gold-400">
-              Navegar Ofertas Especiais
-            </Button>
-          </div>
+                  <Select value={selectedPriceRange} onValueChange={setSelectedPriceRange}>
+                    <SelectTrigger className="w-40 bg-glam-900 border-glam-600">
+                      <SelectValue placeholder="Preço" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-glam-800 border-glam-600">
+                      <SelectItem value="all">Todos os Preços</SelectItem>
+                      <SelectItem value="low">Até R$ 100</SelectItem>
+                      <SelectItem value="medium">R$ 50 - R$ 200</SelectItem>
+                      <SelectItem value="high">Acima de R$ 150</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger className="w-40 bg-glam-900 border-glam-600">
+                      <SelectValue placeholder="Ordenar" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-glam-800 border-glam-600">
+                      <SelectItem value="popular">Mais Popular</SelectItem>
+                      <SelectItem value="rating">Melhor Avaliado</SelectItem>
+                      <SelectItem value="price_low">Menor Preço</SelectItem>
+                      <SelectItem value="price_high">Maior Preço</SelectItem>
+                      <SelectItem value="duration">Menor Duração</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Resultados */}
+          {sortedServices.length === 0 ? (
+            <Card className="bg-glam-800 border-glam-700 text-center p-8">
+              <CardContent>
+                <Filter className="h-16 w-16 text-gold-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2 text-white">
+                  Nenhum serviço encontrado
+                </h3>
+                <p className="text-gray-400 mb-4">
+                  Tente ajustar os filtros para encontrar mais serviços.
+                </p>
+                <Button 
+                  onClick={() => {
+                    setSearchTerm("");
+                    setSelectedCategory("all");
+                    setSelectedPriceRange("all");
+                  }}
+                  className="bg-gold-500 hover:bg-gold-600 text-glam-900"
+                >
+                  Limpar Filtros
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <>
+              <div className="mb-6">
+                <p className="text-gray-400">
+                  {sortedServices.length} serviço(s) encontrado(s)
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {sortedServices.map((service) => (
+                  <Card key={service.id} className="bg-glam-800 border-glam-700 hover:border-gold-500/50 transition-colors">
+                    <div className="relative">
+                      <img
+                        src={service.image}
+                        alt={service.name}
+                        className="w-full h-48 object-cover rounded-t-lg"
+                      />
+                      <Badge 
+                        className="absolute top-3 right-3 bg-gold-500 text-glam-900"
+                      >
+                        {serviceCategories.find(cat => cat.id === service.category)?.label}
+                      </Badge>
+                    </div>
+                    
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-bold mb-2 text-white">
+                        {service.name}
+                      </h3>
+                      <p className="text-gray-400 text-sm mb-4">
+                        {service.description}
+                      </p>
+
+                      {/* Avaliação e Duração */}
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-1">
+                          {renderStars(service.rating)}
+                          <span className="text-gold-400 font-semibold ml-2">
+                            {service.rating}
+                          </span>
+                          <span className="text-gray-400 text-sm">
+                            ({service.reviewCount})
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1 text-gray-400 text-sm">
+                          <Clock className="h-4 w-4" />
+                          {service.duration}min
+                        </div>
+                      </div>
+
+                      {/* Preço */}
+                      <div className="mb-4">
+                        <span className="text-2xl font-bold text-gold-400">
+                          {formatPrice(service.priceRange)}
+                        </span>
+                      </div>
+
+                      {/* Estabelecimentos Populares */}
+                      <div className="mb-4">
+                        <p className="text-gray-400 text-sm mb-2">
+                          Disponível em {service.businessCount} estabelecimentos
+                        </p>
+                        <div className="flex flex-wrap gap-1">
+                          {service.popularBusinesses.slice(0, 2).map((business, index) => (
+                            <Badge key={index} variant="outline" className="text-xs">
+                              {business}
+                            </Badge>
+                          ))}
+                          {service.popularBusinesses.length > 2 && (
+                            <Badge variant="outline" className="text-xs">
+                              +{service.popularBusinesses.length - 2}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Ações */}
+                      <div className="flex gap-2">
+                        <Button asChild className="bg-gold-500 hover:bg-gold-600 text-glam-900 flex-1">
+                          <Link to={`/salons?service=${service.id}`}>
+                            Ver Profissionais
+                          </Link>
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          className="border-glam-600 text-gray-300 hover:bg-glam-700"
+                        >
+                          <Heart className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* Call to Action */}
+          <Card className="bg-glam-800 border-glam-700 mt-12">
+            <CardContent className="p-8 text-center">
+              <h3 className="text-2xl font-bold mb-4 text-gold-400">
+                Não encontrou o serviço que procura?
+              </h3>
+              <p className="text-gray-300 mb-6">
+                Entre em contato conosco ou explore nossos estabelecimentos para descobrir mais opções.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button asChild className="bg-gold-500 hover:bg-gold-600 text-glam-900">
+                  <Link to="/salons">
+                    <MapPin className="h-4 w-4 mr-2" />
+                    Explorar Estabelecimentos
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" className="border-gold-500 text-gold-400">
+                  <Link to="/contact">
+                    Fale Conosco
+                  </Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </section>
+      </div>
     </div>
   );
 };
