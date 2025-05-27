@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, Business, Service, Appointment, Review } from '@/types';
 
@@ -132,8 +133,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const newUser: User = {
       ...userData,
       id: crypto.randomUUID(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(), // Convert Date to string
+      updatedAt: new Date().toISOString(), // Convert Date to string
     };
 
     setUsers(prev => [...prev, newUser]);

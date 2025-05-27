@@ -1,15 +1,16 @@
-
 export type UserRole = 'client' | 'business';
 
 export interface User {
   id: string;
   name: string;
   email: string;
+  password: string; // Added password field
   role: UserRole;
   phone?: string;
   cpf?: string;
   profileImage?: string;
-  createdAt: Date;
+  createdAt: string; // Changed from Date to string for localStorage compatibility
+  updatedAt?: string; // Added updatedAt field as string
 }
 
 export interface Business extends User {
