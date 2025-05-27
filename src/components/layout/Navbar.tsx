@@ -9,10 +9,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Search, Menu, X, User } from "lucide-react";
+import { useApp } from "@/contexts/AppContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isLoggedIn = false; // Substituir pela lógica de autenticação real
+  const { isAuthenticated, currentUser, logout } = useApp();
+
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-glam-700 bg-glam-900/95 backdrop-blur">
@@ -25,9 +31,11 @@ const Navbar = () => {
             <Link to="/" className="text-sm font-medium text-gray-300 hover:text-gold-400 transition-colors">
               Início
             </Link>
-            <Link to="/salons" className="text-sm font-medium text-gray-300 hover:text-gold-400 transition-colors">
-              Encontrar Salões
-            </Link>
+            {isAuthenticated && (
+              <Link to="/salons" className="text-sm font-medium text-gray-300 hover:text-gold-400 transition-colors">
+                Encontrar Salões
+              </Link>
+            )}
             <Link to="/services" className="text-sm font-medium text-gray-300 hover:text-gold-400 transition-colors">
               Serviços
             </Link>
@@ -41,16 +49,18 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-4">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Buscar salões..."
-              className="rounded-md border-glam-700 bg-glam-800 px-8 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 w-[200px] lg:w-[300px] text-white"
-            />
-          </div>
+          {isAuthenticated && (
+            <div className="relative">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Buscar salões..."
+                className="rounded-md border-glam-700 bg-glam-800 px-8 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 w-[200px] lg:w-[300px] text-white"
+              />
+            </div>
+          )}
           
-          {isLoggedIn ? (
+          {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="p-0 h-9 w-9 rounded-full bg-glam-700 hover:bg-glam-600">
@@ -67,7 +77,12 @@ const Navbar = () => {
                 <DropdownMenuItem asChild className="hover:bg-glam-700 focus:bg-glam-700">
                   <Link to="/favorites">Favoritos</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="hover:bg-glam-700 focus:bg-glam-700">Sair</DropdownMenuItem>
+                <DropdownMenuItem 
+                  className="hover:bg-glam-700 focus:bg-glam-700 cursor-pointer"
+                  onClick={handleLogout}
+                >
+                  Sair
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
@@ -94,14 +109,16 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="container md:hidden pb-3 animate-fade-in bg-glam-900">
           <div className="flex flex-col gap-3">
-            <div className="relative mb-2">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Buscar salões..."
-                className="rounded-md border-glam-700 bg-glam-800 px-8 py-2 text-sm w-full text-white"
-              />
-            </div>
+            {isAuthenticated && (
+              <div className="relative mb-2">
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Buscar salões..."
+                  className="rounded-md border-glam-700 bg-glam-800 px-8 py-2 text-sm w-full text-white"
+                />
+              </div>
+            )}
             <Link 
               to="/" 
               className="px-2 py-1.5 text-sm font-medium text-gray-300 hover:bg-glam-800"
@@ -109,13 +126,15 @@ const Navbar = () => {
             >
               Início
             </Link>
-            <Link 
-              to="/salons" 
-              className="px-2 py-1.5 text-sm font-medium text-gray-300 hover:bg-glam-800"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Encontrar Salões
-            </Link>
+            {isAuthenticated && (
+              <Link 
+                to="/salons" 
+                className="px-2 py-1.5 text-sm font-medium text-gray-300 hover:bg-glam-800"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Encontrar Salões
+              </Link>
+            )}
             <Link 
               to="/services" 
               className="px-2 py-1.5 text-sm font-medium text-gray-300 hover:bg-glam-800"
@@ -138,7 +157,7 @@ const Navbar = () => {
               Para Empresas
             </Link>
             <div className="border-t border-glam-700 my-2"></div>
-            {isLoggedIn ? (
+            {isAuthenticated ? (
               <>
                 <Link 
                   to="/profile" 
@@ -161,7 +180,10 @@ const Navbar = () => {
                 >
                   Favoritos
                 </Link>
-                <button className="text-left px-2 py-1.5 text-sm font-medium text-red-400 hover:bg-glam-800">
+                <button 
+                  className="text-left px-2 py-1.5 text-sm font-medium text-red-400 hover:bg-glam-800"
+                  onClick={handleLogout}
+                >
                   Sair
                 </button>
               </>

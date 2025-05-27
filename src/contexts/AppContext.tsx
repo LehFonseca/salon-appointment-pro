@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, Business, Service, Appointment, Review } from '@/types';
 
@@ -38,9 +37,13 @@ interface AppContextType {
   deleteReview: (id: string) => void;
   getReviewById: (id: string) => Review | undefined;
   
-  // Current user
+  // Current user and authentication
   currentUser: User | null;
   setCurrentUser: (user: User | null) => void;
+  isAuthenticated: boolean;
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (userData: Omit<User, 'id' | 'createdAt' | 'updatedAt'>) => Promise<boolean>;
+  logout: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -60,6 +63,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  const isAuthenticated = currentUser !== null;
 
   // Load data from localStorage on mount
   useEffect(() => {
@@ -106,6 +111,39 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       localStorage.removeItem('glampro_current_user');
     }
   }, [currentUser]);
+
+  // Authentication functions
+  const login = async (email: string, password: string): Promise<boolean> => {
+    const user = users.find(u => u.email === email && u.password === password);
+    if (user) {
+      setCurrentUser(user);
+      return true;
+    }
+    return false;
+  };
+
+  const register = async (userData: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): Promise<boolean> => {
+    // Check if user already exists
+    const existingUser = users.find(u => u.email === userData.email);
+    if (existingUser) {
+      return false;
+    }
+
+    const newUser: User = {
+      ...userData,
+      id: crypto.randomUUID(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    setUsers(prev => [...prev, newUser]);
+    setCurrentUser(newUser);
+    return true;
+  };
+
+  const logout = () => {
+    setCurrentUser(null);
+  };
 
   // User CRUD operations
   const addUser = (user: User) => {
@@ -225,6 +263,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     
     currentUser,
     setCurrentUser,
+    isAuthenticated,
+    login,
+    register,
+    logout,
   };
 
   return (

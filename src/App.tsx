@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppProvider } from "@/contexts/AppContext";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -43,13 +44,48 @@ const App = () => (
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/services" element={<ServicesPage />} />
                 <Route path="/business" element={<BusinessPage />} />
-                <Route path="/salons" element={<SalonsPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/appointments" element={<AppointmentsPage />} />
-                <Route path="/favorites" element={<FavoritesPage />} />
+                <Route 
+                  path="/salons" 
+                  element={
+                    <ProtectedRoute>
+                      <SalonsPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/profile" 
+                  element={
+                    <ProtectedRoute>
+                      <ProfilePage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/appointments" 
+                  element={
+                    <ProtectedRoute>
+                      <AppointmentsPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/favorites" 
+                  element={
+                    <ProtectedRoute>
+                      <FavoritesPage />
+                    </ProtectedRoute>
+                  } 
+                />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/faq" element={<FAQPage />} />
-                <Route path="/admin" element={<AdminPage />} />
+                <Route 
+                  path="/admin" 
+                  element={
+                    <ProtectedRoute>
+                      <AdminPage />
+                    </ProtectedRoute>
+                  } 
+                />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
