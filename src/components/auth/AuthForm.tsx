@@ -21,9 +21,9 @@ const AuthForm = ({ type }: AuthFormProps) => {
       {!isLogin && (
         <div className="mb-6">
           <Tabs defaultValue="client" onValueChange={(value) => setUserRole(value as UserRole)}>
-            <TabsList className="grid w-full grid-cols-2 bg-gray-100">
-              <TabsTrigger value="client" className="text-sm">Sou Cliente</TabsTrigger>
-              <TabsTrigger value="business" className="text-sm">Sou Empresa</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-glam-700">
+              <TabsTrigger value="client" className="text-sm text-white data-[state=active]:bg-gold-500 data-[state=active]:text-glam-900">Sou Cliente</TabsTrigger>
+              <TabsTrigger value="business" className="text-sm text-white data-[state=active]:bg-gold-500 data-[state=active]:text-glam-900">Sou Empresa</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
@@ -32,34 +32,34 @@ const AuthForm = ({ type }: AuthFormProps) => {
       <form className="space-y-4">
         {!isLogin && (
           <div className="space-y-2">
-            <Label htmlFor={userRole === "client" ? "name" : "businessName"} className="text-gray-700 font-medium">
+            <Label htmlFor={userRole === "client" ? "name" : "businessName"} className="text-white font-medium">
               {userRole === "client" ? "Nome Completo" : "Nome da Empresa"}
             </Label>
             <Input 
               id={userRole === "client" ? "name" : "businessName"} 
               placeholder={userRole === "client" ? "João Silva" : "Salão Incrível"}
-              className="bg-white border-gray-300 focus:border-gold-400 focus:ring-gold-400"
+              className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
             />
           </div>
         )}
 
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-gray-700 font-medium">Email</Label>
+          <Label htmlFor="email" className="text-white font-medium">Email</Label>
           <Input 
             id="email" 
             type="email" 
             placeholder="nome@exemplo.com"
-            className="bg-white border-gray-300 focus:border-gold-400 focus:ring-gold-400"
+            className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
           />
         </div>
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label htmlFor="password" className="text-gray-700 font-medium">Senha</Label>
+            <Label htmlFor="password" className="text-white font-medium">Senha</Label>
             {isLogin && (
               <Link 
                 to="/forgot-password" 
-                className="text-xs text-gold-600 hover:text-gold-700 font-medium"
+                className="text-xs text-gold-400 hover:text-gold-300 font-medium"
               >
                 Esqueceu a senha?
               </Link>
@@ -68,81 +68,81 @@ const AuthForm = ({ type }: AuthFormProps) => {
           <Input 
             id="password" 
             type="password"
-            className="bg-white border-gray-300 focus:border-gold-400 focus:ring-gold-400"
+            className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
           />
         </div>
 
         {!isLogin && (
           <>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-gray-700 font-medium">Confirmar Senha</Label>
+              <Label htmlFor="confirmPassword" className="text-white font-medium">Confirmar Senha</Label>
               <Input 
                 id="confirmPassword" 
                 type="password"
-                className="bg-white border-gray-300 focus:border-gold-400 focus:ring-gold-400"
+                className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone" className="text-gray-700 font-medium">Número de Telefone</Label>
+              <Label htmlFor="phone" className="text-white font-medium">Número de Telefone</Label>
               <Input 
                 id="phone" 
                 placeholder="(99) 99999-9999"
-                className="bg-white border-gray-300 focus:border-gold-400 focus:ring-gold-400"
+                className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
               />
             </div>
 
             {userRole === "business" && (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="cnpj" className="text-gray-700 font-medium">CNPJ</Label>
+                  <Label htmlFor="cnpj" className="text-white font-medium">CNPJ</Label>
                   <Input 
                     id="cnpj" 
                     placeholder="XX.XXX.XXX/XXXX-XX"
-                    className="bg-white border-gray-300 focus:border-gold-400 focus:ring-gold-400"
+                    className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="zipCode" className="text-gray-700 font-medium">CEP</Label>
+                  <Label htmlFor="zipCode" className="text-white font-medium">CEP</Label>
                   <Input 
                     id="zipCode" 
                     placeholder="XXXXX-XXX"
-                    className="bg-white border-gray-300 focus:border-gold-400 focus:ring-gold-400"
+                    className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="address" className="text-gray-700 font-medium">Endereço</Label>
+                  <Label htmlFor="address" className="text-white font-medium">Endereço</Label>
                   <Input 
                     id="address" 
                     placeholder="Rua, número"
-                    className="bg-white border-gray-300 focus:border-gold-400 focus:ring-gold-400"
+                    className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
                   />
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="city" className="text-gray-700 font-medium">Cidade</Label>
+                    <Label htmlFor="city" className="text-white font-medium">Cidade</Label>
                     <Input 
                       id="city"
-                      className="bg-white border-gray-300 focus:border-gold-400 focus:ring-gold-400"
+                      className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="state" className="text-gray-700 font-medium">Estado</Label>
+                    <Label htmlFor="state" className="text-white font-medium">Estado</Label>
                     <Input 
                       id="state"
-                      className="bg-white border-gray-300 focus:border-gold-400 focus:ring-gold-400"
+                      className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
                     />
                   </div>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="category" className="text-gray-700 font-medium">Categoria</Label>
+                  <Label htmlFor="category" className="text-white font-medium">Categoria</Label>
                   <select 
                     id="category" 
-                    className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex h-10 w-full rounded-md border border-glam-600 bg-glam-700 px-3 py-2 text-sm text-white ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <option value="">Selecione uma categoria</option>
                     <option value="hair_salon">Salão de Beleza</option>
@@ -161,15 +161,15 @@ const AuthForm = ({ type }: AuthFormProps) => {
               <input
                 type="checkbox"
                 id="terms"
-                className="h-4 w-4 rounded border-gray-300 text-gold-600 focus:ring-gold-400"
+                className="h-4 w-4 rounded border-glam-600 text-gold-500 focus:ring-gold-400 bg-glam-700"
               />
-              <label htmlFor="terms" className="text-sm text-gray-600">
+              <label htmlFor="terms" className="text-sm text-gray-300">
                 Concordo com os{" "}
-                <Link to="/terms" className="text-gold-600 hover:text-gold-700 font-medium">
+                <Link to="/terms" className="text-gold-400 hover:text-gold-300 font-medium">
                   Termos de Serviço
                 </Link>{" "}
                 e{" "}
-                <Link to="/privacy" className="text-gold-600 hover:text-gold-700 font-medium">
+                <Link to="/privacy" className="text-gold-400 hover:text-gold-300 font-medium">
                   Política de Privacidade
                 </Link>
               </label>
@@ -179,7 +179,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
         <Button 
           type="submit" 
-          className="w-full bg-gradient-to-r from-gold-400 to-gold-600 hover:from-gold-500 hover:to-gold-700 text-white font-semibold py-3 text-base shadow-lg hover:shadow-xl transition-all duration-200"
+          className="w-full bg-gradient-to-r from-gold-400 to-gold-600 hover:from-gold-500 hover:to-gold-700 text-glam-900 font-semibold py-3 text-base shadow-lg hover:shadow-xl transition-all duration-200"
         >
           {isLogin ? "Entrar" : "Criar Conta"}
         </Button>
@@ -189,17 +189,17 @@ const AuthForm = ({ type }: AuthFormProps) => {
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
+              <div className="w-full border-t border-glam-600" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-gray-500">
+              <span className="bg-glam-800 px-2 text-gray-400">
                 Ou continue com
               </span>
             </div>
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-3">
-            <Button variant="outline" type="button" className="w-full border-gray-300 hover:bg-gray-50">
+            <Button variant="outline" type="button" className="w-full border-red-600 bg-red-600 hover:bg-red-700 text-white">
               <svg
                 className="mr-2 h-4 w-4"
                 xmlns="http://www.w3.org/2000/svg"
@@ -226,7 +226,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
               </svg>
               Google
             </Button>
-            <Button variant="outline" type="button" className="w-full border-gray-300 hover:bg-gray-50">
+            <Button variant="outline" type="button" className="w-full border-blue-600 bg-blue-600 hover:bg-blue-700 text-white">
               <svg
                 className="mr-2 h-4 w-4"
                 xmlns="http://www.w3.org/2000/svg"
@@ -246,18 +246,18 @@ const AuthForm = ({ type }: AuthFormProps) => {
       )}
 
       <div className="text-center mt-6">
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-400">
           {isLogin ? (
             <>
               Não tem uma conta?{" "}
-              <Link to="/register" className="text-gold-600 hover:text-gold-700 font-semibold">
+              <Link to="/register" className="text-gold-400 hover:text-gold-300 font-semibold">
                 Cadastre-se
               </Link>
             </>
           ) : (
             <>
               Já tem uma conta?{" "}
-              <Link to="/login" className="text-gold-600 hover:text-gold-700 font-semibold">
+              <Link to="/login" className="text-gold-400 hover:text-gold-300 font-semibold">
                 Entre
               </Link>
             </>

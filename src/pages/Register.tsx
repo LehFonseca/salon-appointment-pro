@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Register = () => {
   return (
-    <div className="min-h-screen relative flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen relative flex items-center justify-center py-12 px-4 bg-glam-900">
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -14,19 +14,19 @@ const Register = () => {
       />
       
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/60" />
+      <div className="absolute inset-0 bg-black/70" />
       
       {/* Content */}
       <div className="relative z-10 w-full max-w-md">
-        <div className="bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-2xl border border-white/20">
+        <div className="bg-glam-800/95 backdrop-blur-sm p-8 rounded-2xl shadow-2xl border border-glam-700">
           <div className="text-center mb-8">
             <Link to="/" className="inline-block">
               <h1 className="text-3xl font-bold bg-gradient-to-r from-gold-400 to-gold-600 bg-clip-text text-transparent">
                 GlamPro
               </h1>
             </Link>
-            <p className="text-gray-600 mt-2 text-lg">Criar uma nova conta</p>
-            <p className="text-gray-500 text-sm mt-1">
+            <p className="text-white mt-2 text-lg">Criar uma nova conta</p>
+            <p className="text-gray-400 text-sm mt-1">
               Junte-se à nossa comunidade de beleza
             </p>
           </div>
