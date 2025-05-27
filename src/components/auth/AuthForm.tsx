@@ -1,11 +1,12 @@
-
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { UserRole } from "@/types";
+import { useApp } from "@/contexts/AppContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface AuthFormProps {
   type: "login" | "register";
@@ -13,8 +14,115 @@ interface AuthFormProps {
 
 const AuthForm = ({ type }: AuthFormProps) => {
   const [userRole, setUserRole] = useState<UserRole>("client");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    name: "",
+    businessName: "",
+    phone: "",
+    cnpj: "",
+    zipCode: "",
+    address: "",
+    city: "",
+    state: "",
+    category: ""
+  });
+  const [isLoading, setIsLoading] = useState(false);
   
+  const { login, register } = useApp();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const isLogin = type === "login";
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.id]: e.target.value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      if (isLogin) {
+        const success = await login(formData.email, formData.password);
+        if (success) {
+          toast({
+            title: "Login realizado com sucesso!",
+            description: "Bem-vindo de volta ao GlamPro."
+          });
+          navigate("/");
+        } else {
+          toast({
+            title: "Erro no login",
+            description: "Email ou senha incorretos.",
+            variant: "destructive"
+          });
+        }
+      } else {
+        // Validações para cadastro
+        if (formData.password !== formData.confirmPassword) {
+          toast({
+            title: "Erro no cadastro",
+            description: "As senhas não coincidem.",
+            variant: "destructive"
+          });
+          return;
+        }
+
+        if (!formData.name && !formData.businessName) {
+          toast({
+            title: "Erro no cadastro",
+            description: "Nome é obrigatório.",
+            variant: "destructive"
+          });
+          return;
+        }
+
+        const userData = {
+          email: formData.email,
+          password: formData.password,
+          name: userRole === "client" ? formData.name : formData.businessName,
+          phone: formData.phone,
+          role: userRole,
+          ...(userRole === "business" && {
+            cnpj: formData.cnpj,
+            address: formData.address,
+            city: formData.city,
+            state: formData.state,
+            zipCode: formData.zipCode,
+            category: formData.category
+          })
+        };
+
+        const success = await register(userData);
+        if (success) {
+          toast({
+            title: "Cadastro realizado com sucesso!",
+            description: "Bem-vindo ao GlamPro."
+          });
+          navigate("/");
+        } else {
+          toast({
+            title: "Erro no cadastro",
+            description: "Email já cadastrado ou dados inválidos.",
+            variant: "destructive"
+          });
+        }
+      }
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Ocorreu um erro inesperado. Tente novamente.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="w-full">
@@ -29,7 +137,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
         </div>
       )}
 
-      <form className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {!isLogin && (
           <div className="space-y-2">
             <Label htmlFor={userRole === "client" ? "name" : "businessName"} className="text-white font-medium">
@@ -38,6 +146,9 @@ const AuthForm = ({ type }: AuthFormProps) => {
             <Input 
               id={userRole === "client" ? "name" : "businessName"} 
               placeholder={userRole === "client" ? "João Silva" : "Salão Incrível"}
+              value={userRole === "client" ? formData.name : formData.businessName}
+              onChange={handleInputChange}
+              required
               className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
             />
           </div>
@@ -49,6 +160,9 @@ const AuthForm = ({ type }: AuthFormProps) => {
             id="email" 
             type="email" 
             placeholder="nome@exemplo.com"
+            value={formData.email}
+            onChange={handleInputChange}
+            required
             className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
           />
         </div>
@@ -68,6 +182,9 @@ const AuthForm = ({ type }: AuthFormProps) => {
           <Input 
             id="password" 
             type="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            required
             className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
           />
         </div>
@@ -79,6 +196,9 @@ const AuthForm = ({ type }: AuthFormProps) => {
               <Input 
                 id="confirmPassword" 
                 type="password"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                required
                 className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
               />
             </div>
@@ -88,6 +208,9 @@ const AuthForm = ({ type }: AuthFormProps) => {
               <Input 
                 id="phone" 
                 placeholder="(99) 99999-9999"
+                value={formData.phone}
+                onChange={handleInputChange}
+                required
                 className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
               />
             </div>
@@ -99,6 +222,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
                   <Input 
                     id="cnpj" 
                     placeholder="XX.XXX.XXX/XXXX-XX"
+                    value={formData.cnpj}
+                    onChange={handleInputChange}
                     className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
                   />
                 </div>
@@ -108,6 +233,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
                   <Input 
                     id="zipCode" 
                     placeholder="XXXXX-XXX"
+                    value={formData.zipCode}
+                    onChange={handleInputChange}
                     className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
                   />
                 </div>
@@ -117,6 +244,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
                   <Input 
                     id="address" 
                     placeholder="Rua, número"
+                    value={formData.address}
+                    onChange={handleInputChange}
                     className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
                   />
                 </div>
@@ -126,6 +255,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
                     <Label htmlFor="city" className="text-white font-medium">Cidade</Label>
                     <Input 
                       id="city"
+                      value={formData.city}
+                      onChange={handleInputChange}
                       className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
                     />
                   </div>
@@ -133,6 +264,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
                     <Label htmlFor="state" className="text-white font-medium">Estado</Label>
                     <Input 
                       id="state"
+                      value={formData.state}
+                      onChange={handleInputChange}
                       className="bg-glam-700 border-glam-600 text-white focus:border-gold-400 focus:ring-gold-400"
                     />
                   </div>
@@ -142,6 +275,8 @@ const AuthForm = ({ type }: AuthFormProps) => {
                   <Label htmlFor="category" className="text-white font-medium">Categoria</Label>
                   <select 
                     id="category" 
+                    value={formData.category}
+                    onChange={handleInputChange}
                     className="flex h-10 w-full rounded-md border border-glam-600 bg-glam-700 px-3 py-2 text-sm text-white ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     <option value="">Selecione uma categoria</option>
@@ -161,6 +296,7 @@ const AuthForm = ({ type }: AuthFormProps) => {
               <input
                 type="checkbox"
                 id="terms"
+                required
                 className="h-4 w-4 rounded border-glam-600 text-gold-500 focus:ring-gold-400 bg-glam-700"
               />
               <label htmlFor="terms" className="text-sm text-gray-300">
@@ -179,9 +315,10 @@ const AuthForm = ({ type }: AuthFormProps) => {
 
         <Button 
           type="submit" 
+          disabled={isLoading}
           className="w-full bg-gradient-to-r from-gold-400 to-gold-600 hover:from-gold-500 hover:to-gold-700 text-glam-900 font-semibold py-3 text-base shadow-lg hover:shadow-xl transition-all duration-200"
         >
-          {isLogin ? "Entrar" : "Criar Conta"}
+          {isLoading ? "Carregando..." : (isLogin ? "Entrar" : "Criar Conta")}
         </Button>
       </form>
 

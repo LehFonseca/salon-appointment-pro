@@ -4,15 +4,29 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { useApp } from "@/contexts/AppContext";
 
 const HeroSection = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
+  const { isAuthenticated } = useApp();
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      navigate(`/salons?search=${encodeURIComponent(searchTerm.trim())}`);
+      if (isAuthenticated) {
+        navigate(`/salons?search=${encodeURIComponent(searchTerm.trim())}`);
+      } else {
+        navigate("/login");
+      }
+    }
+  };
+
+  const handleQuickSearch = (tag: string) => {
+    if (isAuthenticated) {
+      navigate(`/salons?search=${encodeURIComponent(tag)}`);
+    } else {
+      navigate("/login");
     }
   };
 
@@ -66,7 +80,7 @@ const HeroSection = () => {
             {['Corte', 'Manicure', 'Barba', 'Coloração', 'Massagem'].map((tag) => (
               <button 
                 key={tag} 
-                onClick={() => setSearchTerm(tag)}
+                onClick={() => handleQuickSearch(tag)}
                 className="px-3 py-1 rounded-full bg-glam-700/60 hover:bg-glam-700 text-gray-300 text-sm transition-colors"
               >
                 {tag}
