@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,6 +19,7 @@ const UserManagement = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    password: "",
     role: "client" as UserRole,
     phone: "",
     cpf: "",
@@ -43,7 +43,7 @@ const UserManagement = () => {
       const newUser: User = {
         id: crypto.randomUUID(),
         ...formData,
-        createdAt: new Date(),
+        createdAt: new Date().toISOString(), // Convert to string
       };
       addUser(newUser);
       toast({
@@ -57,6 +57,7 @@ const UserManagement = () => {
     setFormData({
       name: "",
       email: "",
+      password: "",
       role: "client",
       phone: "",
       cpf: "",
@@ -68,6 +69,7 @@ const UserManagement = () => {
     setFormData({
       name: user.name,
       email: user.email,
+      password: user.password,
       role: user.role,
       phone: user.phone || "",
       cpf: user.cpf || "",
@@ -131,6 +133,17 @@ const UserManagement = () => {
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="bg-glam-700 border-glam-600"
+                  required
+                />
+              </div>
+              <div>
+                <Label htmlFor="password">Senha</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   className="bg-glam-700 border-glam-600"
                   required
                 />

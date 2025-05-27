@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,6 +20,7 @@ const BusinessManagement = () => {
     name: "",
     businessName: "",
     email: "",
+    password: "",
     phone: "",
     cnpj: "",
     category: "hair_salon" as BusinessCategory,
@@ -67,7 +67,7 @@ const BusinessManagement = () => {
         id: crypto.randomUUID(),
         ...formData,
         role: "business",
-        createdAt: new Date(),
+        createdAt: new Date().toISOString(), // Convert to string
         photos: [],
         services: [],
         employees: [],
@@ -89,6 +89,7 @@ const BusinessManagement = () => {
       name: "",
       businessName: "",
       email: "",
+      password: "",
       phone: "",
       cnpj: "",
       category: "hair_salon",
@@ -110,6 +111,7 @@ const BusinessManagement = () => {
       name: business.name,
       businessName: business.businessName,
       email: business.email,
+      password: business.password,
       phone: business.phone || "",
       cnpj: business.cnpj,
       category: business.category,
@@ -194,6 +196,20 @@ const BusinessManagement = () => {
                   />
                 </div>
                 <div>
+                  <Label htmlFor="password">Senha</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    className="bg-glam-700 border-glam-600"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
                   <Label htmlFor="phone">Telefone</Label>
                   <Input
                     id="phone"
@@ -202,9 +218,6 @@ const BusinessManagement = () => {
                     className="bg-glam-700 border-glam-600"
                   />
                 </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="cnpj">CNPJ</Label>
                   <Input
@@ -215,19 +228,20 @@ const BusinessManagement = () => {
                     required
                   />
                 </div>
-                <div>
-                  <Label htmlFor="category">Categoria</Label>
-                  <select
-                    id="category"
-                    value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value as BusinessCategory })}
-                    className="flex h-10 w-full rounded-md border border-glam-600 bg-glam-700 px-3 py-2 text-sm text-white"
-                  >
-                    {Object.entries(categoryLabels).map(([value, label]) => (
-                      <option key={value} value={value}>{label}</option>
-                    ))}
-                  </select>
-                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="category">Categoria</Label>
+                <select
+                  id="category"
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value as BusinessCategory })}
+                  className="flex h-10 w-full rounded-md border border-glam-600 bg-glam-700 px-3 py-2 text-sm text-white"
+                >
+                  {Object.entries(categoryLabels).map(([value, label]) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
+                </select>
               </div>
 
               <div>
