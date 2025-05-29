@@ -1,6 +1,4 @@
-
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -24,18 +22,24 @@ import ContactPage from "./pages/ContactPage";
 import FAQPage from "./pages/FAQPage";
 import AdminPage from "./pages/AdminPage";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 5 * 60 * 1000, // 5 minutos
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AppProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
+      <TooltipProvider delayDuration={300}>
         <BrowserRouter>
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col min-h-screen bg-gray-50">
             <Navbar />
-            <main className="flex-grow">
+            <main className="flex-grow container mx-auto px-4 py-8">
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/login" element={<Login />} />
@@ -44,54 +48,25 @@ const App = () => (
                 <Route path="/about" element={<AboutPage />} />
                 <Route path="/services" element={<ServicesPage />} />
                 <Route path="/business" element={<BusinessPage />} />
-                <Route 
-                  path="/salons" 
-                  element={
-                    <ProtectedRoute>
-                      <SalonsPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/profile" 
-                  element={
-                    <ProtectedRoute>
-                      <ProfilePage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/appointments" 
-                  element={
-                    <ProtectedRoute>
-                      <AppointmentsPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/favorites" 
-                  element={
-                    <ProtectedRoute>
-                      <FavoritesPage />
-                    </ProtectedRoute>
-                  } 
-                />
+                
+                {/* Rotas protegidas */}
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/salons" element={<SalonsPage />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/appointments" element={<AppointmentsPage />} />
+                  <Route path="/favorites" element={<FavoritesPage />} />
+                  <Route path="/admin" element={<AdminPage />} />
+                </Route>
+
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/faq" element={<FAQPage />} />
-                <Route 
-                  path="/admin" 
-                  element={
-                    <ProtectedRoute>
-                      <AdminPage />
-                    </ProtectedRoute>
-                  } 
-                />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
             <Footer />
           </div>
         </BrowserRouter>
+        <Toaster />
       </TooltipProvider>
     </AppProvider>
   </QueryClientProvider>

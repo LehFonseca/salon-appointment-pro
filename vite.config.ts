@@ -1,22 +1,49 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
-import { componentTagger } from "lovable-tagger";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 8080,
-  },
+export default defineConfig({
   plugins: [
-    react(),
-    mode === 'development' &&
-    componentTagger(),
-  ].filter(Boolean),
+    react({
+      babel: {
+        plugins: ['babel-plugin-react-compiler'],
+      },
+    }),
+  ],
+  build: {
+    chunkSizeWarningLimit: 1000, // Aumenta o limite de aviso para 1000kB
+    rollupOptions: {
+      external: ['react-compiler-runtime'],
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          tanstack: ['@tanstack/react-query'],
+          radix: [/@radix-ui/],
+          icons: ['lucide-react'],
+          vendors: [
+            'date-fns',
+            'zod',
+            'react-hook-form',
+            '@hookform/resolvers',
+            'sonner',
+            'recharts'
+          ],
+        },
+      },
+    },
+    outDir: 'dist',
+    assetsDir: 'assets',
+    emptyOutDir: true,
+  },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      '@': '/src', // Configura alias para imports com @/
     },
   },
-}));
+  server: {
+    port: 5173,
+    open: true, // Abre o navegador automaticamente
+  },
+  preview: {
+    port: 4173,
+  },
+})
