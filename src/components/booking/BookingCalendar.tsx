@@ -7,13 +7,15 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Badge } from "@/components/ui/badge";
 import { Clock, User, Check } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
-import type { Service } from "@/types";
+import type { Tables } from "@/integrations/supabase/types";
 import EmployeeSelection from "./EmployeeSelection";
+import { useEmployees } from "@/hooks/useEmployees";
+import { useAppointments } from "@/hooks/useAppointments";
 
 interface BookingCalendarProps {
   salonId: string;
   salonName: string;
-  services: Service[];
+  services: Tables<'services'>[];
   onBookingComplete: () => void;
 }
 
@@ -30,35 +32,30 @@ interface Employee {
 const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: BookingCalendarProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState<string>("");
-  const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [selectedService, setSelectedService] = useState<Tables<'services'> | null>(null);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  const mockEmployees: Employee[] = [
-    {
-      id: "1",
-      name: "Ana Silva",
-      position: "Cabeleireira Senior",
-      rating: 4.9,
-      specialties: ["Corte Feminino", "Coloração", "Escova"],
-      availableTimes: ["09:00", "10:30", "14:00", "15:30"]
-    },
-    {
-      id: "2",
-      name: "Carlos Santos",
-      position: "Barbeiro",
-      rating: 4.7,
-      specialties: ["Corte Masculino", "Barba"],
-      availableTimes: ["09:30", "11:00", "14:30", "16:00"]
-    }
-  ];
+  const { employees: dbEmployees } = useEmployees(salonId);
+  const { createAppointment } = useAppointments();
+
+  // Converter funcionários do banco para o formato esperado
+  const employees: Employee[] = dbEmployees.map(emp => ({
+    id: emp.id,
+    name: emp.name,
+    position: emp.position,
+    rating: 4.8, // Valor padrão
+    imageUrl: emp.image_url || undefined,
+    availableTimes: ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30"],
+    specialties: ["Diversos serviços"] // Valor padrão
+  }));
 
   const timeSlots = [
     "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
     "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"
   ];
 
-  const handleServiceSelect = (service: Service) => {
+  const handleServiceSelect = (service: Tables<'services'>) => {
     setSelectedService(service);
     setSelectedEmployee(null); // Reset employee when service changes
   };
@@ -91,13 +88,34 @@ const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: Bo
     setShowConfirmation(true);
   };
 
-  const confirmBooking = () => {
-    toast({
-      title: "Agendamento confirmado!",
-      description: `Seu agendamento para ${selectedService?.name} com ${selectedEmployee?.name} foi confirmado para ${selectedDate?.toLocaleDateString('pt-BR')} às ${selectedTime}.`,
-    });
-    setShowConfirmation(false);
-    onBookingComplete();
+  const confirmBooking = async () => {
+    if (!selectedDate || !selectedTime || !selectedService || !selectedEmployee) return;
+
+    try {
+      // Criar data do agendamento
+      const [hours, minutes] = selectedTime.split(':').map(Number);
+      const appointmentDate = new Date(selectedDate);
+      appointmentDate.setHours(hours, minutes, 0, 0);
+
+      await createAppointment({
+        business_id: salonId,
+        service_id: selectedService.id,
+        employee_id: selectedEmployee.id,
+        appointment_date: appointmentDate.toISOString(),
+        status: 'scheduled',
+        user_id: '', // Será preenchido automaticamente pelo RLS
+      });
+
+      toast({
+        title: "Agendamento confirmado!",
+        description: `Seu agendamento para ${selectedService?.name} com ${selectedEmployee?.name} foi confirmado para ${selectedDate?.toLocaleDateString('pt-BR')} às ${selectedTime}.`,
+      });
+      
+      setShowConfirmation(false);
+      onBookingComplete();
+    } catch (error) {
+      console.error('Erro ao confirmar agendamento:', error);
+    }
   };
 
   const formatDate = (date: Date) => {
@@ -139,7 +157,7 @@ const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: Bo
                       <p className="text-gray-400 text-sm">{service.duration} minutos</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-gold-400 font-bold">R$ {service.price.toFixed(2)}</p>
+                      <p className="text-gold-400 font-bold">R$ {service.price}</p>
                       {selectedService?.id === service.id && (
                         <Check className="h-5 w-5 text-gold-400 ml-auto mt-1" />
                       )}
@@ -154,7 +172,7 @@ const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: Bo
 
       {selectedService && (
         <EmployeeSelection
-          employees={mockEmployees}
+          employees={employees}
           selectedEmployee={selectedEmployee}
           onEmployeeSelect={handleEmployeeSelect}
         />
@@ -248,7 +266,7 @@ const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: Bo
               </div>
               <div className="flex justify-between text-lg">
                 <span className="text-gold-400 font-semibold">Total:</span>
-                <span className="text-gold-400 font-bold">R$ {selectedService.price.toFixed(2)}</span>
+                <span className="text-gold-400 font-bold">R$ {selectedService.price}</span>
               </div>
             </div>
             <Button 
@@ -277,7 +295,7 @@ const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: Bo
                 {selectedDate && formatDate(selectedDate)} às {selectedTime}
               </p>
               <p className="text-gold-400 font-bold text-xl">
-                R$ {selectedService?.price.toFixed(2)}
+                R$ {selectedService?.price}
               </p>
             </div>
             <p className="text-gray-300">

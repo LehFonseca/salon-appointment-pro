@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -19,9 +18,16 @@ import {
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
 import EmployeeManagement from "./EmployeeManagement";
 import ServiceManagement from "./ServiceManagement";
+import { useAppointments } from "@/hooks/useAppointments";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 const BusinessDashboard = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("month");
+  const [businessId, setBusinessId] = useState<string>(""); // Seria obtido do contexto do usuário
+
+  // Para demonstração, vamos usar dados mockados, mas em produção seria do banco
+  const { appointments, loading } = useAppointments(undefined, businessId);
 
   // Dados mockados para demonstração
   const appointmentsData = [
@@ -43,13 +49,15 @@ const BusinessDashboard = () => {
     { month: 'Jun', receita: 38000 },
   ];
 
-  const todayAppointments = [
-    { id: 1, time: "09:00", client: "Maria Silva", service: "Corte + Escova", status: "confirmed", value: 80, employee: "Ana Silva" },
-    { id: 2, time: "10:30", client: "João Santos", service: "Barba", status: "completed", value: 35, employee: "Carlos Santos" },
-    { id: 3, time: "14:00", client: "Ana Costa", service: "Coloração", status: "confirmed", value: 150, employee: "Ana Silva" },
-    { id: 4, time: "15:30", client: "Pedro Lima", service: "Corte Masculino", status: "scheduled", value: 45, employee: "Carlos Santos" },
-    { id: 5, time: "17:00", client: "Carla Souza", service: "Tratamento", status: "scheduled", value: 90, employee: "Ana Silva" },
-  ];
+  const todayAppointments = appointments.slice(0, 5).map(appointment => ({
+    id: appointment.id,
+    time: new Date(appointment.appointment_date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+    client: "Cliente",
+    service: appointment.service?.name || "Serviço",
+    status: appointment.status,
+    value: appointment.service?.price || 0,
+    employee: appointment.employee?.name || "Funcionário"
+  }));
 
   const reviews = [
     { id: 1, client: "Maria Silva", rating: 5, comment: "Excelente atendimento! Adorei o corte.", date: "2024-01-10", service: "Corte Feminino" },
@@ -70,7 +78,7 @@ const BusinessDashboard = () => {
       cancelled: { label: "Cancelado", variant: "destructive" as const, icon: XCircle },
     };
     
-    const config = statusConfig[status as keyof typeof statusConfig];
+    const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.scheduled;
     const Icon = config.icon;
     
     return (
@@ -90,6 +98,29 @@ const BusinessDashboard = () => {
     ));
   };
 
+  const updateAppointmentStatus = async (appointmentId: string, newStatus: string) => {
+    try {
+      const { error } = await supabase
+        .from('appointments')
+        .update({ status: newStatus })
+        .eq('id', appointmentId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Status atualizado",
+        description: "O status do agendamento foi atualizado com sucesso."
+      });
+    } catch (error) {
+      console.error('Erro ao atualizar status:', error);
+      toast({
+        title: "Erro",
+        description: "Não foi possível atualizar o status do agendamento.",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Cards de Estatísticas */}
@@ -99,7 +130,7 @@ const BusinessDashboard = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-400 text-sm">Agendamentos Hoje</p>
-                <p className="text-2xl font-bold text-white">12</p>
+                <p className="text-2xl font-bold text-white">{todayAppointments.length}</p>
                 <p className="text-green-400 text-sm">+2 que ontem</p>
               </div>
               <Calendar className="h-8 w-8 text-gold-400" />
@@ -230,25 +261,49 @@ const BusinessDashboard = () => {
         <TabsContent value="appointments" className="space-y-6">
           <Card className="bg-glam-800 border-glam-700">
             <CardHeader>
-              <CardTitle className="text-gold-400">Todos os Agendamentos de Hoje</CardTitle>
+              <CardTitle className="text-gold-400">Todos os Agendamentos</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {todayAppointments.map((appointment) => (
+              {appointments.map((appointment) => (
                 <div key={appointment.id} className="flex items-center justify-between p-4 bg-glam-900 rounded-lg">
                   <div className="flex items-center gap-4">
                     <div className="bg-gold-500/20 p-3 rounded-lg">
                       <Clock className="h-5 w-5 text-gold-400" />
                     </div>
                     <div>
-                      <p className="font-medium text-white">{appointment.client}</p>
-                      <p className="text-gray-400">{appointment.service}</p>
-                      <p className="text-sm text-gray-500">Profissional: {appointment.employee}</p>
+                      <p className="font-medium text-white">Cliente</p>
+                      <p className="text-gray-400">{appointment.service?.name}</p>
+                      <p className="text-sm text-gray-500">Profissional: {appointment.employee?.name}</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-white font-medium">{appointment.time}</p>
-                    <p className="text-gold-400 font-bold">R$ {appointment.value}</p>
-                    {getStatusBadge(appointment.status)}
+                  <div className="text-right flex items-center gap-4">
+                    <div>
+                      <p className="text-white font-medium">
+                        {new Date(appointment.appointment_date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                      </p>
+                      <p className="text-gold-400 font-bold">R$ {appointment.service?.price}</p>
+                      {getStatusBadge(appointment.status)}
+                    </div>
+                    <div className="flex gap-2">
+                      {appointment.status === 'scheduled' && (
+                        <Button
+                          size="sm"
+                          onClick={() => updateAppointmentStatus(appointment.id, 'confirmed')}
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          Confirmar
+                        </Button>
+                      )}
+                      {appointment.status === 'confirmed' && (
+                        <Button
+                          size="sm"
+                          onClick={() => updateAppointmentStatus(appointment.id, 'completed')}
+                          className="bg-blue-600 hover:bg-blue-700"
+                        >
+                          Concluir
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -283,11 +338,11 @@ const BusinessDashboard = () => {
         </TabsContent>
 
         <TabsContent value="staff" className="space-y-6">
-          <EmployeeManagement />
+          <EmployeeManagement businessId={businessId} />
         </TabsContent>
 
         <TabsContent value="services" className="space-y-6">
-          <ServiceManagement />
+          <ServiceManagement businessId={businessId} />
         </TabsContent>
 
         <TabsContent value="reviews" className="space-y-6">

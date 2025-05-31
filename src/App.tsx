@@ -1,76 +1,39 @@
+
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AppProvider } from "@/contexts/AppContext";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import { AppProvider } from "./contexts/AppContext";
 import Index from "./pages/Index";
+import SalonsPage from "./pages/SalonsPage";
+import SalonDetailsPage from "./pages/SalonDetailsPage";
+import AppointmentsPage from "./pages/AppointmentsPage";
+import BusinessDashboardPage from "./pages/BusinessDashboardPage";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import SalonPage from "./pages/SalonPage";
-import NotFound from "./pages/NotFound";
-import AboutPage from "./pages/AboutPage";
-import ServicesPage from "./pages/ServicesPage";
-import BusinessPage from "./pages/BusinessPage";
-import SalonsPage from "./pages/SalonsPage";
-import ProfilePage from "./pages/ProfilePage";
-import AppointmentsPage from "./pages/AppointmentsPage";
-import FavoritesPage from "./pages/FavoritesPage";
-import ContactPage from "./pages/ContactPage";
-import FAQPage from "./pages/FAQPage";
-import AdminPage from "./pages/AdminPage";
-import BusinessDashboardPage from "./pages/BusinessDashboardPage";
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
-      staleTime: 5 * 60 * 1000, // 5 minutos
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <AppProvider>
-      <TooltipProvider delayDuration={300}>
+    <TooltipProvider>
+      <AppProvider>
         <BrowserRouter>
-          <div className="flex flex-col min-h-screen bg-gray-50">
-            <Navbar />
-            <main className="flex-grow container mx-auto px-4 py-8">
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/salon/:id" element={<SalonPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/services" element={<ServicesPage />} />
-                <Route path="/business" element={<BusinessPage />} />
-                
-                {/* Rotas protegidas */}
-                <Route element={<ProtectedRoute />}>
-                  <Route path="/salons" element={<SalonsPage />} />
-                  <Route path="/profile" element={<ProfilePage />} />
-                  <Route path="/appointments" element={<AppointmentsPage />} />
-                  <Route path="/favorites" element={<FavoritesPage />} />
-                  <Route path="/admin" element={<AdminPage />} />
-                  <Route path="/business-dashboard" element={<BusinessDashboardPage />} />
-                </Route>
-
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/faq" element={<FAQPage />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/salons" element={<SalonsPage />} />
+            <Route path="/salon/:id" element={<SalonDetailsPage />} />
+            <Route path="/appointments" element={<AppointmentsPage />} />
+            <Route path="/business-dashboard" element={<BusinessDashboardPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
         </BrowserRouter>
         <Toaster />
-      </TooltipProvider>
-    </AppProvider>
+        <Sonner />
+      </AppProvider>
+    </TooltipProvider>
   </QueryClientProvider>
 );
 

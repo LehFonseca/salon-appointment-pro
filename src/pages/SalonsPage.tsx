@@ -14,134 +14,12 @@ import {
   Clock,
   DollarSign
 } from "lucide-react";
+import { useBusinesses } from "@/hooks/useBusinesses";
 
 const SalonsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-
-  // Dados mockados de salões
-  const salons = [
-    {
-      id: "1",
-      businessName: "Eliza Hair & Beauty",
-      category: "hair_salon",
-      address: {
-        city: "São Paulo",
-        state: "SP",
-        street: "Rua Augusta",
-        number: "1200",
-        neighborhood: "Consolação"
-      },
-      photos: [
-        "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1674&q=80"
-      ],
-      rating: 4.8,
-      reviewCount: 156,
-      priceRange: "R$ 60 - R$ 220",
-      services: ["Corte", "Coloração", "Tratamentos"],
-      description: "Salão premium com mais de 10 anos de experiência"
-    },
-    {
-      id: "2", 
-      businessName: "Barbearia Clássica",
-      category: "barbershop",
-      address: {
-        city: "São Paulo",
-        state: "SP", 
-        street: "Rua da Consolação",
-        number: "850",
-        neighborhood: "Centro"
-      },
-      photos: [
-        "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1674&q=80"
-      ],
-      rating: 4.6,
-      reviewCount: 89,
-      priceRange: "R$ 35 - R$ 80",
-      services: ["Corte Masculino", "Barba", "Bigode"],
-      description: "Tradição em cortes masculinos desde 1985"
-    },
-    {
-      id: "3",
-      businessName: "Spa & Bem-estar",
-      category: "spa",
-      address: {
-        city: "São Paulo",
-        state: "SP",
-        street: "Av. Paulista",
-        number: "2000",
-        neighborhood: "Bela Vista"
-      },
-      photos: [
-        "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=1674&q=80"
-      ],
-      rating: 4.9,
-      reviewCount: 203,
-      priceRange: "R$ 90 - R$ 350",
-      services: ["Massagem", "Facial", "Tratamentos Corporais"],
-      description: "Seu refúgio de relaxamento no coração da cidade"
-    },
-    {
-      id: "4",
-      businessName: "Nail Art Studio",
-      category: "nail_salon",
-      address: {
-        city: "São Paulo",
-        state: "SP",
-        street: "Rua Oscar Freire",
-        number: "1500",
-        neighborhood: "Jardins"
-      },
-      photos: [
-        "https://images.unsplash.com/photo-1604654894610-df63bc536371?ixlib=rb-4.0.3&auto=format&fit=crop&w=1674&q=80"
-      ],
-      rating: 4.7,
-      reviewCount: 124,
-      priceRange: "R$ 45 - R$ 120",
-      services: ["Manicure", "Pedicure", "Nail Art", "Alongamento"],
-      description: "Arte nas unhas com técnicas inovadoras"
-    },
-    {
-      id: "5",
-      businessName: "Estúdio Makeup Pro",
-      category: "makeup_studio",
-      address: {
-        city: "São Paulo",
-        state: "SP",
-        street: "Rua Haddock Lobo",
-        number: "300",
-        neighborhood: "Cerqueira César"
-      },
-      photos: [
-        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1674&q=80"
-      ],
-      rating: 4.8,
-      reviewCount: 167,
-      priceRange: "R$ 80 - R$ 300",
-      services: ["Maquiagem Social", "Maquiagem Noiva", "Curso de Automaquiagem"],
-      description: "Especialistas em realçar sua beleza natural"
-    },
-    {
-      id: "6",
-      businessName: "Clínica Estética Renovar",
-      category: "esthetic_clinic",
-      address: {
-        city: "São Paulo",
-        state: "SP",
-        street: "Av. Brigadeiro Faria Lima",
-        number: "2500",
-        neighborhood: "Itaim Bibi"
-      },
-      photos: [
-        "https://images.unsplash.com/photo-1629909613654-28e377c37b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=1674&q=80"
-      ],
-      rating: 4.9,
-      reviewCount: 312,
-      priceRange: "R$ 150 - R$ 800",
-      services: ["Limpeza de Pele", "Peeling", "Harmonização Facial"],
-      description: "Tecnologia avançada para sua beleza e bem-estar"
-    }
-  ];
+  const { businesses, loading, error } = useBusinesses();
 
   const categories = [
     { value: "all", label: "Todos" },
@@ -153,10 +31,10 @@ const SalonsPage = () => {
     { value: "esthetic_clinic", label: "Clínica Estética" }
   ];
 
-  const filteredSalons = salons.filter(salon => {
-    const matchesSearch = salon.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         salon.address.neighborhood.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "all" || salon.category === selectedCategory;
+  const filteredSalons = businesses.filter(business => {
+    const matchesSearch = business.business_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (business.address?.neighborhood?.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesCategory = selectedCategory === "all" || business.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -172,6 +50,27 @@ const SalonsPage = () => {
     const Icon = icons[category as keyof typeof icons] || Scissors;
     return <Icon className="h-5 w-5" />;
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-glam-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <Clock className="h-16 w-16 text-gold-400 mx-auto mb-4 animate-spin" />
+          <p className="text-xl">Carregando estabelecimentos...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-glam-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-xl text-red-400">Erro ao carregar estabelecimentos: {error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-glam-900 text-white">
@@ -235,8 +134,8 @@ const SalonsPage = () => {
               <Card key={salon.id} className="bg-glam-800 border-glam-700 hover:border-gold-500 transition-colors">
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
                   <img
-                    src={salon.photos[0]}
-                    alt={salon.businessName}
+                    src={salon.photos?.[0] || "https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=1674&q=80"}
+                    alt={salon.business_name}
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute top-3 right-3">
@@ -249,45 +148,31 @@ const SalonsPage = () => {
 
                 <CardHeader className="pb-3">
                   <CardTitle className="text-white text-lg">
-                    {salon.businessName}
+                    {salon.business_name}
                   </CardTitle>
                   <div className="flex items-center gap-2 text-sm">
                     <div className="flex items-center">
                       <Star className="h-4 w-4 text-gold-400 fill-gold-400 mr-1" />
-                      <span className="text-white font-medium">{salon.rating}</span>
-                      <span className="text-gray-400 ml-1">({salon.reviewCount})</span>
+                      <span className="text-white font-medium">{salon.rating || 0}</span>
+                      <span className="text-gray-400 ml-1">({salon.review_count || 0})</span>
                     </div>
                   </div>
                 </CardHeader>
 
                 <CardContent className="pt-0">
                   <div className="space-y-3">
-                    <div className="flex items-center text-gray-300 text-sm">
-                      <MapPin className="h-4 w-4 text-gold-400 mr-2" />
-                      <span>{salon.address.street}, {salon.address.number} - {salon.address.neighborhood}</span>
-                    </div>
+                    {salon.address && (
+                      <div className="flex items-center text-gray-300 text-sm">
+                        <MapPin className="h-4 w-4 text-gold-400 mr-2" />
+                        <span>{salon.address.street}, {salon.address.number} - {salon.address.neighborhood}</span>
+                      </div>
+                    )}
 
-                    <div className="flex items-center text-gray-300 text-sm">
-                      <DollarSign className="h-4 w-4 text-gold-400 mr-2" />
-                      <span>{salon.priceRange}</span>
-                    </div>
-
-                    <div className="flex flex-wrap gap-1">
-                      {salon.services.slice(0, 3).map((service, index) => (
-                        <Badge key={index} variant="outline" className="border-glam-600 text-gray-300 text-xs">
-                          {service}
-                        </Badge>
-                      ))}
-                      {salon.services.length > 3 && (
-                        <Badge variant="outline" className="border-glam-600 text-gray-300 text-xs">
-                          +{salon.services.length - 3} mais
-                        </Badge>
-                      )}
-                    </div>
-
-                    <p className="text-gray-400 text-sm line-clamp-2">
-                      {salon.description}
-                    </p>
+                    {salon.description && (
+                      <p className="text-gray-400 text-sm line-clamp-2">
+                        {salon.description}
+                      </p>
+                    )}
 
                     <div className="flex gap-2 pt-2">
                       <Link to={`/salon/${salon.id}`} className="flex-1">
