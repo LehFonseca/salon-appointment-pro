@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { 
@@ -7,8 +6,10 @@ import {
   TabsList, 
   TabsTrigger 
 } from "@/components/ui/tabs";
-import { Star, MapPin, Phone, Clock, Heart } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Star, MapPin, Phone, Clock, Heart, Calendar } from "lucide-react";
 import ServiceCard from "@/components/ui/ServiceCard";
+import BookingCalendar from "@/components/booking/BookingCalendar";
 import { Business, Service } from "@/types";
 
 interface SalonDetailsProps {
@@ -18,10 +19,10 @@ interface SalonDetailsProps {
 const SalonDetails = ({ salon }: SalonDetailsProps) => {
   const [activeTab, setActiveTab] = useState("services");
   const [isFavorite, setIsFavorite] = useState(false);
+  const [showBookingDialog, setShowBookingDialog] = useState(false);
   
   const handleBookService = (serviceId: string) => {
-    console.log("Agendando serviço:", serviceId);
-    // Lógica de agendamento aqui
+    setShowBookingDialog(true);
   };
 
   // Agrupar serviços por categoria
@@ -77,19 +78,43 @@ const SalonDetails = ({ salon }: SalonDetailsProps) => {
                 </div>
               </div>
             </div>
-            <Button 
-              variant="outline"
-              className={`
-                border-2 h-10 px-3 rounded-full
-                ${isFavorite 
-                  ? 'bg-white/10 border-white text-white' 
-                  : 'bg-white/10 border-white/40 text-white hover:bg-white/20 hover:border-white'}
-              `}
-              onClick={() => setIsFavorite(!isFavorite)}
-            >
-              <Heart size={18} className={isFavorite ? "fill-pink-200 mr-2" : "mr-2"} />
-              {isFavorite ? "Favoritado" : "Favoritar"}
-            </Button>
+            <div className="flex gap-3">
+              <Dialog open={showBookingDialog} onOpenChange={setShowBookingDialog}>
+                <DialogTrigger asChild>
+                  <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900 px-6">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Agendar
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="bg-glam-800 border-glam-700 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle className="text-gold-400 text-xl">
+                      Agendar em {salon.businessName}
+                    </DialogTitle>
+                  </DialogHeader>
+                  <BookingCalendar
+                    salonId={salon.id || ""}
+                    salonName={salon.businessName || ""}
+                    services={salon.services || []}
+                    onBookingComplete={() => setShowBookingDialog(false)}
+                  />
+                </DialogContent>
+              </Dialog>
+              
+              <Button 
+                variant="outline"
+                className={`
+                  border-2 h-10 px-3 rounded-full
+                  ${isFavorite 
+                    ? 'bg-white/10 border-white text-white' 
+                    : 'bg-white/10 border-white/40 text-white hover:bg-white/20 hover:border-white'}
+                `}
+                onClick={() => setIsFavorite(!isFavorite)}
+              >
+                <Heart size={18} className={isFavorite ? "fill-pink-200 mr-2" : "mr-2"} />
+                {isFavorite ? "Favoritado" : "Favoritar"}
+              </Button>
+            </div>
           </div>
         </div>
       </div>

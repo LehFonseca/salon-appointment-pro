@@ -21,6 +21,7 @@ import FavoritesPage from "./pages/FavoritesPage";
 import ContactPage from "./pages/ContactPage";
 import FAQPage from "./pages/FAQPage";
 import AdminPage from "./pages/AdminPage";
+import BusinessDashboardPage from "./pages/BusinessDashboardPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +57,7 @@ const App = () => (
                   <Route path="/appointments" element={<AppointmentsPage />} />
                   <Route path="/favorites" element={<FavoritesPage />} />
                   <Route path="/admin" element={<AdminPage />} />
+                  <Route path="/business-dashboard" element={<BusinessDashboardPage />} />
                 </Route>
 
                 <Route path="/contact" element={<ContactPage />} />
