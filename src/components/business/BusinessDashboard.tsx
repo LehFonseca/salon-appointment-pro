@@ -12,9 +12,13 @@ import {
   Clock,
   Star,
   Plus,
-  BarChart3
+  BarChart3,
+  CheckCircle,
+  XCircle
 } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import EmployeeManagement from "./EmployeeManagement";
+import ServiceManagement from "./ServiceManagement";
 
 const BusinessDashboard = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("month");
@@ -40,25 +44,50 @@ const BusinessDashboard = () => {
   ];
 
   const todayAppointments = [
-    { id: 1, time: "09:00", client: "Maria Silva", service: "Corte + Escova", status: "confirmed", value: 80 },
-    { id: 2, time: "10:30", client: "João Santos", service: "Barba", status: "completed", value: 35 },
-    { id: 3, time: "14:00", client: "Ana Costa", service: "Coloração", status: "confirmed", value: 150 },
-    { id: 4, time: "15:30", client: "Pedro Lima", service: "Corte Masculino", status: "scheduled", value: 45 },
-    { id: 5, time: "17:00", client: "Carla Souza", service: "Tratamento", status: "scheduled", value: 90 },
+    { id: 1, time: "09:00", client: "Maria Silva", service: "Corte + Escova", status: "confirmed", value: 80, employee: "Ana Silva" },
+    { id: 2, time: "10:30", client: "João Santos", service: "Barba", status: "completed", value: 35, employee: "Carlos Santos" },
+    { id: 3, time: "14:00", client: "Ana Costa", service: "Coloração", status: "confirmed", value: 150, employee: "Ana Silva" },
+    { id: 4, time: "15:30", client: "Pedro Lima", service: "Corte Masculino", status: "scheduled", value: 45, employee: "Carlos Santos" },
+    { id: 5, time: "17:00", client: "Carla Souza", service: "Tratamento", status: "scheduled", value: 90, employee: "Ana Silva" },
+  ];
+
+  const reviews = [
+    { id: 1, client: "Maria Silva", rating: 5, comment: "Excelente atendimento! Adorei o corte.", date: "2024-01-10", service: "Corte Feminino" },
+    { id: 2, client: "João Santos", rating: 4, comment: "Muito bom, profissional competente.", date: "2024-01-09", service: "Barba" },
+    { id: 3, client: "Ana Costa", rating: 5, comment: "Superou minhas expectativas!", date: "2024-01-08", service: "Coloração" },
+  ];
+
+  const pendingPayments = [
+    { id: 1, client: "Maria Silva", service: "Corte + Escova", value: 80, date: "2024-01-10", status: "pending" },
+    { id: 2, client: "Pedro Lima", service: "Corte Masculino", value: 45, date: "2024-01-09", status: "pending" },
   ];
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
-      scheduled: { label: "Agendado", variant: "secondary" as const },
-      confirmed: { label: "Confirmado", variant: "default" as const },
-      completed: { label: "Concluído", variant: "outline" as const },
+      scheduled: { label: "Agendado", variant: "secondary" as const, icon: Clock },
+      confirmed: { label: "Confirmado", variant: "default" as const, icon: CheckCircle },
+      completed: { label: "Concluído", variant: "outline" as const, icon: CheckCircle },
+      cancelled: { label: "Cancelado", variant: "destructive" as const, icon: XCircle },
     };
     
+    const config = statusConfig[status as keyof typeof statusConfig];
+    const Icon = config.icon;
+    
     return (
-      <Badge variant={statusConfig[status as keyof typeof statusConfig].variant}>
-        {statusConfig[status as keyof typeof statusConfig].label}
+      <Badge variant={config.variant} className="flex items-center gap-1">
+        <Icon className="h-3 w-3" />
+        {config.label}
       </Badge>
     );
+  };
+
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <Star 
+        key={i} 
+        className={`h-4 w-4 ${i < rating ? 'text-yellow-400 fill-current' : 'text-gray-400'}`} 
+      />
+    ));
   };
 
   return (
@@ -119,7 +148,7 @@ const BusinessDashboard = () => {
       </div>
 
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-5 bg-glam-800">
+        <TabsList className="grid w-full grid-cols-7 bg-glam-800">
           <TabsTrigger value="overview" className="text-white data-[state=active]:bg-gold-500 data-[state=active]:text-glam-900">
             Visão Geral
           </TabsTrigger>
@@ -134,6 +163,12 @@ const BusinessDashboard = () => {
           </TabsTrigger>
           <TabsTrigger value="services" className="text-white data-[state=active]:bg-gold-500 data-[state=active]:text-glam-900">
             Serviços
+          </TabsTrigger>
+          <TabsTrigger value="reviews" className="text-white data-[state=active]:bg-gold-500 data-[state=active]:text-glam-900">
+            Avaliações
+          </TabsTrigger>
+          <TabsTrigger value="payments" className="text-white data-[state=active]:bg-gold-500 data-[state=active]:text-glam-900">
+            Pagamentos
           </TabsTrigger>
         </TabsList>
 
@@ -177,10 +212,12 @@ const BusinessDashboard = () => {
                       <div>
                         <p className="font-medium text-white">{appointment.client}</p>
                         <p className="text-sm text-gray-400">{appointment.service}</p>
+                        <p className="text-xs text-gray-500">{appointment.employee}</p>
                       </div>
                     </div>
                     <div className="text-right">
                       <p className="text-sm text-gray-400">{appointment.time}</p>
+                      <p className="text-gold-400 font-semibold text-sm">R$ {appointment.value}</p>
                       {getStatusBadge(appointment.status)}
                     </div>
                   </div>
@@ -188,6 +225,35 @@ const BusinessDashboard = () => {
               </CardContent>
             </Card>
           </div>
+        </TabsContent>
+
+        <TabsContent value="appointments" className="space-y-6">
+          <Card className="bg-glam-800 border-glam-700">
+            <CardHeader>
+              <CardTitle className="text-gold-400">Todos os Agendamentos de Hoje</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {todayAppointments.map((appointment) => (
+                <div key={appointment.id} className="flex items-center justify-between p-4 bg-glam-900 rounded-lg">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-gold-500/20 p-3 rounded-lg">
+                      <Clock className="h-5 w-5 text-gold-400" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-white">{appointment.client}</p>
+                      <p className="text-gray-400">{appointment.service}</p>
+                      <p className="text-sm text-gray-500">Profissional: {appointment.employee}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-white font-medium">{appointment.time}</p>
+                    <p className="text-gold-400 font-bold">R$ {appointment.value}</p>
+                    {getStatusBadge(appointment.status)}
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="revenue" className="space-y-6">
@@ -217,70 +283,105 @@ const BusinessDashboard = () => {
         </TabsContent>
 
         <TabsContent value="staff" className="space-y-6">
+          <EmployeeManagement />
+        </TabsContent>
+
+        <TabsContent value="services" className="space-y-6">
+          <ServiceManagement />
+        </TabsContent>
+
+        <TabsContent value="reviews" className="space-y-6">
           <div className="flex justify-between items-center">
-            <h3 className="text-xl font-semibold text-white">Funcionários</h3>
-            <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900">
-              <Plus className="h-4 w-4 mr-2" />
-              Adicionar Funcionário
-            </Button>
+            <h3 className="text-xl font-semibold text-white">Avaliações dos Clientes</h3>
+            <div className="flex items-center gap-2">
+              <Star className="h-5 w-5 text-yellow-400 fill-current" />
+              <span className="text-white font-semibold">4.8</span>
+              <span className="text-gray-400">({reviews.length} avaliações)</span>
+            </div>
           </div>
           
           <div className="grid gap-4">
-            {[
-              { name: "Ana Silva", role: "Cabeleireira Senior", agendamentos: 8, receita: "R$ 640" },
-              { name: "Carlos Santos", role: "Barbeiro", agendamentos: 6, receita: "R$ 270" },
-              { name: "Mariana Costa", role: "Esteticista", agendamentos: 4, receita: "R$ 320" },
-            ].map((staff, index) => (
-              <Card key={index} className="bg-glam-800 border-glam-700">
+            {reviews.map((review) => (
+              <Card key={review.id} className="bg-glam-800 border-glam-700">
                 <CardContent className="p-6">
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between items-start mb-3">
                     <div>
-                      <h4 className="font-semibold text-white">{staff.name}</h4>
-                      <p className="text-gray-400">{staff.role}</p>
+                      <h4 className="font-semibold text-white">{review.client}</h4>
+                      <p className="text-gray-400 text-sm">{review.service}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-white">{staff.agendamentos} agendamentos hoje</p>
-                      <p className="text-gold-400 font-semibold">{staff.receita}</p>
+                      <div className="flex gap-1 mb-1">
+                        {renderStars(review.rating)}
+                      </div>
+                      <p className="text-gray-400 text-sm">{review.date}</p>
                     </div>
                   </div>
+                  <p className="text-gray-300">{review.comment}</p>
                 </CardContent>
               </Card>
             ))}
           </div>
         </TabsContent>
 
-        <TabsContent value="services" className="space-y-6">
-          <div className="flex justify-between items-center">
-            <h3 className="text-xl font-semibold text-white">Serviços</h3>
-            <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900">
-              <Plus className="h-4 w-4 mr-2" />
-              Adicionar Serviço
-            </Button>
-          </div>
-          
-          <div className="grid gap-4">
-            {[
-              { name: "Corte Feminino", price: "R$ 80", duration: "60 min", bookings: 15 },
-              { name: "Coloração", price: "R$ 150", duration: "120 min", bookings: 8 },
-              { name: "Corte Masculino", price: "R$ 45", duration: "45 min", bookings: 12 },
-              { name: "Tratamento Capilar", price: "R$ 90", duration: "45 min", bookings: 6 },
-            ].map((service, index) => (
-              <Card key={index} className="bg-glam-800 border-glam-700">
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h4 className="font-semibold text-white">{service.name}</h4>
-                      <p className="text-gray-400">{service.duration}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-gold-400 font-semibold">{service.price}</p>
-                      <p className="text-gray-400">{service.bookings} agendamentos hoje</p>
-                    </div>
+        <TabsContent value="payments" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <Card className="bg-glam-800 border-glam-700">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-gray-400 text-sm">A Receber Hoje</p>
+                    <p className="text-2xl font-bold text-white">R$ 125</p>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
+                  <DollarSign className="h-8 w-8 text-gold-400" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-glam-800 border-glam-700">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-gray-400 text-sm">Recebido Hoje</p>
+                    <p className="text-2xl font-bold text-white">R$ 835</p>
+                  </div>
+                  <CheckCircle className="h-8 w-8 text-green-400" />
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-glam-800 border-glam-700">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-gray-400 text-sm">Total do Mês</p>
+                    <p className="text-2xl font-bold text-white">R$ 38.000</p>
+                  </div>
+                  <TrendingUp className="h-8 w-8 text-gold-400" />
+                </div>
+              </CardContent>
+            </Card>
           </div>
+
+          <Card className="bg-glam-800 border-glam-700">
+            <CardHeader>
+              <CardTitle className="text-gold-400">Pagamentos Pendentes</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {pendingPayments.map((payment) => (
+                <div key={payment.id} className="flex items-center justify-between p-4 bg-glam-900 rounded-lg">
+                  <div>
+                    <p className="font-medium text-white">{payment.client}</p>
+                    <p className="text-gray-400">{payment.service}</p>
+                    <p className="text-gray-500 text-sm">{payment.date}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-gold-400 font-bold">R$ {payment.value}</p>
+                    <Badge variant="secondary">Pendente</Badge>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

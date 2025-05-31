@@ -4,31 +4,31 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { Calendar, Clock, MapPin, Edit, Trash2, Plus, User, Scissors } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { toast } from "@/hooks/use-toast";
-import type { Appointment, AppointmentStatus } from "@/types";
+import type { AppointmentStatus } from "@/types";
+import BookingCalendar from "@/components/booking/BookingCalendar";
+import AppointmentConfirmation from "@/components/booking/AppointmentConfirmation";
 
-const appointmentSchema = z.object({
-  businessName: z.string().min(1, "Nome do salão é obrigatório"),
-  serviceName: z.string().min(1, "Serviço é obrigatório"),
-  date: z.string().min(1, "Data é obrigatória"),
-  time: z.string().min(1, "Horário é obrigatório"),
-  employeeName: z.string().optional(),
-  note: z.string().optional(),
-  status: z.enum(["scheduled", "confirmed", "completed", "cancelled", "no_show"]),
-});
-
-type AppointmentFormData = z.infer<typeof appointmentSchema>;
+interface ExtendedAppointment {
+  id: string;
+  businessId: string;
+  userId: string;
+  serviceId: string;
+  employeeId?: string;
+  date: Date;
+  status: AppointmentStatus;
+  note?: string;
+  businessName: string;
+  serviceName: string;
+  employeeName?: string;
+  price: number;
+  duration: number;
+  businessAddress: string;
+}
 
 const AppointmentsPage = () => {
-  const [appointments, setAppointments] = useState<(Appointment & { businessName: string; serviceName: string; employeeName?: string })[]>([
+  const [appointments, setAppointments] = useState<ExtendedAppointment[]>([
     {
       id: "1",
       businessId: "salon1",
@@ -40,7 +40,10 @@ const AppointmentsPage = () => {
       note: "Primeiro corte neste salão",
       businessName: "Salão Beleza Pura",
       serviceName: "Corte e Escova",
-      employeeName: "Ana Silva"
+      employeeName: "Ana Silva",
+      price: 80,
+      duration: 60,
+      businessAddress: "Rua das Flores, 123 - Centro"
     },
     {
       id: "2",
@@ -51,7 +54,10 @@ const AppointmentsPage = () => {
       status: "scheduled",
       businessName: "Barbearia Clássica",
       serviceName: "Corte + Barba",
-      employeeName: "Carlos Santos"
+      employeeName: "Carlos Santos",
+      price: 65,
+      duration: 90,
+      businessAddress: "Av. Principal, 456 - Jardins"
     },
     {
       id: "3",
@@ -61,25 +67,22 @@ const AppointmentsPage = () => {
       date: new Date("2024-12-10T09:00:00"),
       status: "completed",
       businessName: "Spa & Bem-estar",
-      serviceName: "Massagem Relaxante"
+      serviceName: "Massagem Relaxante",
+      price: 120,
+      duration: 60,
+      businessAddress: "Rua do Spa, 789 - Vila Nova"
     }
   ]);
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingAppointment, setEditingAppointment] = useState<string | null>(null);
+  const [showBookingDialog, setShowBookingDialog] = useState(false);
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+  const [pendingAppointment, setPendingAppointment] = useState<ExtendedAppointment | null>(null);
 
-  const form = useForm<AppointmentFormData>({
-    resolver: zodResolver(appointmentSchema),
-    defaultValues: {
-      businessName: "",
-      serviceName: "",
-      date: "",
-      time: "",
-      employeeName: "",
-      note: "",
-      status: "scheduled",
-    },
-  });
+  const mockServices = [
+    { id: "1", name: "Corte Feminino", description: "Corte moderno", price: 80, duration: 60, category: "haircut" as const },
+    { id: "2", name: "Coloração", description: "Coloração completa", price: 150, duration: 120, category: "hair_coloring" as const },
+    { id: "3", name: "Corte Masculino", description: "Corte clássico", price: 45, duration: 45, category: "haircut" as const },
+  ];
 
   const getStatusBadge = (status: AppointmentStatus) => {
     const statusConfig = {
@@ -112,66 +115,26 @@ const AppointmentsPage = () => {
     }).format(date);
   };
 
-  const onSubmit = (data: AppointmentFormData) => {
-    const newAppointment = {
-      id: editingAppointment || `appointment_${Date.now()}`,
-      businessId: `business_${Date.now()}`,
-      userId: "current_user",
-      serviceId: `service_${Date.now()}`,
-      employeeId: data.employeeName ? `emp_${Date.now()}` : undefined,
-      date: new Date(`${data.date}T${data.time}`),
-      status: data.status,
-      note: data.note,
-      businessName: data.businessName,
-      serviceName: data.serviceName,
-      employeeName: data.employeeName,
-    };
-
-    if (editingAppointment) {
-      setAppointments(prev => 
-        prev.map(app => app.id === editingAppointment ? newAppointment : app)
-      );
-      toast({
-        title: "Agendamento atualizado",
-        description: "Seu agendamento foi atualizado com sucesso.",
-      });
-    } else {
-      setAppointments(prev => [...prev, newAppointment]);
-      toast({
-        title: "Agendamento criado",
-        description: "Seu novo agendamento foi criado com sucesso.",
-      });
-    }
-
-    form.reset();
-    setIsDialogOpen(false);
-    setEditingAppointment(null);
-  };
-
-  const handleEdit = (appointment: typeof appointments[0]) => {
-    setEditingAppointment(appointment.id);
-    form.setValue("businessName", appointment.businessName);
-    form.setValue("serviceName", appointment.serviceName);
-    form.setValue("date", appointment.date.toISOString().split('T')[0]);
-    form.setValue("time", appointment.date.toTimeString().slice(0, 5));
-    form.setValue("employeeName", appointment.employeeName || "");
-    form.setValue("note", appointment.note || "");
-    form.setValue("status", appointment.status);
-    setIsDialogOpen(true);
+  const handleBookingComplete = () => {
+    setShowBookingDialog(false);
+    // Aqui você atualizaria a lista de agendamentos
+    toast({
+      title: "Agendamento realizado!",
+      description: "Seu agendamento foi criado com sucesso.",
+    });
   };
 
   const handleDelete = (appointmentId: string) => {
     setAppointments(prev => prev.filter(app => app.id !== appointmentId));
     toast({
-      title: "Agendamento excluído",
-      description: "O agendamento foi excluído com sucesso.",
+      title: "Agendamento cancelado",
+      description: "O agendamento foi cancelado com sucesso.",
     });
   };
 
-  const handleNewAppointment = () => {
-    setEditingAppointment(null);
-    form.reset();
-    setIsDialogOpen(true);
+  const handleConfirmAppointment = (appointment: ExtendedAppointment) => {
+    setPendingAppointment(appointment);
+    setShowConfirmationDialog(true);
   };
 
   return (
@@ -187,147 +150,25 @@ const AppointmentsPage = () => {
             </p>
           </div>
           
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <Dialog open={showBookingDialog} onOpenChange={setShowBookingDialog}>
             <DialogTrigger asChild>
-              <Button onClick={handleNewAppointment} className="bg-gold-500 hover:bg-gold-600 text-glam-900">
+              <Button className="bg-gold-500 hover:bg-gold-600 text-glam-900">
                 <Plus className="h-4 w-4 mr-2" />
                 Novo Agendamento
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-glam-800 border-glam-700 text-white max-w-md">
+            <DialogContent className="bg-glam-800 border-glam-700 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="text-gold-400">
-                  {editingAppointment ? "Editar Agendamento" : "Novo Agendamento"}
+                  Agendar Novo Serviço
                 </DialogTitle>
               </DialogHeader>
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="businessName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nome do Salão</FormLabel>
-                        <FormControl>
-                          <Input {...field} className="bg-glam-900 border-glam-600" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="serviceName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Serviço</FormLabel>
-                        <FormControl>
-                          <Input {...field} className="bg-glam-900 border-glam-600" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="date"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Data</FormLabel>
-                          <FormControl>
-                            <Input type="date" {...field} className="bg-glam-900 border-glam-600" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    
-                    <FormField
-                      control={form.control}
-                      name="time"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Horário</FormLabel>
-                          <FormControl>
-                            <Input type="time" {...field} className="bg-glam-900 border-glam-600" />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  
-                  <FormField
-                    control={form.control}
-                    name="employeeName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Profissional (Opcional)</FormLabel>
-                        <FormControl>
-                          <Input {...field} className="bg-glam-900 border-glam-600" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="status"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Status</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger className="bg-glam-900 border-glam-600">
-                              <SelectValue />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent className="bg-glam-800 border-glam-600">
-                            <SelectItem value="scheduled">Agendado</SelectItem>
-                            <SelectItem value="confirmed">Confirmado</SelectItem>
-                            <SelectItem value="completed">Concluído</SelectItem>
-                            <SelectItem value="cancelled">Cancelado</SelectItem>
-                            <SelectItem value="no_show">Não Compareceu</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="note"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Observações (Opcional)</FormLabel>
-                        <FormControl>
-                          <Textarea {...field} className="bg-glam-900 border-glam-600" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <div className="flex gap-2 pt-4">
-                    <Button type="submit" className="bg-gold-500 hover:bg-gold-600 text-glam-900 flex-1">
-                      {editingAppointment ? "Atualizar" : "Criar"} Agendamento
-                    </Button>
-                    <Button 
-                      type="button" 
-                      variant="outline" 
-                      onClick={() => setIsDialogOpen(false)}
-                      className="border-glam-600 text-gray-300"
-                    >
-                      Cancelar
-                    </Button>
-                  </div>
-                </form>
-              </Form>
+              <BookingCalendar
+                salonId="salon1"
+                salonName="Salão Exemplo"
+                services={mockServices}
+                onBookingComplete={handleBookingComplete}
+              />
             </DialogContent>
           </Dialog>
         </div>
@@ -342,7 +183,7 @@ const AppointmentsPage = () => {
               <p className="text-gray-400 mb-4">
                 Você ainda não possui agendamentos. Que tal marcar seu primeiro compromisso?
               </p>
-              <Button onClick={handleNewAppointment} className="bg-gold-500 hover:bg-gold-600 text-glam-900">
+              <Button onClick={() => setShowBookingDialog(true)} className="bg-gold-500 hover:bg-gold-600 text-glam-900">
                 <Plus className="h-4 w-4 mr-2" />
                 Criar Primeiro Agendamento
               </Button>
@@ -369,14 +210,16 @@ const AppointmentsPage = () => {
                     </div>
                     <div className="flex items-center gap-2">
                       {getStatusBadge(appointment.status)}
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(appointment)}
-                        className="border-glam-600 text-gray-300 hover:bg-glam-700"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
+                      {appointment.status === 'scheduled' && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleConfirmAppointment(appointment)}
+                          className="border-gold-600 text-gold-400 hover:bg-gold-900/20"
+                        >
+                          Confirmar
+                        </Button>
+                      )}
                       <Button
                         variant="outline"
                         size="sm"
@@ -389,14 +232,14 @@ const AppointmentsPage = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="pt-0">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="flex items-center gap-2 text-gray-300">
                       <Calendar className="h-4 w-4 text-gold-400" />
                       <span>{formatDate(appointment.date)}</span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-300">
                       <Clock className="h-4 w-4 text-gold-400" />
-                      <span>{formatTime(appointment.date)}</span>
+                      <span>{formatTime(appointment.date)} ({appointment.duration}min)</span>
                     </div>
                     {appointment.employeeName && (
                       <div className="flex items-center gap-2 text-gray-300">
@@ -404,6 +247,10 @@ const AppointmentsPage = () => {
                         <span>{appointment.employeeName}</span>
                       </div>
                     )}
+                    <div className="flex items-center gap-2 text-gray-300">
+                      <MapPin className="h-4 w-4 text-gold-400" />
+                      <span className="text-gold-400 font-semibold">R$ {appointment.price.toFixed(2)}</span>
+                    </div>
                   </div>
                   {appointment.note && (
                     <div className="mt-3 p-3 bg-glam-900 rounded-lg">
@@ -412,10 +259,27 @@ const AppointmentsPage = () => {
                       </p>
                     </div>
                   )}
+                  <div className="mt-3 p-3 bg-glam-900 rounded-lg">
+                    <p className="text-gray-300 text-sm">
+                      <strong className="text-gold-400">Endereço:</strong> {appointment.businessAddress}
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             ))}
           </div>
+        )}
+
+        {/* Diálogo de Confirmação */}
+        {pendingAppointment && (
+          <AppointmentConfirmation
+            appointment={pendingAppointment}
+            isOpen={showConfirmationDialog}
+            onClose={() => {
+              setShowConfirmationDialog(false);
+              setPendingAppointment(null);
+            }}
+          />
         )}
       </div>
     </div>

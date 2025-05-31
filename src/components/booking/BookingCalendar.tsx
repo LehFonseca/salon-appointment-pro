@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, User, Check } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import type { Service } from "@/types";
+import EmployeeSelection from "./EmployeeSelection";
 
 interface BookingCalendarProps {
   salonId: string;
@@ -16,11 +17,41 @@ interface BookingCalendarProps {
   onBookingComplete: () => void;
 }
 
+interface Employee {
+  id: string;
+  name: string;
+  position: string;
+  rating: number;
+  imageUrl?: string;
+  availableTimes: string[];
+  specialties: string[];
+}
+
 const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: BookingCalendarProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [selectedService, setSelectedService] = useState<Service | null>(null);
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const mockEmployees: Employee[] = [
+    {
+      id: "1",
+      name: "Ana Silva",
+      position: "Cabeleireira Senior",
+      rating: 4.9,
+      specialties: ["Corte Feminino", "Coloração", "Escova"],
+      availableTimes: ["09:00", "10:30", "14:00", "15:30"]
+    },
+    {
+      id: "2",
+      name: "Carlos Santos",
+      position: "Barbeiro",
+      rating: 4.7,
+      specialties: ["Corte Masculino", "Barba"],
+      availableTimes: ["09:30", "11:00", "14:30", "16:00"]
+    }
+  ];
 
   const timeSlots = [
     "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
@@ -29,17 +60,30 @@ const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: Bo
 
   const handleServiceSelect = (service: Service) => {
     setSelectedService(service);
+    setSelectedEmployee(null); // Reset employee when service changes
+  };
+
+  const handleEmployeeSelect = (employee: Employee) => {
+    setSelectedEmployee(employee);
   };
 
   const handleTimeSelect = (time: string) => {
+    if (!selectedEmployee || !selectedEmployee.availableTimes.includes(time)) {
+      toast({
+        title: "Horário indisponível",
+        description: "Este horário não está disponível para o profissional selecionado.",
+        variant: "destructive"
+      });
+      return;
+    }
     setSelectedTime(time);
   };
 
   const handleBooking = () => {
-    if (!selectedDate || !selectedTime || !selectedService) {
+    if (!selectedDate || !selectedTime || !selectedService || !selectedEmployee) {
       toast({
         title: "Dados incompletos",
-        description: "Por favor, selecione data, horário e serviço.",
+        description: "Por favor, selecione data, horário, serviço e profissional.",
         variant: "destructive"
       });
       return;
@@ -48,10 +92,9 @@ const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: Bo
   };
 
   const confirmBooking = () => {
-    // Aqui você faria a chamada para salvar o agendamento
     toast({
       title: "Agendamento confirmado!",
-      description: `Seu agendamento para ${selectedService?.name} foi confirmado para ${selectedDate?.toLocaleDateString('pt-BR')} às ${selectedTime}.`,
+      description: `Seu agendamento para ${selectedService?.name} com ${selectedEmployee?.name} foi confirmado para ${selectedDate?.toLocaleDateString('pt-BR')} às ${selectedTime}.`,
     });
     setShowConfirmation(false);
     onBookingComplete();
@@ -64,6 +107,10 @@ const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: Bo
       month: 'long',
       day: 'numeric'
     }).format(date);
+  };
+
+  const isTimeAvailable = (time: string) => {
+    return selectedEmployee ? selectedEmployee.availableTimes.includes(time) : false;
   };
 
   return (
@@ -105,6 +152,14 @@ const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: Bo
         </CardContent>
       </Card>
 
+      {selectedService && (
+        <EmployeeSelection
+          employees={mockEmployees}
+          selectedEmployee={selectedEmployee}
+          onEmployeeSelect={handleEmployeeSelect}
+        />
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="bg-glam-800 border-glam-700">
           <CardHeader>
@@ -116,7 +171,7 @@ const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: Bo
               selected={selectedDate}
               onSelect={setSelectedDate}
               disabled={(date) => date < new Date() || date.getDay() === 0}
-              className="rounded-md border border-glam-600 bg-glam-900 text-white"
+              className="rounded-md border border-glam-600 bg-glam-900 text-white pointer-events-auto"
             />
           </CardContent>
         </Card>
@@ -127,28 +182,40 @@ const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: Bo
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-3">
-              {timeSlots.map((time) => (
-                <Button
-                  key={time}
-                  variant={selectedTime === time ? "default" : "outline"}
-                  className={`${
-                    selectedTime === time 
-                      ? 'bg-gold-500 text-glam-900 hover:bg-gold-600' 
-                      : 'border-glam-600 text-gray-300 hover:bg-glam-700'
-                  }`}
-                  onClick={() => handleTimeSelect(time)}
-                  disabled={!selectedDate}
-                >
-                  <Clock className="h-4 w-4 mr-2" />
-                  {time}
-                </Button>
-              ))}
+              {timeSlots.map((time) => {
+                const isAvailable = selectedEmployee ? isTimeAvailable(time) : false;
+                const isSelected = selectedTime === time;
+                
+                return (
+                  <Button
+                    key={time}
+                    variant={isSelected ? "default" : "outline"}
+                    className={`${
+                      isSelected 
+                        ? 'bg-gold-500 text-glam-900 hover:bg-gold-600' 
+                        : isAvailable
+                        ? 'border-glam-600 text-gray-300 hover:bg-glam-700'
+                        : 'border-glam-600 text-gray-500 bg-glam-800 cursor-not-allowed'
+                    }`}
+                    onClick={() => handleTimeSelect(time)}
+                    disabled={!selectedDate || !selectedEmployee || !isAvailable}
+                  >
+                    <Clock className="h-4 w-4 mr-2" />
+                    {time}
+                  </Button>
+                );
+              })}
             </div>
+            {selectedEmployee && (
+              <p className="text-gray-400 text-sm mt-3">
+                Horários disponíveis para {selectedEmployee.name}
+              </p>
+            )}
           </CardContent>
         </Card>
       </div>
 
-      {selectedDate && selectedTime && selectedService && (
+      {selectedDate && selectedTime && selectedService && selectedEmployee && (
         <Card className="bg-glam-800 border-glam-700">
           <CardHeader>
             <CardTitle className="text-gold-400">Resumo do Agendamento</CardTitle>
@@ -162,6 +229,10 @@ const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: Bo
               <div className="flex justify-between">
                 <span className="text-gray-300">Serviço:</span>
                 <span className="text-white font-medium">{selectedService.name}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-300">Profissional:</span>
+                <span className="text-white font-medium">{selectedEmployee.name}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-300">Data:</span>
@@ -201,6 +272,7 @@ const BookingCalendar = ({ salonId, salonName, services, onBookingComplete }: Bo
             <div className="bg-glam-900 p-4 rounded-lg space-y-2">
               <p className="text-lg font-semibold text-white">{selectedService?.name}</p>
               <p className="text-gray-300">{salonName}</p>
+              <p className="text-gray-300">Profissional: {selectedEmployee?.name}</p>
               <p className="text-gold-400 font-medium">
                 {selectedDate && formatDate(selectedDate)} às {selectedTime}
               </p>
